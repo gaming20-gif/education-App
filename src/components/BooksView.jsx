@@ -84,24 +84,24 @@ export default function BooksView({ onSelectSubject, currentUser }) {
           {filteredBooks.map((book) => (
             <div
               key={book.id}
-              className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row gap-4 justify-between hover:scale-[1.01]"
+              className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row gap-4 justify-between hover:scale-[1.01]"
             >
-              <div className="flex gap-4 min-w-0 flex-1">
+              <div className="flex gap-3 sm:gap-4 min-w-0 flex-1">
                 <ImageWithFallback
                   src={book.cover}
                   alt={book.title}
                   type="book"
                   fallbackTitle={book.title}
-                  className="w-20 h-28 object-cover rounded-lg shadow-sm border border-slate-200 shrink-0"
+                  className="w-18 h-26 sm:w-20 sm:h-28 object-cover rounded-lg shadow-sm border border-slate-200 shrink-0"
                 />
-                <div className="space-y-1">
+                <div className="space-y-1 min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#1E40AF]">
                       {book.subjectCode || "COURSE-REF"}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#1E293B] leading-snug">
+                  <h3 className="text-sm sm:text-base font-bold text-[#1E293B] leading-snug">
                     {book.title}
                   </h3>
                   <p className="text-xs text-[#64748B] font-medium">
@@ -118,7 +118,7 @@ export default function BooksView({ onSelectSubject, currentUser }) {
               </div>
 
               {/* Read PDF Button */}
-              <div className="flex sm:flex-col items-center justify-between sm:justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 flex-shrink-0">
+              <div className="flex sm:flex-col items-center justify-between sm:justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0 w-full sm:w-auto">
                 <button
                   onClick={() => setActivePdfBook(book)}
                   className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-white text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5 active:scale-[0.97]"

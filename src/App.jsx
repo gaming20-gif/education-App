@@ -375,7 +375,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-24 md:pb-8">
         
         {searchResults ? (
           /* Global Search Results Mode */
@@ -472,11 +472,17 @@ export default function App() {
       </main>
 
       {/* Academic Portal Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mb-14 md:mb-0">
+      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mb-16 md:mb-0">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 EduNexus Higher Education Reference Hub. All rights reserved.</p>
-          <div className="flex items-center gap-4 text-slate-600 font-medium">
-            <span>Universities</span> • <span>Colleges</span> • <span className="text-[#1E40AF] font-bold">{currentUser?.course || "Course Portal"}</span> • <span>PDF Textbooks</span>
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 text-slate-600 font-medium text-xs">
+            <span>Universities</span>
+            <span className="text-slate-300">•</span>
+            <span>Colleges</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-[#1E40AF] font-bold">{currentUser?.course || "Course Portal"}</span>
+            <span className="text-slate-300">•</span>
+            <span>PDF Textbooks</span>
           </div>
         </div>
       </footer>

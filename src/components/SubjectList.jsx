@@ -76,41 +76,38 @@ export default function SubjectList({
           <div
             key={sub.id}
             onClick={() => onSelectSubject(sub)}
-            className={`group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl p-6 transition-all duration-200 shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between border-l-4 border-l-[#1E40AF]`}
+            className={`group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl p-4 sm:p-6 transition-all duration-200 shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between border-l-4 border-l-[#1E40AF]`}
           >
             <div>
-              <div className="flex items-start justify-between gap-3 mb-2">
-                <div>
-                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-blue-50 text-[#1E40AF] border border-blue-200">
-                    {sub.code}
-                  </span>
-                  <h3 className="text-lg font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors mt-2">
-                    {sub.name}
-                  </h3>
-                </div>
-
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-[#64748B] border border-slate-200 whitespace-nowrap">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-blue-50 text-[#1E40AF] border border-blue-200">
+                  {sub.code}
+                </span>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-[#64748B] border border-slate-200 whitespace-nowrap">
                   {sub.credits} Credits
                 </span>
               </div>
+              <h3 className="text-base sm:text-lg font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors mt-1">
+                {sub.name}
+              </h3>
 
               <p className="text-xs sm:text-sm text-[#64748B] mt-2 mb-4 line-clamp-2 leading-relaxed">
                 {sub.description}
               </p>
 
               {/* Resource Counters with Amber Book Icon */}
-              <div className="grid grid-cols-3 gap-2 bg-[#F8FAFC] p-3 rounded-lg border border-slate-200 mb-4 text-xs">
-                <div className="flex items-center gap-1.5 text-[#1E293B] font-medium">
-                  <BookOpen className="w-4 h-4 text-[#F59E0B]" />
-                  <span><strong className="text-[#1E40AF]">{sub.books?.length || 0}</strong> Books</span>
+              <div className="grid grid-cols-3 gap-1 sm:gap-2 bg-[#F8FAFC] p-2.5 sm:p-3 rounded-lg border border-slate-200 mb-4 text-[10px] sm:text-xs">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[#1E293B] font-medium truncate">
+                  <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F59E0B] shrink-0" />
+                  <span className="truncate"><strong className="text-[#1E40AF]">{sub.books?.length || 0}</strong> Books</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[#1E293B] font-medium">
-                  <Video className="w-4 h-4 text-[#1E40AF]" />
-                  <span><strong className="text-[#1E40AF]">{sub.videos?.length || 0}</strong> Videos</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[#1E293B] font-medium truncate">
+                  <Video className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1E40AF] shrink-0" />
+                  <span className="truncate"><strong className="text-[#1E40AF]">{sub.videos?.length || 0}</strong> Videos</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[#1E293B] font-medium">
-                  <FileText className="w-4 h-4 text-[#10B981]" />
-                  <span><strong className="text-[#10B981]">{sub.notes?.length || 0}</strong> Notes</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 text-[#1E293B] font-medium truncate">
+                  <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#10B981] shrink-0" />
+                  <span className="truncate"><strong className="text-[#10B981]">{sub.notes?.length || 0}</strong> Notes</span>
                 </div>
               </div>
 

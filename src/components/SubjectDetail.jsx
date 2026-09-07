@@ -84,8 +84,8 @@ export default function SubjectDetail({ subject, onBack }) {
     <div className="space-y-6 animate-fade-in pb-4">
       {/* Header Banner */}
       <div className="bg-[#1E40AF] text-white rounded-2xl p-4 sm:p-7 shadow-md border border-blue-900/20 relative overflow-hidden">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1 w-full">
             <button
               onClick={onBack}
               className="p-2 sm:p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-[0.97] mt-0.5 border border-white/20 shrink-0"
@@ -117,7 +117,7 @@ export default function SubjectDetail({ subject, onBack }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 bg-white/10 p-2.5 rounded-xl border border-white/20 text-xs text-white shrink-0 self-start">
+          <div className="flex items-center justify-around md:justify-start gap-2 sm:gap-3 bg-white/10 p-2.5 rounded-xl border border-white/20 text-xs text-white shrink-0 w-full md:w-auto self-stretch md:self-start">
             <div className="text-center px-2 sm:px-3 border-r border-white/20">
               <span className="block text-base sm:text-lg font-bold text-amber-400">
                 {syllabusUnits.length}
@@ -266,11 +266,11 @@ export default function SubjectDetail({ subject, onBack }) {
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0 w-full sm:w-auto">
                 {/* 1. PDF BUTTON */}
                 <button
                   onClick={handleOpenPdfForChapter}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.97]"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.97] w-full sm:w-auto"
                 >
                   <Eye className="w-4 h-4" />
                   <span>1. Read Chapter PDF Book</span>
@@ -282,7 +282,7 @@ export default function SubjectDetail({ subject, onBack }) {
                     setActiveVideo(defaultVideo);
                     setActiveTab("videos");
                   }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-blue-900 text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.97]"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-blue-900 text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.97] w-full sm:w-auto"
                 >
                   <Play className="w-4 h-4 fill-white" />
                   <span>2. Watch Chapter Video</span>

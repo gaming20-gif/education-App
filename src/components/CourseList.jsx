@@ -45,26 +45,31 @@ export default function CourseList({
           <div
             key={course.id}
             onClick={() => onSelectCourse(course)}
-            className="group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl p-6 transition-all duration-200 shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between"
+            className="group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl p-4 sm:p-6 transition-all duration-200 shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between"
           >
             <div>
               {/* Top Header */}
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-[#1E40AF] group-hover:scale-105 transition-transform flex-shrink-0">
-                    <GraduationCap className="w-6 h-6 text-[#1E40AF]" />
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                <div className="flex items-start gap-3 min-w-0 flex-1">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-[#1E40AF] group-hover:scale-105 transition-transform flex-shrink-0 mt-0.5">
+                    <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-[#1E40AF]" />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors leading-snug">
                       {course.name}
                     </h3>
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-[#1E40AF] border border-blue-200">
-                      {course.degree}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      <span className="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-[#1E40AF] border border-blue-200 whitespace-nowrap inline-block">
+                        {course.degree}
+                      </span>
+                      <span className="text-[11px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-[#F59E0B] border border-amber-200 whitespace-nowrap inline-block sm:hidden">
+                        {course.level}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 text-[#F59E0B] border border-amber-200 whitespace-nowrap">
+                <span className="hidden sm:inline-block text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 text-[#F59E0B] border border-amber-200 whitespace-nowrap shrink-0">
                   {course.level}
                 </span>
               </div>

@@ -112,7 +112,7 @@ export default function Navbar({
           
           {/* Stream & Course Switcher Dropdowns */}
           {currentUser && (
-            <div className="grid grid-cols-2 gap-2 bg-blue-950/70 border border-blue-700/60 rounded-xl p-1.5 text-xs shadow-inner">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-2 bg-blue-950/70 border border-blue-700/60 rounded-xl p-1.5 text-xs shadow-inner">
               {/* Stream Selector */}
               <div className="flex items-center gap-1 bg-blue-900/90 border border-blue-600/60 rounded-lg px-2 py-1">
                 <span className="text-[10px] font-bold text-amber-300 flex-shrink-0">Stream:</span>

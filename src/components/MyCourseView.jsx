@@ -20,12 +20,12 @@ export default function MyCourseView({ onSelectSubject, onSelectCourse, currentU
     <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Course Header Banner */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-3xl p-4 sm:p-8 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -z-10" />
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold uppercase tracking-wider">
                 Active Student Portal
               </span>
@@ -34,7 +34,7 @@ export default function MyCourseView({ onSelectSubject, onSelectCourse, currentU
               </span>
             </div>
             
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#1E293B]">
+            <h1 className="text-xl sm:text-3xl font-bold text-[#1E293B]">
               {userCourseStr}
             </h1>
             <p className="text-sm text-[#64748B] max-w-2xl leading-relaxed">

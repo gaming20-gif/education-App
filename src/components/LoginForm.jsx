@@ -161,29 +161,29 @@ export default function LoginForm({ isOpen, onClose, onLoginSuccess, isFullPage 
       <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-xl my-6 overflow-hidden transform transition-all">
         
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-[#1E40AF] via-blue-800 to-indigo-900 text-white p-6 sm:p-7 relative">
+        <div className="bg-gradient-to-r from-[#1E40AF] via-blue-800 to-indigo-900 text-white p-5 sm:p-7 pr-12 sm:pr-14 relative">
           {!isFullPage && onClose && (
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors"
+              className="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors z-10"
               title="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
           )}
 
-          <div className="flex items-center gap-3.5 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center shadow-inner flex-shrink-0">
-              <GraduationCap className="w-7 h-7 text-amber-300" />
+          <div className="flex items-start gap-3 mb-2 min-w-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center shadow-inner flex-shrink-0 mt-0.5">
+              <GraduationCap className="w-5 h-5 sm:w-7 sm:h-7 text-amber-300" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">EduNexus Portal</h2>
-                <span className="px-2 py-0.5 rounded-full bg-amber-400 text-blue-950 font-black text-[10px] uppercase">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-white leading-tight">EduNexus Portal</h2>
+                <span className="px-2 py-0.5 rounded-full bg-amber-400 text-blue-950 font-black text-[10px] uppercase whitespace-nowrap">
                   Step 1 Login
                 </span>
               </div>
-              <p className="text-xs text-blue-200 mt-0.5">
+              <p className="text-xs text-blue-200 mt-1 leading-relaxed">
                 {mode === "register" 
                   ? "Student Registration — Select Stream & Course to Access Portal" 
                   : "Sign In to Access Your Academic Dashboard"}
@@ -192,22 +192,22 @@ export default function LoginForm({ isOpen, onClose, onLoginSuccess, isFullPage 
           </div>
 
           {/* Mode Switcher Tabs */}
-          <div className="flex bg-blue-950/50 p-1.5 rounded-2xl border border-blue-700/40 mt-5 text-xs font-semibold">
+          <div className="flex bg-blue-950/50 p-1.5 rounded-2xl border border-blue-700/40 mt-4 text-[11px] sm:text-xs font-semibold">
             <button
               type="button"
               onClick={() => setMode("register")}
-              className={`flex-1 py-2.5 rounded-xl text-center transition-all ${
+              className={`flex-1 py-2 sm:py-2.5 px-1 rounded-xl text-center transition-all ${
                 mode === "register"
                   ? "bg-white text-[#1E40AF] shadow-md font-extrabold"
                   : "text-blue-200 hover:text-white"
               }`}
             >
-              🎓 Student Enrolment (Register)
+              🎓 Student Enrolment
             </button>
             <button
               type="button"
               onClick={() => setMode("login")}
-              className={`flex-1 py-2.5 rounded-xl text-center transition-all ${
+              className={`flex-1 py-2 sm:py-2.5 px-1 rounded-xl text-center transition-all ${
                 mode === "login"
                   ? "bg-white text-[#1E40AF] shadow-md font-extrabold"
                   : "text-blue-200 hover:text-white"
