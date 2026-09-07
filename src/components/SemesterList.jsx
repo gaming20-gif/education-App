@@ -8,32 +8,32 @@ export default function SemesterList({
   onBack
 }) {
   return (
-    <div className="space-y-6 animate-fade-in pb-16">
+    <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 sm:p-6 rounded-2xl shadow-sm">
+        <div className="flex items-start gap-3 sm:gap-4 min-w-0">
           <button
             onClick={onBack}
-            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all active:scale-[0.97]"
+            className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all active:scale-[0.97] shrink-0 mt-0.5"
             title="Back to Courses"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1E40AF]" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-[#1E40AF]" />
           </button>
-          <div>
-            <div className="text-xs uppercase font-bold text-[#1E40AF] tracking-wider">
+          <div className="min-w-0 flex-1">
+            <div className="text-xs uppercase font-bold text-[#1E40AF] tracking-wider truncate">
               Step 4 of 5 • {course.shortCode} Semesters
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#1E293B] mt-0.5">
+            <h1 className="text-lg sm:text-2xl font-bold text-[#1E293B] mt-0.5 leading-snug">
               Select Semester for {course.name}
             </h1>
-            <p className="text-xs sm:text-sm text-[#64748B] mt-1">
+            <p className="text-xs sm:text-sm text-[#64748B] mt-1 leading-relaxed">
               Click on any semester below to view its syllabus, subjects, recommended textbooks, and video lectures.
             </p>
           </div>
         </div>
 
-        <div className="px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold self-start sm:self-auto">
+        <div className="px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold self-start sm:self-auto shrink-0 whitespace-nowrap">
           {semesters.length} Academic Terms
         </div>
       </div>

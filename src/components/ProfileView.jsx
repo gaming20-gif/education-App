@@ -26,7 +26,7 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-16">
+    <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Profile Header Card */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">

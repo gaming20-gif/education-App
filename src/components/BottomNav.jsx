@@ -13,16 +13,13 @@ export default function BottomNav({ activeTab, setActiveTab }) {
 
   return (
     <nav 
-      aria-label="Mobile Navigation Bar"
-      className="fixed bottom-0 left-0 right-0 w-full z-[9999] bg-white border-t-2 border-blue-900/20 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] px-1 sm:px-4 py-1.5 transform-gpu"
+      aria-label="Bottom Navigation Bar"
+      className="block md:hidden fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-slate-200 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] px-1 sm:px-4 py-1.5"
       style={{
-        transform: "translate3d(0, 0, 0)",
-        WebkitTransform: "translate3d(0, 0, 0)",
-        willChange: "transform",
-        paddingBottom: "max(0.375rem, env(safe-area-inset-bottom, 0.375rem))"
+        paddingBottom: "calc(0.375rem + env(safe-area-inset-bottom, 0px))"
       }}
     >
-      <div className="max-w-xl mx-auto flex items-center justify-around">
+      <div className="max-w-md mx-auto flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id || (activeTab === "home" && item.id === "universities");
@@ -31,7 +28,7 @@ export default function BottomNav({ activeTab, setActiveTab }) {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-[0.93] select-none ${
+              className={`relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all active:scale-[0.93] select-none ${
                 isActive ? "text-[#1E40AF] font-extrabold" : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -42,11 +39,11 @@ export default function BottomNav({ activeTab, setActiveTab }) {
 
               {/* Icon Container */}
               <div className={`p-1 rounded-lg transition-colors ${isActive ? "bg-blue-50" : ""}`}>
-                <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? "scale-110 text-[#1E40AF]" : "text-slate-500"}`} />
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 ${isActive ? "scale-110 text-[#1E40AF]" : "text-slate-500"}`} />
               </div>
 
               {/* Label */}
-              <span className="text-[10px] font-bold mt-0.5 tracking-tight truncate max-w-[58px]">
+              <span className="text-[9px] sm:text-[10px] font-bold mt-0.5 tracking-tight truncate max-w-[48px] min-[360px]:max-w-[58px]">
                 {item.label}
               </span>
 
@@ -61,3 +58,4 @@ export default function BottomNav({ activeTab, setActiveTab }) {
     </nav>
   );
 }
+

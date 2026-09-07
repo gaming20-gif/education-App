@@ -17,7 +17,7 @@ export default function MyCourseView({ onSelectSubject, onSelectCourse, currentU
   const progressPercent = Math.round((completedCredits / Math.max(totalCredits, 1)) * 100);
 
   return (
-    <div className="space-y-6 animate-fade-in pb-16">
+    <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Course Header Banner */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">

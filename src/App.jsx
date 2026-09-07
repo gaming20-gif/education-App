@@ -210,21 +210,110 @@ export default function App() {
     ? getSubjectsForSemester(selectedSemester.id, selectedCourse.id)
     : filterSubjectsByCourse(userCourseStr);
 
-  // 6. Global Search Filter Results (Scoped to Selected Course)
+  // 6. Global Stream-Scoped Search Filter Results
   const searchResults = searchQuery.trim() ? (() => {
-    const q = searchQuery.toLowerCase();
-    const courseUnis = filterUniversitiesByCourse(userCourseStr);
-    const courseCols = filterCollegesByCourse(userCourseStr);
-    const courseCrs = filterCoursesByCourse(userCourseStr);
-    const courseSubs = filterSubjectsByCourse(userCourseStr);
-    const courseBks = filterBooksByCourse(userCourseStr);
+    const q = searchQuery.toLowerCase().trim();
+    const currentStream = currentUser?.stream || "Commerce";
+
+    // Courses belonging to the active stream
+    const streamCourseObjects = COURSES.filter(c => c.stream === currentStream);
+    const streamCourseIds = new Set(streamCourseObjects.map(c => c.id));
+    const streamCollegeIds = new Set(streamCourseObjects.map(c => c.collegeId));
+    
+    // Colleges in active stream
+    const streamColleges = COLLEGES.filter(col => streamCollegeIds.has(col.id) || streamCourseObjects.some(c => c.collegeId === col.id));
+    const streamUniIds = new Set(streamColleges.map(col => col.universityId));
+    
+    // Universities in active stream
+    const streamUniversities = UNIVERSITIES.filter(u => streamUniIds.has(u.id));
+
+    // Subjects in active stream
+    const streamSubjects = SUBJECTS.filter(sub => streamCourseIds.has(sub.courseId));
+
+    // Semesters in active stream
+    const streamSemesters = [];
+    streamCourseObjects.forEach(course => {
+      const sems = getSemestersForCourse(course);
+      sems.forEach(s => streamSemesters.push({ ...s, courseObj: course }));
+    });
+
+    // Books in active stream
+    const streamBooks = filterBooksByCourse(userCourseStr);
+
+    // 1. Filter Universities
+    const matchedUnis = streamUniversities.filter(u => 
+      u.name.toLowerCase().includes(q) ||
+      u.shortName.toLowerCase().includes(q) ||
+      u.location.toLowerCase().includes(q) ||
+      u.type.toLowerCase().includes(q)
+    );
+
+    // 2. Filter Colleges
+    const matchedCols = streamColleges.filter(c => 
+      c.name.toLowerCase().includes(q) ||
+      c.shortName.toLowerCase().includes(q) ||
+      (c.department && c.department.toLowerCase().includes(q)) ||
+      c.address.toLowerCase().includes(q)
+    );
+
+    // 3. Filter Courses
+    const matchedCourses = streamCourseObjects.filter(c => 
+      c.name.toLowerCase().includes(q) ||
+      c.shortCode.toLowerCase().includes(q) ||
+      c.degree.toLowerCase().includes(q) ||
+      c.description.toLowerCase().includes(q) ||
+      (c.careerPaths && c.careerPaths.some(cp => cp.toLowerCase().includes(q)))
+    );
+
+    // 4. Filter Semesters
+    const matchedSemesters = streamSemesters.filter(s => 
+      s.name.toLowerCase().includes(q) ||
+      s.title.toLowerCase().includes(q) ||
+      `semester ${s.semesterNumber}`.includes(q) ||
+      `sem ${s.semesterNumber}`.includes(q)
+    );
+
+    // 5. Filter Subjects
+    const matchedSubjects = streamSubjects.filter(sub => 
+      sub.name.toLowerCase().includes(q) ||
+      sub.code.toLowerCase().includes(q) ||
+      (sub.shortName && sub.shortName.toLowerCase().includes(q)) ||
+      (sub.description && sub.description.toLowerCase().includes(q))
+    );
+
+    // 6. Filter Chapters / Syllabus Units specifically
+    const matchedChapters = [];
+    streamSubjects.forEach(sub => {
+      if (sub.syllabus) {
+        sub.syllabus.forEach((unit, idx) => {
+          if (unit.toLowerCase().includes(q)) {
+            matchedChapters.push({
+              unitTitle: unit,
+              unitIndex: idx + 1,
+              subject: sub
+            });
+          }
+        });
+      }
+    });
+
+    // 7. Filter Books
+    const matchedBooks = streamBooks.filter(b => 
+      b.title.toLowerCase().includes(q) ||
+      b.author.toLowerCase().includes(q) ||
+      (b.subjectName && b.subjectName.toLowerCase().includes(q)) ||
+      (b.summary && b.summary.toLowerCase().includes(q))
+    );
 
     return {
-      universities: courseUnis.filter(u => u.name.toLowerCase().includes(q) || u.shortName.toLowerCase().includes(q)),
-      colleges: courseCols.filter(c => c.name.toLowerCase().includes(q) || c.shortName.toLowerCase().includes(q)),
-      courses: courseCrs.filter(c => c.name.toLowerCase().includes(q) || c.shortCode.toLowerCase().includes(q)),
-      subjects: courseSubs.filter(s => s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q)),
-      books: courseBks.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
+      stream: currentStream,
+      universities: matchedUnis,
+      colleges: matchedCols,
+      courses: matchedCourses,
+      semesters: matchedSemesters,
+      subjects: matchedSubjects,
+      chapters: matchedChapters,
+      books: matchedBooks
     };
   })() : null;
 
@@ -240,9 +329,18 @@ export default function App() {
     } else if (type === "course") {
       setActiveTab("mycourse");
       handleSelectCourse(item);
-    } else if (type === "subject") {
-      setActiveTab("subjects");
-      setSelectedSubject(item);
+    } else if (type === "semester") {
+      setActiveTab("mycourse");
+      setSelectedSemester(item);
+    } else if (type === "subject" || type === "chapter") {
+      const targetSub = type === "chapter" ? item.subject : item;
+      setSelectedSubject(targetSub);
+    } else if (type === "book") {
+      if (item.subjectObj) {
+        setSelectedSubject(item.subjectObj);
+      } else {
+        setActiveTab("books");
+      }
     }
   };
 
@@ -277,7 +375,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-6">
         
         {searchResults ? (
           /* Global Search Results Mode */
@@ -373,16 +471,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Sticky Bottom Navigation Bar */}
-      <BottomNav
-        activeTab={activeTab}
-        setActiveTab={(tab) => {
-          handleNavTabChange(tab === "home" ? "universities" : tab);
-        }}
-      />
-
       {/* Academic Portal Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mb-14">
+      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mb-14 md:mb-0">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 EduNexus Higher Education Reference Hub. All rights reserved.</p>
           <div className="flex items-center gap-4 text-slate-600 font-medium">
@@ -390,6 +480,14 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Sticky Bottom Navigation Bar (Fixed Position for Mobile Viewports) */}
+      <BottomNav
+        activeTab={activeTab}
+        setActiveTab={(tab) => {
+          handleNavTabChange(tab === "home" ? "universities" : tab);
+        }}
+      />
     </div>
   );
 }

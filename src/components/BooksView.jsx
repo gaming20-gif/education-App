@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { BookOpen, Search, ExternalLink, FileText, CheckCircle, Sparkles } from "lucide-react";
 import { filterBooksByCourse } from "../data/educationData";
 import PdfViewerModal from "./PdfViewerModal";
+import ImageWithFallback from "./ImageWithFallback";
 
 export default function BooksView({ onSelectSubject, currentUser }) {
   const [filterQuery, setFilterQuery] = useState("");
@@ -29,7 +30,7 @@ export default function BooksView({ onSelectSubject, currentUser }) {
   }, [courseBooks, filterQuery]);
 
   return (
-    <div className="space-y-6 animate-fade-in pb-16">
+    <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Header Banner */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -85,11 +86,13 @@ export default function BooksView({ onSelectSubject, currentUser }) {
               key={book.id}
               className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row gap-4 justify-between hover:scale-[1.01]"
             >
-              <div className="flex gap-4">
-                <img
+              <div className="flex gap-4 min-w-0 flex-1">
+                <ImageWithFallback
                   src={book.cover}
                   alt={book.title}
-                  className="w-20 h-28 object-cover rounded-lg shadow-sm border border-slate-200 flex-shrink-0"
+                  type="book"
+                  fallbackTitle={book.title}
+                  className="w-20 h-28 object-cover rounded-lg shadow-sm border border-slate-200 shrink-0"
                 />
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
