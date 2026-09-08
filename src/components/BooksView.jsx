@@ -10,12 +10,13 @@ export default function BooksView({ onSelectSubject, currentUser }) {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [filterQuery, setFilterQuery] = useState("");
   const [activePdfBook, setActivePdfBook] = useState(null);
-  const [selectedStreamFilter, setSelectedStreamFilter] = useState("All");
+  const [selectedStreamFilter, setSelectedStreamFilter] = useState(() => currentUser?.stream || "All");
 
   // Flatten all available courses across streams
   const allCoursesList = useMemo(() => {
     const list = [];
     Object.entries(STREAM_DATA).forEach(([streamKey, streamObj]) => {
+      if (streamKey === "All") return;
       streamObj.courses.forEach(c => {
         const booksCount = filterBooksByCourse(c.name).length;
         list.push({

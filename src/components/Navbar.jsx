@@ -11,9 +11,9 @@ export default function Navbar({
   onLogout,
   onStreamCourseChange
 }) {
-  const activeStream = currentUser?.stream || "Commerce";
+  const activeStream = currentUser?.stream || "All";
   const activeCourse = currentUser?.course || STREAM_DATA[activeStream]?.courses[0]?.name || "M.Com (Master of Commerce)";
-  const availableCourses = STREAM_DATA[activeStream]?.courses || STREAM_DATA["Commerce"].courses;
+  const availableCourses = STREAM_DATA[activeStream]?.courses || STREAM_DATA["All"].courses;
 
   const handleStreamChange = (e) => {
     const newStream = e.target.value;
@@ -124,7 +124,7 @@ export default function Navbar({
                 >
                   {Object.keys(STREAM_DATA).map((streamKey) => (
                     <option key={streamKey} value={streamKey} className="bg-slate-900 text-white">
-                      {streamKey}
+                      {streamKey === "All" ? "🌐 All Streams" : streamKey}
                     </option>
                   ))}
                 </select>

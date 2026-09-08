@@ -79,7 +79,13 @@ export default function App() {
     setCurrentUser(userData);
     localStorage.setItem("edunexus_user", JSON.stringify(userData));
     setIsLoginModalOpen(false);
-    applyUserCourseSelection(userData);
+    setSelectedUniversity(null);
+    setSelectedCollege(null);
+    setSelectedCourse(null);
+    setSelectedSemester(null);
+    setSelectedSubject(null);
+    setSearchQuery("");
+    setActiveTab("universities");
   };
 
   const handleLogout = () => {
@@ -90,6 +96,7 @@ export default function App() {
     setSelectedCourse(null);
     setSelectedSemester(null);
     setSelectedSubject(null);
+    setSearchQuery("");
   };
 
   // Live Stream & Course Switcher in Navbar handler
@@ -102,7 +109,15 @@ export default function App() {
     };
     setCurrentUser(updatedUser);
     localStorage.setItem("edunexus_user", JSON.stringify(updatedUser));
-    applyUserCourseSelection(updatedUser);
+    
+    // Reset drill-down selections & navigate to Universities page to display stream-available universities
+    setSelectedUniversity(null);
+    setSelectedCollege(null);
+    setSelectedCourse(null);
+    setSelectedSemester(null);
+    setSelectedSubject(null);
+    setSearchQuery("");
+    setActiveTab("universities");
   };
 
   // -------------------------------------------------------------
@@ -194,45 +209,93 @@ export default function App() {
     setSelectedSubject(sub);
   };
 
-  // 1. All Universities (no colleges or departments hidden)
-  const activeUniversities = UNIVERSITIES;
+  // -------------------------------------------------------------
+  // Stream-Scoped Data Computation (Supports 'All', 'Arts', 'Commerce', 'Science')
+  // -------------------------------------------------------------
+  const currentStream = currentUser?.stream || "All";
 
-  // 2. All Colleges & Departments (filtered by selected University if one is clicked)
+  // Courses belonging to the active stream
+  const streamCourseObjects = currentStream === "All"
+    ? COURSES
+    : COURSES.filter(c => c.stream === currentStream);
+
+  const streamCourseIds = new Set(streamCourseObjects.map(c => c.id));
+  const streamCollegeIds = new Set(streamCourseObjects.map(c => c.collegeId));
+
+  // Helper: evaluate whether a college offers the active stream
+  const isCollegeInStream = (col) => {
+    if (currentStream === "All") return true;
+    if (streamCollegeIds.has(col.id)) return true;
+    if (streamCourseObjects.some(c => c.collegeId === col.id)) return true;
+
+    // Check department field
+    if (col.department) {
+      const depLower = col.department.toLowerCase();
+      if (currentStream === "Commerce" && (depLower.includes("commerce") || depLower.includes("business") || depLower.includes("management"))) return true;
+      if (currentStream === "Arts" && (depLower.includes("arts") || depLower.includes("humanities") || depLower.includes("social") || depLower.includes("education") || depLower.includes("law"))) return true;
+      if (currentStream === "Science" && (depLower.includes("science") || depLower.includes("technology") || depLower.includes("computer") || depLower.includes("engineering") || depLower.includes("it"))) return true;
+    }
+
+    // Check coursesOffered array
+    if (col.coursesOffered && col.coursesOffered.length > 0) {
+      return col.coursesOffered.some(cStr => {
+        const lower = cStr.toLowerCase();
+        if (currentStream === "Commerce" && (lower.includes("b.com") || lower.includes("m.com") || lower.includes("bcom") || lower.includes("mcom") || lower.includes("bba") || lower.includes("mba") || lower.includes("ca") || lower.includes("cs") || lower.includes("commerce"))) return true;
+        if (currentStream === "Arts" && (lower.includes("b.a") || lower.includes("m.a") || lower.includes("ba ") || lower.includes("ma ") || lower.includes("bfa") || lower.includes("b.ed") || lower.includes("bed") || lower.includes("bjmc") || lower.includes("journalism") || lower.includes("arts") || lower.includes("law") || lower.includes("l.l.b"))) return true;
+        if (currentStream === "Science" && (lower.includes("b.sc") || lower.includes("m.sc") || lower.includes("bsc") || lower.includes("msc") || lower.includes("b.tech") || lower.includes("m.tech") || lower.includes("btech") || lower.includes("mtech") || lower.includes("bca") || lower.includes("mca") || lower.includes("science") || lower.includes("tech"))) return true;
+        return false;
+      });
+    }
+
+    return false;
+  };
+
+  // Colleges matching active stream
+  const streamColleges = COLLEGES.filter(isCollegeInStream);
+
+  const streamUniIds = new Set(streamColleges.map(col => col.universityId));
+
+  // Universities in active stream
+  const streamUniversities = currentStream === "All"
+    ? UNIVERSITIES
+    : UNIVERSITIES.filter(u => streamUniIds.has(u.id));
+
+  // Subjects in active stream
+  const streamSubjects = currentStream === "All"
+    ? SUBJECTS
+    : SUBJECTS.filter(sub => streamCourseIds.has(sub.courseId));
+
+  // 1. Universities filtered by active Stream
+  const activeUniversities = streamUniversities;
+
+  // 2. Colleges & Departments filtered by active Stream & selected University
   const activeColleges = selectedUniversity
-    ? COLLEGES.filter(c => c.universityId === selectedUniversity.id)
-    : COLLEGES;
-  const allCollegesOfferingCourse = COLLEGES;
+    ? streamColleges.filter(c => c.universityId === selectedUniversity.id)
+    : streamColleges;
 
-  // 3. Filtered Courses for active College (shows ONLY the courses offered by selected college)
-  const activeCourses = selectedCollege ? getCoursesForCollege(selectedCollege) : filterCoursesByCourse(userCourseStr);
+  // Colleges offering user's specific selected course (e.g. B.Com)
+  const courseColleges = filterCollegesByCourse(userCourseStr, selectedUniversity ? selectedUniversity.id : null);
+  const allCollegesOfferingCourse = courseColleges.length > 0 ? courseColleges : streamColleges;
+
+  // 3. Filtered Courses for active College / Stream
+  const activeCourses = selectedCollege 
+    ? getCoursesForCollege(selectedCollege).filter(c => currentStream === "All" || c.stream === currentStream)
+    : (selectedUniversity ? streamCourseObjects.filter(c => {
+        const col = COLLEGES.find(col => col.id === c.collegeId);
+        return col && col.universityId === selectedUniversity.id;
+      }) : streamCourseObjects);
 
   // 4. Filtered Semesters for active Course
   const activeSemesters = selectedCourse ? getSemestersForCourse(selectedCourse) : [];
 
-  // 5. Filtered Subjects for active Semester or active Course
+  // 5. Filtered Subjects for active Semester / Course / Stream
   const activeSubjects = (selectedSemester && selectedCourse)
     ? getSubjectsForSemester(selectedSemester.id, selectedCourse.id)
-    : filterSubjectsByCourse(userCourseStr);
+    : (selectedCourse ? filterSubjectsByCourse(selectedCourse.name) : streamSubjects);
 
   // 6. Global Stream-Scoped Search Filter Results
   const searchResults = searchQuery.trim() ? (() => {
     const q = searchQuery.toLowerCase().trim();
-    const currentStream = currentUser?.stream || "Commerce";
-
-    // Courses belonging to the active stream
-    const streamCourseObjects = COURSES.filter(c => c.stream === currentStream);
-    const streamCourseIds = new Set(streamCourseObjects.map(c => c.id));
-    const streamCollegeIds = new Set(streamCourseObjects.map(c => c.collegeId));
-    
-    // Colleges in active stream
-    const streamColleges = COLLEGES.filter(col => streamCollegeIds.has(col.id) || streamCourseObjects.some(c => c.collegeId === col.id));
-    const streamUniIds = new Set(streamColleges.map(col => col.universityId));
-    
-    // Universities in active stream
-    const streamUniversities = UNIVERSITIES.filter(u => streamUniIds.has(u.id));
-
-    // Subjects in active stream
-    const streamSubjects = SUBJECTS.filter(sub => streamCourseIds.has(sub.courseId));
 
     // Semesters in active stream
     const streamSemesters = [];

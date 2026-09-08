@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Download, BookOpen, ZoomIn, ZoomOut, Maximize2, Sparkles } from "lucide-react";
+import { X, Eye, BookOpen, ZoomIn, ZoomOut, Maximize2, Sparkles } from "lucide-react";
 
 export default function PdfViewerModal({ book, isOpen, onClose }) {
   const [zoom, setZoom] = useState(100);
@@ -65,9 +65,10 @@ export default function PdfViewerModal({ book, isOpen, onClose }) {
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F59E0B] hover:bg-[#D97706] text-white text-xs font-bold shadow-xs transition-colors active:scale-[0.97]"
+              title="Open PDF in new tab"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Download</span>
+              <Eye className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">View PDF</span>
             </a>
 
             <button

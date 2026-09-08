@@ -2381,7 +2381,44 @@ export const filterCoursesByCourse = (selectedCourseStr, collegeId = null) => {
 };
 
 export const collegeOffersCourse = (college, targetKey) => {
-  return COURSES.some(c => c.collegeId === college.id && isCourseMatchingKey(c, targetKey));
+  if (!college) return false;
+
+  // 1. Direct course link in COURSES array
+  const directMatch = COURSES.some(c => c.collegeId === college.id && isCourseMatchingKey(c, targetKey));
+  if (directMatch) return true;
+
+  // 2. Check college.coursesOffered array
+  if (college.coursesOffered && college.coursesOffered.length > 0) {
+    const hasMatchingOffered = college.coursesOffered.some(cStr => {
+      const key = getCourseKey(cStr);
+      if (key === targetKey) return true;
+
+      const lower = cStr.toLowerCase();
+      if ((targetKey === "bcom" || targetKey === "mcom") && (lower.includes("b.com") || lower.includes("m.com") || lower.includes("bcom") || lower.includes("mcom"))) return true;
+      if ((targetKey === "bba" || targetKey === "mba") && (lower.includes("bba") || lower.includes("mba"))) return true;
+      if (targetKey === "ca" && lower.includes("ca")) return true;
+      if (targetKey === "cs" && lower.includes("cs")) return true;
+      if ((targetKey === "ba" || targetKey === "ma") && (lower.includes("b.a") || lower.includes("m.a") || lower.includes("ba ") || lower.includes("ma "))) return true;
+      if (targetKey === "bfa" && lower.includes("bfa")) return true;
+      if (targetKey === "bed" && (lower.includes("b.ed") || lower.includes("bed"))) return true;
+      if (targetKey === "bjmc" && (lower.includes("bjmc") || lower.includes("journalism"))) return true;
+      if ((targetKey === "bsc" || targetKey === "msc") && (lower.includes("b.sc") || lower.includes("m.sc") || lower.includes("bsc") || lower.includes("msc"))) return true;
+      if ((targetKey === "btech" || targetKey === "mtech") && (lower.includes("b.tech") || lower.includes("m.tech") || lower.includes("btech") || lower.includes("mtech"))) return true;
+      if ((targetKey === "bca" || targetKey === "mca") && (lower.includes("bca") || lower.includes("mca"))) return true;
+      return false;
+    });
+    if (hasMatchingOffered) return true;
+  }
+
+  // 3. Check department string match
+  if (college.department) {
+    const depLower = college.department.toLowerCase();
+    if ((targetKey === "bcom" || targetKey === "mcom" || targetKey === "bba" || targetKey === "mba" || targetKey === "ca" || targetKey === "cs") && (depLower.includes("commerce") || depLower.includes("business"))) return true;
+    if ((targetKey === "ba" || targetKey === "ma" || targetKey === "bfa" || targetKey === "bed" || targetKey === "bjmc") && (depLower.includes("arts") || depLower.includes("humanities") || depLower.includes("education") || depLower.includes("law"))) return true;
+    if ((targetKey === "bsc" || targetKey === "msc" || targetKey === "btech" || targetKey === "mtech" || targetKey === "bca" || targetKey === "mca") && (depLower.includes("science") || depLower.includes("technology") || depLower.includes("computer"))) return true;
+  }
+
+  return false;
 };
 
 export const filterCollegesByCourse = (selectedCourseStr, universityId = null) => {

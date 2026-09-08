@@ -3,7 +3,6 @@ import {
   BookOpen,
   Video,
   FileText,
-  Download,
   Eye,
   Play,
   CheckCircle,
@@ -262,7 +261,7 @@ export default function SubjectDetail({ subject, onBack }) {
                   {currentChapterTitle}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#64748B] mt-1">
-                  Access official textbook PDF reader, stream video lectures, or download handwritten notes for Chapter {selectedChapterIdx + 1}.
+                  Access official textbook PDF reader, stream video lectures, or view handwritten notes for Chapter {selectedChapterIdx + 1}.
                 </p>
               </div>
 
@@ -345,7 +344,7 @@ export default function SubjectDetail({ subject, onBack }) {
                 </button>
               </div>
 
-              {/* Option 3: Downloadable PDF Notes Card */}
+              {/* Option 3: PDF Notes Card */}
               <div className="bg-gradient-to-br from-emerald-50 to-teal-50/50 border border-emerald-200 rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-xs">
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-[#10B981] text-white flex items-center justify-center font-bold shadow-sm mb-2">
@@ -362,14 +361,12 @@ export default function SubjectDetail({ subject, onBack }) {
                   </p>
                 </div>
 
-                <a
-                  href={defaultNote.pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  onClick={() => setSelectedBookForPdf(defaultNote)}
                   className="w-full py-2 px-3 rounded-lg bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                 >
-                  <Download className="w-3.5 h-3.5" /> Download Notes PDF
-                </a>
+                  <Eye className="w-3.5 h-3.5" /> View PDF Notes
+                </button>
               </div>
             </div>
           </div>
@@ -445,14 +442,12 @@ export default function SubjectDetail({ subject, onBack }) {
                       <Eye className="w-3.5 h-3.5" /> Read PDF Book
                     </button>
 
-                    <a
-                      href={book.pdfUrl}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      onClick={() => setSelectedBookForPdf(book)}
                       className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1 active:scale-[0.97]"
                     >
-                      <Download className="w-3.5 h-3.5" /> Download
-                    </a>
+                      <Eye className="w-3.5 h-3.5" /> View PDF
+                    </button>
                   </div>
                 </div>
               </div>
@@ -571,14 +566,12 @@ export default function SubjectDetail({ subject, onBack }) {
                   </div>
                 </div>
 
-                <a
-                  href={note.pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  onClick={() => setSelectedBookForPdf(note)}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-semibold transition-colors shrink-0 active:scale-[0.97]"
                 >
-                  <Download className="w-3.5 h-3.5" /> Download
-                </a>
+                  <Eye className="w-3.5 h-3.5" /> View PDF
+                </button>
               </div>
             ))}
           </div>

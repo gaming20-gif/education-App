@@ -3,6 +3,35 @@ import { X, GraduationCap, User, Mail, Lock, BookOpen, Award, Building2, CheckCi
 
 // Stream data with dependent courses and specializations
 export const STREAM_DATA = {
+  All: {
+    label: "All Academic Streams",
+    courses: [
+      { id: "mcom", name: "M.Com (Master of Commerce)", duration: "2 Years", code: "M.COM" },
+      { id: "bcom_hons", name: "B.Com Hons (Bachelor of Commerce)", duration: "3 Years", code: "B.COM (H)" },
+      { id: "bcom_pass", name: "B.Com General / Program", duration: "3 Years", code: "B.COM" },
+      { id: "bba", name: "BBA (Bachelor of Business Admin)", duration: "3 Years", code: "BBA" },
+      { id: "mba", name: "MBA (Master of Business Admin)", duration: "2 Years", code: "MBA" },
+      { id: "ca", name: "CA (Chartered Accountancy)", duration: "Professional", code: "CA" },
+      { id: "cs", name: "CS (Company Secretary)", duration: "Professional", code: "CS" },
+      { id: "ba_hons", name: "B.A. Hons (Bachelor of Arts)", duration: "3 Years", code: "B.A. (H)" },
+      { id: "ma", name: "M.A. (Master of Arts)", duration: "2 Years", code: "M.A." },
+      { id: "bfa", name: "BFA (Bachelor of Fine Arts)", duration: "4 Years", code: "BFA" },
+      { id: "bed", name: "B.Ed (Bachelor of Education)", duration: "2 Years", code: "B.ED" },
+      { id: "journalism", name: "B.A. Journalism & Mass Communication", duration: "3 Years", code: "BJMC" },
+      { id: "bsc", name: "B.Sc (Bachelor of Science)", duration: "3 Years", code: "B.SC" },
+      { id: "msc", name: "M.Sc (Master of Science)", duration: "2 Years", code: "M.SC" },
+      { id: "btech", name: "B.Tech (Bachelor of Technology)", duration: "4 Years", code: "B.TECH" },
+      { id: "mtech", name: "M.Tech (Master of Technology)", duration: "2 Years", code: "M.TECH" },
+      { id: "bca", name: "BCA (Bachelor of Computer Applications)", duration: "3 Years", code: "BCA" },
+      { id: "mca", name: "MCA (Master of Computer Applications)", duration: "2 Years", code: "MCA" }
+    ],
+    specializations: [
+      "All Academic Specializations & Disciplines",
+      "Advanced Accounting & Financial Management",
+      "English Literature & Critical Studies",
+      "Computer Science & Artificial Intelligence"
+    ]
+  },
   Commerce: {
     label: "Commerce & Business",
     courses: [
@@ -92,7 +121,7 @@ export default function LoginForm({ isOpen, onClose, onLoginSuccess, isFullPage 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedStream, setSelectedStream] = useState("Commerce");
+  const [selectedStream, setSelectedStream] = useState("All");
   const [selectedCourse, setSelectedCourse] = useState("M.Com (Master of Commerce)");
   const [specialization, setSpecialization] = useState("Advanced Accounting & Financial Management");
   const [semester, setSemester] = useState("Postgraduate Year 1 (Sem 1 & 2)");
@@ -263,27 +292,27 @@ export default function LoginForm({ isOpen, onClose, onLoginSuccess, isFullPage 
                     </div>
                   </div>
 
-                  {/* 2. Stream Selection (Commerce, Arts, Science) */}
+                  {/* 2. Stream Selection (All, Commerce, Arts, Science) */}
                   <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-3">
                     <label className="block text-xs font-bold text-amber-900 uppercase tracking-wider">
                       1. Select Stream <span className="text-red-500">*</span>
                     </label>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {Object.keys(STREAM_DATA).map((streamKey) => (
                         <button
                           key={streamKey}
                           type="button"
                           onClick={() => handleStreamChange(streamKey)}
-                          className={`py-3 px-3 rounded-xl border text-xs sm:text-sm font-extrabold flex flex-col items-center justify-center gap-1 transition-all ${
+                          className={`py-2.5 px-2 rounded-xl border text-xs font-extrabold flex flex-col items-center justify-center gap-1 transition-all ${
                             selectedStream === streamKey
                               ? "bg-[#1E40AF] text-white border-[#1E40AF] shadow-md scale-[1.02]"
                               : "bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50"
                           }`}
                         >
-                          <span className="text-lg">
-                            {streamKey === "Commerce" ? "📊" : streamKey === "Arts" ? "🎨" : "🔬"}
+                          <span className="text-base sm:text-lg">
+                            {streamKey === "All" ? "🌐" : streamKey === "Commerce" ? "📊" : streamKey === "Arts" ? "🎨" : "🔬"}
                           </span>
-                          <span>{streamKey}</span>
+                          <span>{streamKey === "All" ? "All Streams" : streamKey}</span>
                         </button>
                       ))}
                     </div>
