@@ -18,8 +18,10 @@ import {
   UNIVERSITIES,
   COLLEGES,
   COURSES,
+  SUBJECTS,
   getSemestersForCourse,
   getSubjectsForSemester,
+  getCoursesForCollege,
   filterUniversitiesByCourse,
   filterCollegesByCourse,
   filterCoursesByCourse,
@@ -199,8 +201,8 @@ export default function App() {
   const activeColleges = filterCollegesByCourse(userCourseStr, selectedUniversity?.id);
   const allCollegesOfferingCourse = filterCollegesByCourse(userCourseStr);
 
-  // 3. Filtered Courses for active College AND active course
-  const activeCourses = filterCoursesByCourse(userCourseStr, selectedCollege?.id);
+  // 3. Filtered Courses for active College (shows ONLY the courses offered by selected college)
+  const activeCourses = selectedCollege ? getCoursesForCollege(selectedCollege) : filterCoursesByCourse(userCourseStr);
 
   // 4. Filtered Semesters for active Course
   const activeSemesters = selectedCourse ? getSemestersForCourse(selectedCourse) : [];
@@ -443,7 +445,7 @@ export default function App() {
             course={selectedCourse}
             semesters={activeSemesters}
             onSelectSemester={handleSelectSemester}
-            onBack={() => setSelectedCollege(null)}
+            onBack={() => setSelectedCourse(null)}
           />
         ) : selectedCollege ? (
           /* College Courses */
@@ -451,7 +453,7 @@ export default function App() {
             college={selectedCollege}
             courses={activeCourses}
             onSelectCourse={handleSelectCourse}
-            onBack={() => setSelectedUniversity(null)}
+            onBack={() => setSelectedCollege(null)}
           />
         ) : selectedUniversity ? (
           /* University Colleges */

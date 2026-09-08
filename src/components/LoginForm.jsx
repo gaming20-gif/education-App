@@ -96,7 +96,7 @@ export default function LoginForm({ isOpen, onClose, onLoginSuccess, isFullPage 
   const [selectedCourse, setSelectedCourse] = useState("M.Com (Master of Commerce)");
   const [specialization, setSpecialization] = useState("Advanced Accounting & Financial Management");
   const [semester, setSemester] = useState("Postgraduate Year 1 (Sem 1 & 2)");
-  const [collegeName, setCollegeName] = useState("Shri Ram College of Commerce (SRCC), Delhi University");
+  const [collegeName, setCollegeName] = useState("Department of Commerce & Management, KSKV Kutch University");
   const [rollNumber, setRollNumber] = useState("");
 
   const [submittedSuccess, setSubmittedSuccess] = useState(false);

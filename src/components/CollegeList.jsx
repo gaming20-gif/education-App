@@ -1,5 +1,5 @@
 import React from "react";
-import { School, MapPin, ArrowRight, BookOpen, Calendar, ArrowLeft, Building2 } from "lucide-react";
+import { School, MapPin, ArrowRight, BookOpen, Calendar, ArrowLeft, Building2, Award } from "lucide-react";
 import { UNIVERSITIES } from "../data/educationData";
 import ImageWithFallback from "./ImageWithFallback";
 
@@ -11,42 +11,39 @@ export default function CollegeList({
   selectedCourseName
 }) {
   return (
-    <div className="space-y-6 animate-fade-in pb-4">
+    <div className="space-y-5 animate-fade-in pb-4">
       
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 sm:p-6 rounded-2xl shadow-sm">
-        <div className="flex items-start gap-3 sm:gap-4 min-w-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-3.5 sm:p-4 rounded-xl shadow-xs">
+        <div className="flex items-center gap-3 min-w-0">
           {onBack && (
             <button
               onClick={onBack}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all active:scale-[0.97] shrink-0 mt-0.5"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all active:scale-[0.97] shrink-0"
               title="Back"
             >
-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-[#1E40AF]" />
+              <ArrowLeft className="w-4 h-4 text-[#1E40AF]" />
             </button>
           )}
           <div className="min-w-0 flex-1">
-            <div className="text-xs uppercase font-bold text-[#1E40AF] tracking-wider truncate">
-              {university ? `University Unit • ${university.shortName}` : `Course Catalog • ${selectedCourseName || "Selected Course"}`}
+            <div className="text-[11px] uppercase font-bold text-[#1E40AF] tracking-wider truncate">
+              {university ? university.shortName : (selectedCourseName || "Selected Course")}
             </div>
-            <h1 className="text-lg sm:text-2xl font-bold text-[#1E293B] mt-0.5 leading-snug">
+            <h1 className="text-base sm:text-lg font-bold text-[#1E293B] leading-snug truncate">
               {university 
                 ? `Colleges & Departments in ${university.name}`
-                : `Colleges & Departments Teaching ${selectedCourseName || "Selected Course"}`}
+                : `Colleges Teaching ${selectedCourseName || "Selected Course"}`}
             </h1>
-            <p className="text-xs sm:text-sm text-[#64748B] mt-1 leading-relaxed">
-              Select any college or academic department below to explore available degree programs, semesters, and subject resources.
-            </p>
           </div>
         </div>
 
-        <div className="px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold self-start sm:self-auto shrink-0 whitespace-nowrap">
-          {colleges.length} Colleges Available
+        <div className="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold self-start sm:self-auto shrink-0 whitespace-nowrap">
+          {colleges.length} Colleges & Depts
         </div>
       </div>
 
-      {/* College Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* College Cards Grid: 4 Boxes per row on desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {colleges.map((col) => {
           const parentUni = UNIVERSITIES.find(u => u.id === col.universityId);
 
@@ -54,9 +51,10 @@ export default function CollegeList({
             <div
               key={col.id}
               onClick={() => onSelectCollege(col)}
-              className="group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl overflow-hidden transition-all duration-200 shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between"
+              className="group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-xl overflow-hidden transition-all duration-200 shadow-2xs hover:shadow-md hover:scale-[1.01] cursor-pointer flex flex-col justify-between"
             >
-              <div className="relative h-40 overflow-hidden bg-slate-100">
+              {/* Card Banner Image */}
+              <div className="relative h-28 overflow-hidden bg-slate-100">
                 <ImageWithFallback
                   src={col.image}
                   alt={col.name}
@@ -64,57 +62,80 @@ export default function CollegeList({
                   fallbackTitle={col.shortName || col.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/25 to-transparent pointer-events-none" />
                 
-                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between gap-2 z-10">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-[#1E40AF] text-white shadow-xs">
+                {/* NAAC Grade Badge */}
+                {col.naac && (
+                  <div className="absolute top-2 right-2 z-10">
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-600 text-white shadow-xs flex items-center gap-1">
+                      <Award className="w-3 h-3 text-amber-300" />
+                      NAAC: {col.naac}
+                    </span>
+                  </div>
+                )}
+
+                {/* College Type Tag */}
+                <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between gap-1.5 z-10">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#1E40AF] text-white shadow-2xs truncate max-w-[65%]">
                     {col.type}
                   </span>
                   {parentUni && (
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-500 text-slate-950 font-bold border border-amber-400 backdrop-blur-sm shadow-xs flex items-center gap-1">
-                      <Building2 className="w-3 h-3" />
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 border border-amber-400 backdrop-blur-sm shadow-2xs flex items-center gap-1 shrink-0">
+                      <Building2 className="w-2.5 h-2.5" />
                       {parentUni.shortName}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+              {/* Card Body */}
+              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors leading-snug">
+                  <h3 className="text-sm font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors leading-snug line-clamp-2" title={col.name}>
                     {col.name}
                   </h3>
 
-                  {parentUni && (
-                    <p className="text-xs font-semibold text-[#1E40AF] mt-0.5">
-                      Affiliated with {parentUni.name}
-                    </p>
-                  )}
-
-                  <p className="text-xs text-[#64748B] flex items-center gap-1 mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#1E40AF] shrink-0" />
+                  <p className="text-[11px] text-[#64748B] flex items-center gap-1 mt-1.5">
+                    <MapPin className="w-3 h-3 text-[#1E40AF] shrink-0" />
                     <span className="truncate">{col.address}</span>
                   </p>
 
-                  <p className="text-xs sm:text-sm text-[#64748B] mt-3 line-clamp-2 leading-relaxed">
-                    {col.description}
-                  </p>
+                  {/* Offered Courses Badges (Clean preview) */}
+                  {col.coursesOffered && col.coursesOffered.length > 0 && (
+                    <div className="mt-2.5">
+                      <div className="flex flex-wrap gap-1">
+                        {col.coursesOffered.slice(0, 3).map((c, i) => (
+                          <span key={i} className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-blue-50 text-[#1E40AF] border border-blue-100 truncate max-w-full">
+                            {c}
+                          </span>
+                        ))}
+                        {col.coursesOffered.length > 3 && (
+                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                            +{col.coursesOffered.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-[#64748B] font-medium">
-                    <span className="flex items-center gap-1 whitespace-nowrap">
-                      <Calendar className="w-3.5 h-3.5 text-[#1E40AF] shrink-0" />
-                      Estd. {col.established}
-                    </span>
-                    <span className="flex items-center gap-1 text-[#1E293B] font-semibold whitespace-nowrap">
-                      <BookOpen className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" />
-                      {col.coursesCount} Programs
+                {/* Footer Info & Action */}
+                <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+                  <div className="flex items-center gap-2 text-[#64748B] font-medium">
+                    {col.established && (
+                      <span className="flex items-center gap-0.5 whitespace-nowrap">
+                        <Calendar className="w-3 h-3 text-[#1E40AF] shrink-0" />
+                        {col.established}
+                      </span>
+                    )}
+                    <span className="flex items-center gap-0.5 text-[#1E293B] font-semibold whitespace-nowrap">
+                      <BookOpen className="w-3 h-3 text-[#F59E0B] shrink-0" />
+                      {col.coursesCount} Prog.
                     </span>
                   </div>
 
-                  <span className="text-xs font-bold text-[#1E40AF] group-hover:text-[#1E3A8A] flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto sm:ml-0">
-                    Explore College <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform shrink-0" />
+                  <span className="font-bold text-[#1E40AF] group-hover:text-[#1E3A8A] flex items-center gap-0.5 shrink-0 whitespace-nowrap">
+                    Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform shrink-0" />
                   </span>
                 </div>
               </div>
@@ -127,3 +148,5 @@ export default function CollegeList({
     </div>
   );
 }
+
+

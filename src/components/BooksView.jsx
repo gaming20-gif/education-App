@@ -33,28 +33,19 @@ export default function BooksView({ onSelectSubject, currentUser }) {
     <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Header Banner */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#F59E0B] text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              Digital Textbook Library
-            </span>
-            <span className="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold">
-              {currentUser?.stream ? `${currentUser.stream} Stream` : "Enrolled Stream"}
-            </span>
+          <div className="text-[11px] uppercase font-bold text-[#1E40AF] tracking-wider truncate">
+            {currentUser?.stream ? `${currentUser.stream} Stream` : "Digital Library"}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1E293B] mt-2">
-            {userCourseStr} Reference Textbooks
+          <h1 className="text-base sm:text-lg font-bold text-[#1E293B] leading-snug">
+            {userCourseStr} Textbooks & PDF Books
           </h1>
-          <p className="text-sm text-[#64748B] mt-1 max-w-xl">
-            Browse official textbooks, reference guides, and PDF documents recommended for <strong className="text-[#1E40AF]">{userCourseStr}</strong>.
-          </p>
         </div>
 
-        <div className="px-4 py-2 rounded-2xl bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-extrabold flex items-center gap-2 self-start md:self-auto">
-          <BookOpen className="w-4 h-4 text-[#F59E0B]" />
-          <span>{filteredBooks.length} Available Textbooks</span>
+        <div className="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold self-start sm:self-auto shrink-0 whitespace-nowrap flex items-center gap-1.5">
+          <BookOpen className="w-3.5 h-3.5 text-[#1E40AF]" />
+          <span>{filteredBooks.length} Books Available</span>
         </div>
       </div>
 

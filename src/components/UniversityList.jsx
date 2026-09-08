@@ -7,17 +7,13 @@ export default function UniversityList({ universities, onSelectUniversity }) {
     <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Header Banner */}
-      <div className="relative rounded-2xl overflow-hidden bg-white border border-slate-200 p-4 sm:p-8 shadow-sm">
-        <div className="relative z-10 max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold uppercase tracking-wider">
-            <Award className="w-3.5 h-3.5 text-[#1E40AF]" />
-            <span>Step 1 of 5 • Select University</span>
-          </div>
-          <h1 className="text-xl sm:text-3xl font-extrabold text-[#1E293B] tracking-tight leading-tight">
+      <div className="bg-white border border-slate-200 p-3.5 sm:p-4 rounded-xl shadow-xs flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-base sm:text-lg font-bold text-[#1E293B] tracking-tight">
             Academic Course & University Reference Hub
           </h1>
-          <p className="text-xs sm:text-base text-[#64748B] leading-relaxed">
-            Select your university to access colleges, postgraduate & undergraduate degrees (M.Com, B.Com, B.Tech, B.Sc), semester syllabi, reference books with PDF reader, and video lectures.
+          <p className="text-xs text-[#64748B] mt-0.5">
+            Select your university to access affiliated colleges, degree courses, syllabi, and study materials.
           </p>
         </div>
       </div>
