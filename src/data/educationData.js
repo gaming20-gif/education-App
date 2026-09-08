@@ -1144,6 +1144,23 @@ export const COLLEGES = [
     coursesCount: 2
   },
   {
+    id: "kskvku-dept-commerce",
+    universityId: "kskvku",
+    name: "Department of Commerce & Financial Studies (KSKVKU Campus)",
+    shortName: "Commerce Dept KSKVKU",
+    type: "University Department",
+    department: "Commerce & Financial Studies",
+    address: "KSKV Kutch University Campus, Mundra Road, Bhuj – Kachchh 370001",
+    established: "2004",
+    phone: "02832-235000",
+    email: "commerce@kskvku.ac.in",
+    web: "www.kskvku.ac.in",
+    coursesOffered: ["M.Com (Master of Commerce) (2 Yrs)", "B.Com (Hons) (3 Yrs)", "BBA (3 Yrs)", "MBA (2 Yrs)", "CA", "CS"],
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=80",
+    description: "Premier post-graduate teaching and research department in Commerce, Accounting, Banking, Taxation, and Financial Management.",
+    coursesCount: 6
+  },
+  {
     id: "kskvku-dept-management",
     universityId: "kskvku",
     name: "Department of Management Studies (MBA) (KSKVKU Campus)",

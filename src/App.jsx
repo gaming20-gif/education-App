@@ -194,12 +194,14 @@ export default function App() {
     setSelectedSubject(sub);
   };
 
-  // 1. Filtered Universities for active course (shows ONLY universities offering selected course)
-  const activeUniversities = filterUniversitiesByCourse(userCourseStr);
+  // 1. All Universities (no colleges or departments hidden)
+  const activeUniversities = UNIVERSITIES;
 
-  // 2. Filtered Colleges for active University AND active course (or all colleges teaching course)
-  const activeColleges = filterCollegesByCourse(userCourseStr, selectedUniversity?.id);
-  const allCollegesOfferingCourse = filterCollegesByCourse(userCourseStr);
+  // 2. All Colleges & Departments (filtered by selected University if one is clicked)
+  const activeColleges = selectedUniversity
+    ? COLLEGES.filter(c => c.universityId === selectedUniversity.id)
+    : COLLEGES;
+  const allCollegesOfferingCourse = COLLEGES;
 
   // 3. Filtered Courses for active College (shows ONLY the courses offered by selected college)
   const activeCourses = selectedCollege ? getCoursesForCollege(selectedCollege) : filterCoursesByCourse(userCourseStr);
