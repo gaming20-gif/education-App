@@ -49,12 +49,14 @@ export default function CollegeList({
           )}
           <div className="min-w-0 flex-1">
             <div className="text-[11px] uppercase font-bold text-[#1E40AF] tracking-wider truncate">
-              {university ? university.shortName : "EduNexus Reference Portal"}
+              {university ? university.shortName : (selectedCourseName ? `Available Colleges & Departments` : "EduNexus Reference Portal")}
             </div>
             <h1 className="text-base sm:text-lg font-bold text-[#1E293B] leading-snug truncate">
               {university 
                 ? `Colleges & Campus Departments in ${university.name}`
-                : `All Affiliated Colleges & University Departments`}
+                : selectedCourseName
+                  ? `Colleges & Departments Offering ${selectedCourseName}`
+                  : `All Affiliated Colleges & University Departments`}
             </h1>
           </div>
         </div>

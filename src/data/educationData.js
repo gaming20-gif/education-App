@@ -2276,8 +2276,10 @@ export const getSubjectsForSemester = (semesterId, courseId) => {
 // -------------------------------------------------------------
 
 export const getCourseKey = (courseStr) => {
-  if (!courseStr) return "mcom";
-  const str = courseStr.toLowerCase();
+  if (!courseStr) return "all";
+  const str = courseStr.toLowerCase().trim();
+
+  if (str === "all" || str === "all academic courses" || str.includes("all academic") || str.includes("all courses") || str === "all streams") return "all";
 
   if (str.includes("m.com") || str.includes("mcom") || str.includes("master of commerce")) return "mcom";
   if (str.includes("b.com") || str.includes("bcom") || str.includes("bachelor of commerce")) return "bcom";
@@ -2301,11 +2303,12 @@ export const getCourseKey = (courseStr) => {
   if (str.includes("mca") || str.includes("master of computer applications")) return "mca";
   if (str.includes("bca") || str.includes("bachelor of computer applications")) return "bca";
 
-  return "mcom";
+  return "all";
 };
 
 export const isCourseMatchingKey = (courseObj, targetKey) => {
   if (!courseObj) return false;
+  if (targetKey === "all") return true;
   const courseKey = courseObj.courseKey || getCourseKey(courseObj.shortCode || courseObj.name || courseObj.id);
   if (courseKey === targetKey) return true;
 
@@ -2369,6 +2372,9 @@ export const getCoursesForCollege = (college) => {
 };
 
 export const filterCoursesByCourse = (selectedCourseStr, collegeId = null) => {
+  if (!selectedCourseStr || selectedCourseStr === "All Academic Courses" || getCourseKey(selectedCourseStr) === "all") {
+    return collegeId ? COURSES.filter(c => c.collegeId === collegeId) : COURSES;
+  }
   const targetKey = getCourseKey(selectedCourseStr);
   const matched = COURSES.filter(c => {
     const matchesCollege = collegeId ? c.collegeId === collegeId : true;
@@ -2382,46 +2388,84 @@ export const filterCoursesByCourse = (selectedCourseStr, collegeId = null) => {
 
 export const collegeOffersCourse = (college, targetKey) => {
   if (!college) return false;
+  if (targetKey === "all") return true;
 
-  // 1. Direct course link in COURSES array
+  // 1. Direct course link in COURSES array for this specific college
   const directMatch = COURSES.some(c => c.collegeId === college.id && isCourseMatchingKey(c, targetKey));
   if (directMatch) return true;
 
-  // 2. Check college.coursesOffered array
+  // 2. Check college.coursesOffered array strictly for target degree
   if (college.coursesOffered && college.coursesOffered.length > 0) {
     const hasMatchingOffered = college.coursesOffered.some(cStr => {
-      const key = getCourseKey(cStr);
-      if (key === targetKey) return true;
-
       const lower = cStr.toLowerCase();
-      if ((targetKey === "bcom" || targetKey === "mcom") && (lower.includes("b.com") || lower.includes("m.com") || lower.includes("bcom") || lower.includes("mcom"))) return true;
-      if ((targetKey === "bba" || targetKey === "mba") && (lower.includes("bba") || lower.includes("mba"))) return true;
-      if (targetKey === "ca" && lower.includes("ca")) return true;
-      if (targetKey === "cs" && lower.includes("cs")) return true;
-      if ((targetKey === "ba" || targetKey === "ma") && (lower.includes("b.a") || lower.includes("m.a") || lower.includes("ba ") || lower.includes("ma "))) return true;
-      if (targetKey === "bfa" && lower.includes("bfa")) return true;
-      if (targetKey === "bed" && (lower.includes("b.ed") || lower.includes("bed"))) return true;
-      if (targetKey === "bjmc" && (lower.includes("bjmc") || lower.includes("journalism"))) return true;
-      if ((targetKey === "bsc" || targetKey === "msc") && (lower.includes("b.sc") || lower.includes("m.sc") || lower.includes("bsc") || lower.includes("msc"))) return true;
-      if ((targetKey === "btech" || targetKey === "mtech") && (lower.includes("b.tech") || lower.includes("m.tech") || lower.includes("btech") || lower.includes("mtech"))) return true;
-      if ((targetKey === "bca" || targetKey === "mca") && (lower.includes("bca") || lower.includes("mca"))) return true;
-      return false;
-    });
-    if (hasMatchingOffered) return true;
-  }
 
-  // 3. Check department string match
-  if (college.department) {
-    const depLower = college.department.toLowerCase();
-    if ((targetKey === "bcom" || targetKey === "mcom" || targetKey === "bba" || targetKey === "mba" || targetKey === "ca" || targetKey === "cs") && (depLower.includes("commerce") || depLower.includes("business"))) return true;
-    if ((targetKey === "ba" || targetKey === "ma" || targetKey === "bfa" || targetKey === "bed" || targetKey === "bjmc") && (depLower.includes("arts") || depLower.includes("humanities") || depLower.includes("education") || depLower.includes("law"))) return true;
-    if ((targetKey === "bsc" || targetKey === "msc" || targetKey === "btech" || targetKey === "mtech" || targetKey === "bca" || targetKey === "mca") && (depLower.includes("science") || depLower.includes("technology") || depLower.includes("computer"))) return true;
+      if (targetKey === "mcom") {
+        return lower.includes("m.com") || lower.includes("mcom") || lower.includes("master of commerce");
+      }
+      if (targetKey === "bcom") {
+        return (lower.includes("b.com") || lower.includes("bcom") || lower.includes("bachelor of commerce")) && !lower.includes("m.com") && !lower.includes("mcom");
+      }
+      if (targetKey === "bba") {
+        return lower.includes("bba") || lower.includes("b.b.a");
+      }
+      if (targetKey === "mba") {
+        return lower.includes("mba") || lower.includes("m.b.a");
+      }
+      if (targetKey === "ca") {
+        return lower.includes("ca ") || lower.includes("chartered");
+      }
+      if (targetKey === "cs") {
+        return lower.includes("cs ") || lower.includes("company secretary");
+      }
+
+      if (targetKey === "ma") {
+        return lower.includes("m.a") || lower.includes("ma ") || lower.includes("master of arts");
+      }
+      if (targetKey === "ba") {
+        return (lower.includes("b.a") || lower.includes("ba ") || lower.includes("bachelor of arts")) && !lower.includes("m.a") && !lower.includes("ma ");
+      }
+      if (targetKey === "bfa") {
+        return lower.includes("bfa") || lower.includes("fine arts");
+      }
+      if (targetKey === "bed") {
+        return lower.includes("b.ed") || lower.includes("bed");
+      }
+      if (targetKey === "bjmc") {
+        return lower.includes("bjmc") || lower.includes("journalism");
+      }
+
+      if (targetKey === "msc") {
+        return lower.includes("m.sc") || lower.includes("msc") || lower.includes("master of science");
+      }
+      if (targetKey === "bsc") {
+        return (lower.includes("b.sc") || lower.includes("bsc") || lower.includes("bachelor of science")) && !lower.includes("m.sc") && !lower.includes("msc");
+      }
+      if (targetKey === "mtech") {
+        return lower.includes("m.tech") || lower.includes("mtech");
+      }
+      if (targetKey === "btech") {
+        return (lower.includes("b.tech") || lower.includes("btech")) && !lower.includes("m.tech") && !lower.includes("mtech");
+      }
+      if (targetKey === "mca") {
+        return lower.includes("mca");
+      }
+      if (targetKey === "bca") {
+        return lower.includes("bca");
+      }
+
+      return getCourseKey(cStr) === targetKey;
+    });
+
+    if (hasMatchingOffered) return true;
   }
 
   return false;
 };
 
 export const filterCollegesByCourse = (selectedCourseStr, universityId = null) => {
+  if (!selectedCourseStr || selectedCourseStr === "All Academic Courses" || getCourseKey(selectedCourseStr) === "all") {
+    return universityId ? COLLEGES.filter(col => col.universityId === universityId) : COLLEGES;
+  }
   const targetKey = getCourseKey(selectedCourseStr);
   const collegesOfferingCourse = COLLEGES.filter(col => collegeOffersCourse(col, targetKey));
   
@@ -2430,21 +2474,28 @@ export const filterCollegesByCourse = (selectedCourseStr, universityId = null) =
     if (uniSpecific.length > 0) return uniSpecific;
   }
   
-  return collegesOfferingCourse.length > 0 ? collegesOfferingCourse : COLLEGES;
+  return collegesOfferingCourse;
 };
 
 export const universityOffersCourse = (university, targetKey) => {
+  if (targetKey === "all") return true;
   const uniColleges = COLLEGES.filter(col => col.universityId === university.id);
   return uniColleges.some(col => collegeOffersCourse(col, targetKey));
 };
 
 export const filterUniversitiesByCourse = (selectedCourseStr) => {
+  if (!selectedCourseStr || selectedCourseStr === "All Academic Courses" || getCourseKey(selectedCourseStr) === "all") {
+    return UNIVERSITIES;
+  }
   const targetKey = getCourseKey(selectedCourseStr);
   const matchedUnis = UNIVERSITIES.filter(uni => universityOffersCourse(uni, targetKey));
   return matchedUnis.length > 0 ? matchedUnis : UNIVERSITIES;
 };
 
 export const filterSubjectsByCourse = (selectedCourseStr) => {
+  if (!selectedCourseStr || selectedCourseStr === "All Academic Courses" || getCourseKey(selectedCourseStr) === "all") {
+    return SUBJECTS;
+  }
   const targetKey = getCourseKey(selectedCourseStr);
   const matchingCourses = filterCoursesByCourse(selectedCourseStr);
   const matchingCourseIds = new Set(matchingCourses.map(c => c.id));

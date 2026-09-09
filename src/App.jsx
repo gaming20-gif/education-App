@@ -22,6 +22,8 @@ import {
   getSemestersForCourse,
   getSubjectsForSemester,
   getCoursesForCollege,
+  getCourseKey,
+  isCourseMatchingKey,
   filterUniversitiesByCourse,
   filterCollegesByCourse,
   filterCoursesByCourse,
@@ -85,12 +87,13 @@ export default function App() {
     setSelectedSemester(null);
     setSelectedSubject(null);
     setSearchQuery("");
-    setActiveTab("universities");
+    setActiveTab("colleges");
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem("edunexus_user");
+    setIsLoginModalOpen(false);
     setSelectedUniversity(null);
     setSelectedCollege(null);
     setSelectedCourse(null);
@@ -110,14 +113,14 @@ export default function App() {
     setCurrentUser(updatedUser);
     localStorage.setItem("edunexus_user", JSON.stringify(updatedUser));
     
-    // Reset drill-down selections & navigate to Universities page to display stream-available universities
+    // Reset drill-down selections & navigate to Colleges page to display all colleges offering this course
     setSelectedUniversity(null);
     setSelectedCollege(null);
     setSelectedCourse(null);
     setSelectedSemester(null);
     setSelectedSubject(null);
     setSearchQuery("");
-    setActiveTab("universities");
+    setActiveTab("colleges");
   };
 
   // -------------------------------------------------------------
@@ -136,8 +139,6 @@ export default function App() {
   // -------------------------------------------------------------
   // STEP 2: FULL CONTENT (STRICTLY FOR USER'S SELECTED COURSE)
   // -------------------------------------------------------------
-
-  const userCourseStr = currentUser.course;
 
   // Handler: Reset to Universities Home
   const handleResetHome = () => {
@@ -213,6 +214,8 @@ export default function App() {
   // Stream-Scoped Data Computation (Supports 'All', 'Arts', 'Commerce', 'Science')
   // -------------------------------------------------------------
   const currentStream = currentUser?.stream || "All";
+  const userCourseStr = currentUser?.course || "";
+  const isAllCourse = !userCourseStr || userCourseStr === "All Academic Courses" || getCourseKey(userCourseStr) === "all";
 
   // Courses belonging to the active stream
   const streamCourseObjects = currentStream === "All"
@@ -265,21 +268,32 @@ export default function App() {
     ? SUBJECTS
     : SUBJECTS.filter(sub => streamCourseIds.has(sub.courseId));
 
-  // 1. Universities filtered by active Stream
-  const activeUniversities = streamUniversities;
+  // 1. Universities filtered by active Course (or Stream fallback)
+  const activeUniversities = (!isAllCourse)
+    ? filterUniversitiesByCourse(userCourseStr)
+    : streamUniversities;
 
-  // 2. Colleges & Departments filtered by active Stream & selected University
+  // 2. Colleges & Departments filtered by active Course (or Stream fallback) & selected University
   const activeColleges = selectedUniversity
-    ? streamColleges.filter(c => c.universityId === selectedUniversity.id)
-    : streamColleges;
+    ? (!isAllCourse
+        ? filterCollegesByCourse(userCourseStr, selectedUniversity.id)
+        : streamColleges.filter(c => c.universityId === selectedUniversity.id))
+    : (!isAllCourse
+        ? filterCollegesByCourse(userCourseStr)
+        : streamColleges);
 
-  // Colleges offering user's specific selected course (e.g. B.Com)
-  const courseColleges = filterCollegesByCourse(userCourseStr, selectedUniversity ? selectedUniversity.id : null);
-  const allCollegesOfferingCourse = courseColleges.length > 0 ? courseColleges : streamColleges;
+  // Colleges offering user's specific selected course (e.g. M.Com)
+  const allCollegesOfferingCourse = activeColleges;
 
-  // 3. Filtered Courses for active College / Stream
+  // 3. Filtered Courses for active College / Stream / Course
   const activeCourses = selectedCollege 
-    ? getCoursesForCollege(selectedCollege).filter(c => currentStream === "All" || c.stream === currentStream)
+    ? (() => {
+        const colCourses = getCoursesForCollege(selectedCollege);
+        const filtered = (!isAllCourse)
+          ? colCourses.filter(c => isCourseMatchingKey(c, getCourseKey(userCourseStr)))
+          : colCourses.filter(c => currentStream === "All" || c.stream === currentStream || !c.stream);
+        return filtered.length > 0 ? filtered : colCourses;
+      })()
     : (selectedUniversity ? streamCourseObjects.filter(c => {
         const col = COLLEGES.find(col => col.id === c.collegeId);
         return col && col.universityId === selectedUniversity.id;
@@ -291,7 +305,11 @@ export default function App() {
   // 5. Filtered Subjects for active Semester / Course / Stream
   const activeSubjects = (selectedSemester && selectedCourse)
     ? getSubjectsForSemester(selectedSemester.id, selectedCourse.id)
-    : (selectedCourse ? filterSubjectsByCourse(selectedCourse.name) : streamSubjects);
+    : (selectedCourse
+        ? filterSubjectsByCourse(selectedCourse.name)
+        : (!isAllCourse
+            ? filterSubjectsByCourse(userCourseStr)
+            : streamSubjects));
 
   // 6. Global Stream-Scoped Search Filter Results
   const searchResults = searchQuery.trim() ? (() => {
@@ -433,11 +451,13 @@ export default function App() {
         selectedCourseName={currentUser?.course}
       />
 
-      {/* Edit Profile Modal (when logged in) */}
+      {/* User Details & Profile Modal (when logged in) */}
       <LoginForm
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+        currentUser={currentUser}
+        onLogout={handleLogout}
         isFullPage={false}
       />
 
@@ -451,44 +471,6 @@ export default function App() {
             results={searchResults}
             onSelectResult={handleSelectSearchResult}
             onClearSearch={() => setSearchQuery("")}
-          />
-        ) : activeTab === "colleges" ? (
-          /* Colleges Link: Show all colleges teaching the selected course */
-          <CollegeList
-            university={selectedUniversity}
-            colleges={selectedUniversity ? activeColleges : allCollegesOfferingCourse}
-            onSelectCollege={handleSelectCollege}
-            onBack={selectedUniversity ? () => setSelectedUniversity(null) : null}
-            selectedCourseName={currentUser?.course}
-          />
-        ) : activeTab === "mycourse" ? (
-          /* Semesters Link: My Course Dashboard & Semesters */
-          <MyCourseView
-            onSelectSubject={handleSelectSubject}
-            onSelectCourse={handleSelectCourse}
-            currentUser={currentUser}
-          />
-        ) : activeTab === "books" ? (
-          /* Textbooks Link: Textbooks Library */
-          <BooksView
-            onSelectSubject={handleSelectSubject}
-            currentUser={currentUser}
-          />
-        ) : activeTab === "profile" ? (
-          /* Profile Link */
-          <ProfileView
-            onSelectCourse={handleSelectCourse}
-            currentUser={currentUser}
-            onOpenLogin={() => setIsLoginModalOpen(true)}
-            onLogout={handleLogout}
-          />
-        ) : activeTab === "subjects" ? (
-          /* Subjects Link: Direct Subjects Catalog */
-          <SubjectList
-            semester={{ name: `${selectedCourse?.shortCode || currentUser?.course || "Course"} Enrolled Semesters` }}
-            subjects={activeSubjects}
-            onSelectSubject={handleSelectSubject}
-            onBack={() => setActiveTab("universities")}
           />
         ) : selectedSubject ? (
           /* Subject Detail */
@@ -528,6 +510,44 @@ export default function App() {
             onSelectCollege={handleSelectCollege}
             onBack={() => setSelectedUniversity(null)}
             selectedCourseName={currentUser?.course}
+          />
+        ) : activeTab === "colleges" ? (
+          /* Colleges Link: Show all colleges teaching the selected course */
+          <CollegeList
+            university={selectedUniversity}
+            colleges={selectedUniversity ? activeColleges : allCollegesOfferingCourse}
+            onSelectCollege={handleSelectCollege}
+            onBack={selectedUniversity ? () => setSelectedUniversity(null) : null}
+            selectedCourseName={currentUser?.course}
+          />
+        ) : activeTab === "mycourse" ? (
+          /* Semesters Link: My Course Dashboard & Semesters */
+          <MyCourseView
+            onSelectSubject={handleSelectSubject}
+            onSelectCourse={handleSelectCourse}
+            currentUser={currentUser}
+          />
+        ) : activeTab === "books" ? (
+          /* Textbooks Link: Textbooks Library */
+          <BooksView
+            onSelectSubject={handleSelectSubject}
+            currentUser={currentUser}
+          />
+        ) : activeTab === "profile" ? (
+          /* Profile Link */
+          <ProfileView
+            onSelectCourse={handleSelectCourse}
+            currentUser={currentUser}
+            onOpenLogin={() => setIsLoginModalOpen(true)}
+            onLogout={handleLogout}
+          />
+        ) : activeTab === "subjects" ? (
+          /* Subjects Link: Direct Subjects Catalog */
+          <SubjectList
+            semester={{ name: `${selectedCourse?.shortCode || currentUser?.course || "Course"} Enrolled Semesters` }}
+            subjects={activeSubjects}
+            onSelectSubject={handleSelectSubject}
+            onBack={() => setActiveTab("universities")}
           />
         ) : (
           /* Universities Link / Default Home: Choose University */

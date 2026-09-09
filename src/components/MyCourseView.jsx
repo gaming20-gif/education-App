@@ -38,7 +38,9 @@ export default function MyCourseView({ onSelectSubject, onSelectCourse, currentU
               {userCourseStr}
             </h1>
             <p className="text-sm text-[#64748B] max-w-2xl leading-relaxed">
-              {activeCourse.description}
+              {userCourseStr === "All Academic Courses"
+                ? "Comprehensive academic access to all available programs, courses, subjects, and study materials across Commerce, Arts, and Science streams."
+                : activeCourse.description}
             </p>
           </div>
 

@@ -12,12 +12,14 @@ export default function Navbar({
   onStreamCourseChange
 }) {
   const activeStream = currentUser?.stream || "All";
-  const activeCourse = currentUser?.course || STREAM_DATA[activeStream]?.courses[0]?.name || "M.Com (Master of Commerce)";
+  const activeCourse = currentUser?.course || (activeStream === "All" ? "All Academic Courses" : STREAM_DATA[activeStream]?.courses[0]?.name || "M.Com (Master of Commerce)");
   const availableCourses = STREAM_DATA[activeStream]?.courses || STREAM_DATA["All"].courses;
 
   const handleStreamChange = (e) => {
     const newStream = e.target.value;
-    const firstCourse = STREAM_DATA[newStream]?.courses[0]?.name || "";
+    const firstCourse = newStream === "All"
+      ? "All Academic Courses"
+      : (STREAM_DATA[newStream]?.courses[0]?.name || "");
     if (onStreamCourseChange) {
       onStreamCourseChange(newStream, firstCourse);
     }

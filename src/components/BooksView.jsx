@@ -6,11 +6,14 @@ import ImageWithFallback from "./ImageWithFallback";
 import { STREAM_DATA } from "./LoginForm";
 
 export default function BooksView({ onSelectSubject, currentUser }) {
-  // selectedCourse: null = show course selection grid first, object/string = show books for selected course
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const defaultCourse = (currentUser?.course && currentUser.course !== "All Academic Courses")
+    ? { name: currentUser.course, code: currentUser.course, duration: "Enrolled Program" }
+    : null;
+
+  const [selectedCourse, setSelectedCourse] = useState(defaultCourse);
   const [filterQuery, setFilterQuery] = useState("");
   const [activePdfBook, setActivePdfBook] = useState(null);
-  const [selectedStreamFilter, setSelectedStreamFilter] = useState(() => currentUser?.stream || "All");
+  const [selectedStreamFilter, setSelectedStreamFilter] = useState(currentUser?.stream || "All");
 
   // Flatten all available courses across streams
   const allCoursesList = useMemo(() => {
