@@ -7,10 +7,13 @@ export default function BottomNav({
   onOpenSearch,
   isSearchActive = false
 }) {
+  const isExploreActive = activeTab === "explore" && !isSearchActive;
+  const isBooksActive = activeTab === "books" && !isSearchActive;
+
   return (
     <nav
       aria-label="Mobile Navigation Bar"
-      className="block md:hidden fixed bottom-0 left-0 right-0 w-full bg-[#292F4C] border-t border-[#56608F] px-4 py-1.5 shadow-2xl font-sans"
+      className="block md:hidden fixed bottom-0 left-0 right-0 w-full bg-[#292F4C]/95 backdrop-blur-xl border-t border-[#56608F]/60 shadow-[0_-4px_25px_rgba(0,0,0,0.35)] font-sans select-none"
       style={{
         position: "fixed",
         bottom: 0,
@@ -22,84 +25,92 @@ export default function BottomNav({
         WebkitTransform: "translateZ(0)",
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
-        paddingBottom: "calc(0.4rem + env(safe-area-inset-bottom, 0px))"
+        paddingBottom: "env(safe-area-inset-bottom, 8px)"
       }}
     >
-      <div className="max-w-md mx-auto flex items-center justify-between relative">
-        {/* 1. Left Side: Explore Course */}
+      <div className="max-w-md mx-auto h-[62px] px-3 flex items-center justify-around">
+        
+        {/* 1. Left Tab: Explore Course */}
         <button
           type="button"
           onClick={() => onTabChange && onTabChange("explore")}
-          className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none ${
-            activeTab === "explore" && !isSearchActive
-              ? "text-[#8FE388] font-bold"
-              : "text-[#C4C9DE] hover:text-white"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1.5 transition-all cursor-pointer ${
+            isExploreActive ? "text-[#8FE388]" : "text-[#C4C9DE] hover:text-white"
           }`}
           aria-label="Explore Course"
         >
           <div
-            className={`p-1.5 rounded-xl transition-all ${
-              activeTab === "explore" && !isSearchActive
-                ? "bg-[#3D446C] text-[#8FE388] border border-[#56608F] shadow-xs scale-105"
+            className={`w-9 h-8 rounded-full flex items-center justify-center transition-all ${
+              isExploreActive
+                ? "bg-[#3D446C] text-[#8FE388] shadow-xs scale-105"
                 : "text-[#C4C9DE]"
             }`}
           >
-            <Compass className="w-5 h-5 stroke-[2]" />
+            <Compass className={`w-5 h-5 ${isExploreActive ? "stroke-[2.5]" : "stroke-[2]"}`} />
           </div>
-          <span className="text-[11px] font-semibold mt-0.5 tracking-tight truncate">
+          <span
+            className={`text-[10.5px] mt-0.5 tracking-tight transition-colors ${
+              isExploreActive ? "font-bold text-[#8FE388]" : "font-medium text-[#C4C9DE]"
+            }`}
+          >
             Explore Course
           </span>
         </button>
 
-        {/* 2. Center: Search Icon (Click and Search) */}
+        {/* 2. Center Tab: Search (Click to Search) */}
         <button
           type="button"
           onClick={onOpenSearch}
-          className="flex flex-col items-center justify-center flex-1 py-1 transition-all cursor-pointer relative group select-none"
-          aria-label="Search Catalog"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1.5 transition-all cursor-pointer ${
+            isSearchActive ? "text-[#8FE388]" : "text-[#C4C9DE] hover:text-white"
+          }`}
+          aria-label="Search"
         >
           <div
-            className={`w-12 h-12 rounded-full flex items-center justify-center -mt-5 shadow-lg transition-all transform active:scale-95 ${
+            className={`w-9 h-8 rounded-full flex items-center justify-center transition-all ${
               isSearchActive
-                ? "bg-[#8FE388] text-[#1C2036] ring-4 ring-[#8FE388]/30 shadow-[#8FE388]/30 scale-105"
-                : "bg-gradient-to-tr from-[#3D446C] to-[#56608F] text-[#8FE388] border-2 border-[#8FE388]/50 hover:border-[#8FE388] group-hover:scale-105 shadow-md"
+                ? "bg-[#8FE388] text-[#1C2036] shadow-sm scale-105"
+                : "bg-[#3D446C]/60 text-[#C4C9DE] hover:text-white border border-[#56608F]/60"
             }`}
           >
-            <Search className={`w-5 h-5 ${isSearchActive ? "stroke-[2.5]" : "stroke-[2]"}`} />
+            <Search className={`w-4.5 h-4.5 ${isSearchActive ? "stroke-[2.5]" : "stroke-[2]"}`} />
           </div>
           <span
-            className={`text-[11px] font-bold mt-0.5 tracking-tight ${
-              isSearchActive ? "text-[#8FE388]" : "text-[#C4C9DE] group-hover:text-white"
+            className={`text-[10.5px] mt-0.5 tracking-tight transition-colors ${
+              isSearchActive ? "font-bold text-[#8FE388]" : "font-medium text-[#C4C9DE]"
             }`}
           >
             Search
           </span>
         </button>
 
-        {/* 3. Right Side: Books */}
+        {/* 3. Right Tab: Books */}
         <button
           type="button"
           onClick={() => onTabChange && onTabChange("books")}
-          className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none ${
-            activeTab === "books" && !isSearchActive
-              ? "text-[#8FE388] font-bold"
-              : "text-[#C4C9DE] hover:text-white"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1.5 transition-all cursor-pointer ${
+            isBooksActive ? "text-[#8FE388]" : "text-[#C4C9DE] hover:text-white"
           }`}
           aria-label="Books"
         >
           <div
-            className={`p-1.5 rounded-xl transition-all ${
-              activeTab === "books" && !isSearchActive
-                ? "bg-[#3D446C] text-[#8FE388] border border-[#56608F] shadow-xs scale-105"
+            className={`w-9 h-8 rounded-full flex items-center justify-center transition-all ${
+              isBooksActive
+                ? "bg-[#3D446C] text-[#8FE388] shadow-xs scale-105"
                 : "text-[#C4C9DE]"
             }`}
           >
-            <BookOpen className="w-5 h-5 stroke-[2]" />
+            <BookOpen className={`w-5 h-5 ${isBooksActive ? "stroke-[2.5]" : "stroke-[2]"}`} />
           </div>
-          <span className="text-[11px] font-semibold mt-0.5 tracking-tight truncate">
+          <span
+            className={`text-[10.5px] mt-0.5 tracking-tight transition-colors ${
+              isBooksActive ? "font-bold text-[#8FE388]" : "font-medium text-[#C4C9DE]"
+            }`}
+          >
             Books
           </span>
         </button>
+
       </div>
     </nav>
   );

@@ -460,7 +460,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-6 pb-28 md:pb-8 relative z-10">
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-2.5 sm:px-6 lg:px-10 py-3 sm:py-6 pb-32 sm:pb-36 md:pb-8 relative z-10">
         
         {searchResults ? (
           /* Global Search Results Mode */

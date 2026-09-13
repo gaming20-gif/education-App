@@ -348,24 +348,24 @@ export default function HomeView({
       {/* ------------------------------------------------------------- */}
       {/* 2. MAIN DASHBOARD CONTENT (Balanced Modern Grid Layout)       */}
       {/* ------------------------------------------------------------- */}
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-7">
+      <div className="max-w-[1440px] mx-auto px-1 sm:px-4 lg:px-8 py-2 sm:py-8 space-y-5 sm:space-y-7 pb-24 md:pb-8">
         
         {/* ROW 1: HERO CARD & QUICK ACTIONS (SIDE-BY-SIDE ON DESKTOP) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
           
           {/* HERO BANNER (lg:col-span-8) */}
           <div className="lg:col-span-8 flex flex-col">
-            <section className="relative overflow-hidden bg-gradient-to-br from-[#292F4C] via-[#3D446C] to-[#1C2036] rounded-[20px] p-6 sm:p-7 text-white shadow-lg border border-[#56608F] h-full flex flex-col justify-between">
+            <section className="relative overflow-hidden bg-gradient-to-br from-[#292F4C] via-[#3D446C] to-[#1C2036] rounded-[18px] sm:rounded-[20px] p-4 sm:p-7 text-white shadow-lg border border-[#56608F] h-full flex flex-col justify-between">
               {/* Subtle radial & geometric accents */}
               <div className="w-64 h-64 rounded-full bg-[#8FE388]/10 blur-2xl absolute -top-16 -right-16 pointer-events-none" />
               <div className="w-36 h-36 rounded-full bg-white/5 absolute -bottom-10 -left-10 pointer-events-none" />
 
               <div className="relative z-10 space-y-3">
                 <div>
-                  <p className="text-[13px] sm:text-[14px] font-medium text-[#8FE388]">
+                  <p className="text-[12px] sm:text-[14px] font-medium text-[#8FE388]">
                     Welcome back
                   </p>
-                  <h1 className="text-[20px] sm:text-[25px] font-bold text-white tracking-tight mt-0.5 leading-snug">
+                  <h1 className="text-[17px] sm:text-[25px] font-bold text-white tracking-tight mt-0.5 leading-snug">
                     {studentName} · {studentCourse}
                   </h1>
                 </div>
@@ -410,73 +410,78 @@ export default function HomeView({
 
                 {/* 1-Click Course Switcher Bar inside Hero Banner */}
                 {onQuickCourseChange && (
-                  <div className="flex items-center gap-1.5 flex-wrap pt-2 border-t border-[#56608F]">
-                    <span className="text-[11px] font-semibold text-[#8FE388] flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-[#8FE388]" />
-                      1-Click switch course:
-                    </span>
-                    {[
-                      { code: "B.Com", name: "Bachelor of Commerce (Honours) [B.Com]", stream: "Commerce" },
-                      { code: "M.Com", name: "Master of Commerce (M.Com)", stream: "Commerce" },
-                      { code: "BCA", name: "Bachelor of Computer Applications (BCA)", stream: "Science" },
-                      { code: "B.Sc", name: "Bachelor of Science (B.Sc)", stream: "Science" },
-                      { code: "BBA", name: "Bachelor of Business Administration (BBA)", stream: "Commerce" },
-                      { code: "B.Ed", name: "Bachelor of Education (B.Ed.)", stream: "Education" },
-                      { code: "L.L.B", name: "Bachelor of Laws (L.L.B.)", stream: "Law" }
-                    ].map((cItem) => {
-                      const isCurrent = studentCourse.toLowerCase().includes(cItem.code.toLowerCase());
+                  <div className="pt-2 border-t border-[#56608F] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-[#8FE388] flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-[#8FE388]" />
+                        1-Click switch course:
+                      </span>
+                      <span className="text-[10px] text-[#C4C9DE] sm:hidden font-medium">Swipe →</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                      {[
+                        { code: "B.Com", name: "Bachelor of Commerce (Honours) [B.Com]", stream: "Commerce" },
+                        { code: "M.Com", name: "Master of Commerce (M.Com)", stream: "Commerce" },
+                        { code: "BCA", name: "Bachelor of Computer Applications (BCA)", stream: "Science" },
+                        { code: "B.Sc", name: "Bachelor of Science (B.Sc)", stream: "Science" },
+                        { code: "BBA", name: "Bachelor of Business Administration (BBA)", stream: "Commerce" },
+                        { code: "B.Ed", name: "Bachelor of Education (B.Ed.)", stream: "Education" },
+                        { code: "L.L.B", name: "Bachelor of Laws (L.L.B.)", stream: "Law" }
+                      ].map((cItem) => {
+                        const isCurrent = studentCourse.toLowerCase().includes(cItem.code.toLowerCase());
 
-                      return (
-                        <button
-                          key={cItem.code}
-                          type="button"
-                          onClick={() => onQuickCourseChange(cItem.name, cItem.stream)}
-                          className={`btn-cta px-2.5 py-0.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer border ${
-                            isCurrent
-                              ? "bg-[#4CD964] text-[#1C2036] border-[#4CD964] shadow-xs"
-                              : "bg-[#1C2036]/60 text-white hover:bg-[#3D446C] border-[#56608F] backdrop-blur-xs"
-                          }`}
-                          title={`Switch to ${cItem.code} in 1 click`}
-                        >
-                          {cItem.code} {isCurrent && "✓"}
-                        </button>
-                      );
-                    })}
+                        return (
+                          <button
+                            key={cItem.code}
+                            type="button"
+                            onClick={() => onQuickCourseChange(cItem.name, cItem.stream)}
+                            className={`btn-cta px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 border ${
+                              isCurrent
+                                ? "bg-[#4CD964] text-[#1C2036] border-[#4CD964] shadow-xs"
+                                : "bg-[#1C2036]/70 text-white hover:bg-[#3D446C] border-[#56608F] backdrop-blur-xs"
+                            }`}
+                            title={`Switch to ${cItem.code} in 1 click`}
+                          >
+                            {cItem.code} {isCurrent && "✓"}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Clean balanced course stats row */}
-              <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-y-3 sm:gap-y-0 divide-x-0 sm:divide-x divide-[#56608F] text-center border-t border-[#56608F] pt-4 mt-5">
-                <div className="border-r sm:border-r-0 border-[#56608F] sm:border-none">
-                  <p className="text-[20px] sm:text-[24px] font-bold text-white leading-none">
+              <div className="relative z-10 grid grid-cols-4 divide-x divide-[#56608F]/60 text-center border-t border-[#56608F] pt-3 mt-4">
+                <div>
+                  <p className="text-[18px] sm:text-[24px] font-bold text-white leading-none">
                     {totalSemestersCount}
                   </p>
-                  <p className="text-[11px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
+                  <p className="text-[10px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
                     Semesters
                   </p>
                 </div>
                 <div>
-                  <p className="text-[20px] sm:text-[24px] font-bold text-white leading-none">
+                  <p className="text-[18px] sm:text-[24px] font-bold text-white leading-none">
                     {totalSemestersCount * 4}
                   </p>
-                  <p className="text-[11px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
+                  <p className="text-[10px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
                     Core Subjects
                   </p>
                 </div>
-                <div className="border-r sm:border-r-0 border-[#56608F] sm:border-none">
-                  <p className="text-[20px] sm:text-[24px] font-bold text-white leading-none">
+                <div>
+                  <p className="text-[18px] sm:text-[24px] font-bold text-white leading-none">
                     24
                   </p>
-                  <p className="text-[11px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
+                  <p className="text-[10px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
                     Books & PDFs
                   </p>
                 </div>
                 <div>
-                  <p className="text-[20px] sm:text-[24px] font-bold text-white leading-none">
+                  <p className="text-[18px] sm:text-[24px] font-bold text-white leading-none">
                     CBCS
                   </p>
-                  <p className="text-[11px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
+                  <p className="text-[10px] sm:text-[12px] font-medium text-[#8FE388] mt-1">
                     Curriculum
                   </p>
                 </div>
@@ -615,22 +620,27 @@ export default function HomeView({
           </div>
 
           {/* Semester Detail Listing */}
-          <div className="bg-[#292F4C] rounded-[20px] border border-[#56608F] p-5 sm:p-6 space-y-4 shadow-sm">
+          <div className="bg-[#292F4C] rounded-[18px] border border-[#56608F] p-3.5 sm:p-6 space-y-4 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#56608F] pb-3 gap-3">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#8FE388] badge-pulse" />
-                <h3 className="text-[14px] font-bold text-white">
-                  Semester {activeSemester} Subjects
-                </h3>
+              <div className="flex items-center justify-between w-full sm:w-auto">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#8FE388] badge-pulse" />
+                  <h3 className="text-[14px] font-bold text-white">
+                    Semester {activeSemester} Subjects
+                  </h3>
+                </div>
+                <span className="sm:hidden text-[10.5px] font-medium text-[#C4C9DE] bg-[#1C2036] px-2 py-0.5 rounded-full border border-[#56608F]">
+                  {currentSemesterSubjects.length} subjects
+                </span>
               </div>
 
-              <div className="flex items-center gap-2.5 flex-wrap">
+              <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
                 {/* 1-CLICK DOWNLOAD ALL SUBJECTS PDF (ZIP) BUTTON */}
                 <button
                   type="button"
                   onClick={handleDownloadAllSemesterPdf}
                   disabled={isDownloadingZip}
-                  className={`btn-cta flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-[12px] font-bold transition-all shadow-md cursor-pointer ${
+                  className={`btn-cta flex items-center justify-center gap-2 px-3.5 py-2 sm:py-1.5 rounded-xl text-[12px] font-bold transition-all shadow-md cursor-pointer w-full sm:w-auto ${
                     isDownloadedZip
                       ? "bg-[#3D446C] text-[#8FE388] border border-[#8FE388]/30"
                       : "bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036]"
@@ -681,12 +691,12 @@ export default function HomeView({
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {currentSemesterSubjects.map((subject) => (
                 <div
                   key={subject.id}
                   onClick={() => onSelectSubject && onSelectSubject(subject)}
-                  className="course-card group relative p-4 rounded-xl bg-[#1C2036]/70 hover:bg-[#292F4C] border border-[#56608F] hover:border-[#8FE388]/50 transition-all duration-200 cursor-pointer space-y-3"
+                  className="course-card group relative p-3.5 sm:p-4 rounded-xl bg-[#1C2036]/70 hover:bg-[#292F4C] border border-[#56608F] hover:border-[#8FE388]/50 transition-all duration-200 cursor-pointer space-y-2.5"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#3D446C] border border-[#56608F] text-[#8FE388] uppercase tracking-wider">
@@ -870,7 +880,7 @@ export default function HomeView({
           </div>
         </section>
 
-      </main>
+      </div>
 
       {/* ------------------------------------------------------------- */}
       {/* SLIDE-OUT MOBILE DRAWER MENU                                  */}

@@ -93,49 +93,49 @@ export default function ExploreCoursesView({
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-8 font-sans">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in pb-32 sm:pb-36 md:pb-8 font-sans">
       
       {/* Top Header Banner */}
-      <div className="bg-[#292F4C] border border-[#56608F] rounded-[16px] p-5 sm:p-7 shadow-xs relative overflow-hidden text-white">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#292F4C] border border-[#56608F] rounded-[18px] p-4 sm:p-7 shadow-xs relative overflow-hidden text-white">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
           
           <div className="space-y-2 max-w-3xl">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <button
                 onClick={onBack}
-                className="btn-cta inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1C2036] hover:bg-[#3D446C] text-[#C4C9DE] hover:text-white border border-[#56608F] text-xs font-bold transition-all cursor-pointer mr-1"
+                className="btn-cta inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-[#1C2036] hover:bg-[#3D446C] text-[#C4C9DE] hover:text-white border border-[#56608F] text-xs font-bold transition-all cursor-pointer mr-1"
                 title="Back to Home Dashboard"
               >
                 <ArrowLeft className="w-3.5 h-3.5 text-[#8FE388]" />
                 <span>Back</span>
               </button>
-              <span className="px-2.5 py-1 rounded-full bg-[#3D446C] border border-[#56608F] text-[#8FE388] text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+              <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[#3D446C] border border-[#56608F] text-[#8FE388] text-[11px] sm:text-xs font-bold uppercase tracking-wider flex items-center gap-1">
                 <Compass className="w-3.5 h-3.5 text-[#8FE388]" />
                 Course Explorer
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-[#3D446C]/50 text-[#8FE388] border border-[#56608F] text-xs font-bold">
-                {courses.length} Degree Programs Available
+              <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[#3D446C]/50 text-[#8FE388] border border-[#56608F] text-[11px] sm:text-xs font-bold">
+                {courses.length} Degrees
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight">
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-snug">
               Explore All Academic Courses & Degrees
             </h1>
-            <p className="text-xs sm:text-sm text-[#C4C9DE] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#C4C9DE] leading-relaxed line-clamp-3 sm:line-clamp-none">
               Explore undergraduate, postgraduate, and professional degrees across Commerce, Arts, Science, Education, Law, and Medicine. View full semester curriculum, core subjects, textbooks, and affiliated colleges.
             </p>
           </div>
 
           {/* Quick Enrolled Status Pill */}
           {currentUser && (
-            <div className="bg-[#1C2036] border border-[#56608F] rounded-[12px] p-3.5 sm:w-72 shrink-0 space-y-1">
-              <div className="text-[11px] font-bold text-[#C4C9DE] uppercase tracking-wider flex items-center gap-1">
+            <div className="bg-[#1C2036] border border-[#56608F] rounded-xl p-3 sm:p-3.5 sm:w-72 shrink-0 space-y-1">
+              <div className="text-[10px] sm:text-[11px] font-bold text-[#C4C9DE] uppercase tracking-wider flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#8FE388]" /> Active Enrolled Course
               </div>
-              <div className="text-sm font-bold text-white truncate">
+              <div className="text-xs sm:text-sm font-bold text-white truncate">
                 {currentUser.course || "All Academic Courses"}
               </div>
-              <div className="text-[11px] text-[#C4C9DE]">
+              <div className="text-[10.5px] sm:text-[11px] text-[#C4C9DE]">
                 Stream: <strong className="text-[#8FE388]">{currentUser.stream || "All"}</strong>
               </div>
             </div>
