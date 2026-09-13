@@ -29,38 +29,35 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
     <div className="space-y-6 animate-fade-in pb-4">
       
       {/* Profile Header Card */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
+      <div className="bg-[#292F4C] border border-[#56608F] rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden text-white">
         
-        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#1E40AF] to-indigo-900 text-white flex items-center justify-center font-bold text-3xl shadow-md border-4 border-white flex-shrink-0">
+        <div className="w-24 h-24 rounded-2xl bg-[#3D446C] text-[#8FE388] flex items-center justify-center font-bold text-3xl shadow-md border-4 border-[#56608F] flex-shrink-0">
           {getInitials(user.fullName)}
         </div>
 
         <div className="space-y-2 text-center md:text-left flex-1">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-            <h1 className="text-2xl font-bold text-[#1E293B]">
+            <h1 className="text-2xl font-bold text-white">
               {user.fullName}
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#10B981] border border-emerald-200 text-xs font-semibold flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#3D446C] text-[#8FE388] border border-[#56608F] text-xs font-semibold flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5" /> Enrolled Student
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-amber-50 text-[#D97706] border border-amber-200 text-xs font-bold">
-              {user.stream} Stream
             </span>
           </div>
 
-          <p className="text-sm font-semibold text-[#1E40AF]">
-            {user.course} — <span className="text-slate-600 font-normal">{user.specialization}</span>
+          <p className="text-sm font-semibold text-[#8FE388]">
+            {user.course} — <span className="text-[#C4C9DE] font-normal">{user.specialization}</span>
           </p>
 
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-slate-500 pt-1">
-            <span className="flex items-center gap-1 font-medium text-slate-700">
-              <GraduationCap className="w-4 h-4 text-[#1E40AF]" /> {user.collegeName}
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-[#C4C9DE] pt-1">
+            <span className="flex items-center gap-1 font-medium text-white">
+              <GraduationCap className="w-4 h-4 text-[#8FE388]" /> {user.collegeName}
             </span>
-            <span className="flex items-center gap-1 text-slate-500">
-              <Calendar className="w-4 h-4 text-[#1E40AF]" /> {user.semester}
+            <span className="flex items-center gap-1 text-[#C4C9DE]">
+              <Calendar className="w-4 h-4 text-[#8FE388]" /> {user.semester}
             </span>
             {user.rollNumber && (
-              <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[11px]">
+              <span className="px-2 py-0.5 rounded bg-[#1C2036] border border-[#56608F] text-white font-mono text-[11px]">
                 Roll: {user.rollNumber}
               </span>
             )}
@@ -71,15 +68,15 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
         <div className="flex flex-col sm:flex-row md:flex-col gap-2 w-full md:w-auto">
           <button
             onClick={onOpenLogin}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#1E40AF] font-bold text-xs border border-blue-200 transition-all shadow-xs active:scale-[0.97]"
+            className="btn-cta flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#3D446C] hover:bg-[#3D446C]/80 text-[#8FE388] font-bold text-xs border border-[#56608F] transition-all shadow-xs cursor-pointer"
           >
             <Edit3 className="w-4 h-4" />
-            <span>Edit Stream / Course</span>
+            <span>Edit Course Enrolment</span>
           </button>
           
           <button
             onClick={onLogout}
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-all shadow-sm active:scale-[0.97]"
+            className="btn-cta flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#EF4444] hover:bg-[#EF4444]/90 text-white font-bold text-xs transition-all shadow-sm cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>Log Out</span>
@@ -87,25 +84,25 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
         </div>
       </div>
 
-      {/* Dynamic Stream & Course Details Summary Banner */}
-      <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-[#1E40AF] text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* Dynamic Course Details Summary Banner */}
+      <div className="bg-gradient-to-r from-[#3D446C] to-[#1C2036] border border-[#56608F] text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-amber-300 text-xs font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-[#8FE388] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-4 h-4" /> Selected Academic Pathway
           </div>
           <div className="text-lg font-bold">
-            {user.stream} • {user.course}
+            {user.course}
           </div>
-          <div className="text-xs text-blue-200">
+          <div className="text-xs text-[#C4C9DE]">
             Specialization: {user.specialization} | Current Progress: {user.semester}
           </div>
         </div>
 
         <button
           onClick={onOpenLogin}
-          className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-blue-950 font-extrabold text-xs shadow-md transition-all whitespace-nowrap"
+          className="btn-cta px-5 py-2.5 rounded-xl bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] font-extrabold text-xs shadow-md transition-all whitespace-nowrap cursor-pointer"
         >
-          Change Selected Stream / Course ➜
+          Change Selected Course ➜
         </button>
       </div>
 
@@ -113,9 +110,9 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Active Enrolled Courses */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <h2 className="text-base font-bold text-[#1E293B] flex items-center gap-2 border-b border-slate-100 pb-3">
-            <BookOpen className="w-5 h-5 text-[#1E40AF]" />
+        <div className="bg-[#292F4C] border border-[#56608F] rounded-2xl p-6 shadow-xs space-y-4 text-white">
+          <h2 className="text-base font-bold text-white flex items-center gap-2 border-b border-[#56608F] pb-3">
+            <BookOpen className="w-5 h-5 text-[#8FE388]" />
             Recommended & Enrolled Programs
           </h2>
 
@@ -124,17 +121,17 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
               <div
                 key={c.id}
                 onClick={() => onSelectCourse(c)}
-                className="p-3.5 rounded-xl border border-slate-200 hover:border-[#1E40AF] bg-[#F8FAFC] hover:bg-white transition-all cursor-pointer flex items-center justify-between group active:scale-[0.98]"
+                className="course-card p-3.5 rounded-xl border border-[#56608F] hover:border-[#8FE388]/40 bg-[#1C2036]/70 hover:bg-[#1C2036] transition-all cursor-pointer flex items-center justify-between group"
               >
                 <div>
-                  <div className="text-xs font-bold text-[#1E40AF]">{c.shortCode}</div>
-                  <div className="text-sm font-semibold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors">
+                  <div className="text-xs font-bold text-[#8FE388]">{c.shortCode}</div>
+                  <div className="text-sm font-semibold text-white group-hover:text-[#8FE388] transition-colors">
                     {c.name}
                   </div>
-                  <div className="text-xs text-[#64748B]">{c.duration}</div>
+                  <div className="text-xs text-[#C4C9DE]">{c.duration}</div>
                 </div>
 
-                <span className="px-2.5 py-1 rounded bg-amber-500/10 text-[#F59E0B] text-xs font-semibold border border-amber-500/20">
+                <span className="btn-cta px-2.5 py-1 rounded bg-[#3D446C] text-[#8FE388] text-xs font-semibold border border-[#56608F]">
                   Access Portal
                 </span>
               </div>
@@ -143,44 +140,44 @@ export default function ProfileView({ onSelectCourse, currentUser, onOpenLogin, 
         </div>
 
         {/* Academic Bookmarks & Quick PDF Access */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <h2 className="text-base font-bold text-[#1E293B] flex items-center gap-2 border-b border-slate-100 pb-3">
-            <Bookmark className="w-5 h-5 text-[#F59E0B]" />
+        <div className="bg-[#292F4C] border border-[#56608F] rounded-2xl p-6 shadow-xs space-y-4 text-white">
+          <h2 className="text-base font-bold text-white flex items-center gap-2 border-b border-[#56608F] pb-3">
+            <Bookmark className="w-5 h-5 text-[#8FE388]" />
             Saved Textbooks & Study Materials
           </h2>
 
           <div className="space-y-3 text-xs">
-            <div className="p-3 rounded-xl border border-slate-200 bg-[#F8FAFC] flex items-center justify-between">
+            <div className="p-3 rounded-xl border border-[#56608F] bg-[#1C2036] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <Eye className="w-4 h-4 text-[#10B981]" />
+                <Eye className="w-4 h-4 text-[#8FE388]" />
                 <div>
-                  <div className="font-bold text-[#1E293B]">M.Com Advanced Corporate Accounting</div>
-                  <div className="text-slate-500">PDF Guide • 42 Pages</div>
+                  <div className="font-bold text-white">M.Com Advanced Corporate Accounting</div>
+                  <div className="text-[#C4C9DE]">PDF Guide • 42 Pages</div>
                 </div>
               </div>
-              <span className="font-semibold text-[#10B981]">View PDF</span>
+              <span className="font-semibold text-[#8FE388] cursor-pointer hover:underline">View PDF</span>
             </div>
 
-            <div className="p-3 rounded-xl border border-slate-200 bg-[#F8FAFC] flex items-center justify-between">
+            <div className="p-3 rounded-xl border border-[#56608F] bg-[#1C2036] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <Eye className="w-4 h-4 text-[#10B981]" />
+                <Eye className="w-4 h-4 text-[#8FE388]" />
                 <div>
-                  <div className="font-bold text-[#1E293B]">B.Com Financial Management (Tulsian)</div>
-                  <div className="text-slate-500">Reference Textbook • 750 Pages</div>
+                  <div className="font-bold text-white">B.Com Financial Management (Tulsian)</div>
+                  <div className="text-[#C4C9DE]">Reference Textbook • 750 Pages</div>
                 </div>
               </div>
-              <span className="font-semibold text-[#10B981]">View PDF</span>
+              <span className="font-semibold text-[#8FE388] cursor-pointer hover:underline">View PDF</span>
             </div>
 
-            <div className="p-3 rounded-xl border border-slate-200 bg-[#F8FAFC] flex items-center justify-between">
+            <div className="p-3 rounded-xl border border-[#56608F] bg-[#1C2036] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <Bookmark className="w-4 h-4 text-[#F59E0B]" />
+                <Bookmark className="w-4 h-4 text-[#8FE388]" />
                 <div>
-                  <div className="font-bold text-[#1E293B]">Managerial Economics Case Studies</div>
-                  <div className="text-slate-500">Saved Bookmark</div>
+                  <div className="font-bold text-white">Managerial Economics Case Studies</div>
+                  <div className="text-[#C4C9DE]">Saved Bookmark</div>
                 </div>
               </div>
-              <span className="font-semibold text-[#F59E0B]">Bookmarked</span>
+              <span className="font-semibold text-[#8FE388]">Bookmarked</span>
             </div>
           </div>
         </div>

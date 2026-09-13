@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { BookOpen, Search, FileText, ArrowLeft, ArrowRight, GraduationCap, BookMarked } from "lucide-react";
+import { BookOpen, Search, FileText, ArrowLeft, ArrowRight, GraduationCap, BookMarked, FileDown } from "lucide-react";
 import { filterBooksByCourse } from "../data/educationData";
+import { downloadSingleSubjectPdf } from "../utils/downloadHelper";
 import PdfViewerModal from "./PdfViewerModal";
 import ImageWithFallback from "./ImageWithFallback";
 import { STREAM_DATA } from "./LoginForm";
@@ -78,16 +79,16 @@ export default function BooksView({ onSelectSubject, currentUser }) {
     return (
       <div className="space-y-6 animate-fade-in pb-4">
         {/* Header Banner */}
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="bg-[#292F4C] border border-[#56608F] rounded-xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white">
           <div>
-            <div className="text-[11px] uppercase font-bold text-[#1E40AF] tracking-wider flex items-center gap-1.5">
-              <BookMarked className="w-3.5 h-3.5" />
+            <div className="text-[11px] uppercase font-bold text-[#8FE388] tracking-wider flex items-center gap-1.5">
+              <BookMarked className="w-3.5 h-3.5 text-[#8FE388]" />
               <span>Digital Academic Library</span>
             </div>
-            <h1 className="text-base sm:text-xl font-bold text-[#1E293B] leading-snug mt-0.5">
+            <h1 className="text-base sm:text-xl font-bold text-white leading-snug mt-0.5">
               Select a Course to View Available Textbooks
             </h1>
-            <p className="text-xs text-[#64748B] mt-0.5">
+            <p className="text-xs text-[#C4C9DE] mt-0.5">
               Click on any course below to browse all its available textbooks, reference guides, and PDF books.
             </p>
           </div>
@@ -98,25 +99,25 @@ export default function BooksView({ onSelectSubject, currentUser }) {
                 const matched = allCoursesList.find(c => c.name === currentUser.course || c.code === currentUser.course);
                 handleSelectCourseCard(matched || { name: currentUser.course, code: currentUser.course, duration: "Enrolled" });
               }}
-              className="px-3.5 py-2 rounded-xl bg-[#1E40AF] hover:bg-blue-900 text-white text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
+              className="btn-cta px-3.5 py-2 rounded-xl bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 shrink-0 self-start sm:self-auto cursor-pointer"
             >
-              <GraduationCap className="w-4 h-4 text-amber-300" />
+              <GraduationCap className="w-4 h-4 text-[#1C2036]" />
               <span>My Course: {currentUser.course} ➜</span>
             </button>
           )}
         </div>
 
         {/* Filter and Search Bar for Courses */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white border border-slate-200 p-3 rounded-xl shadow-xs">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-[#292F4C] border border-[#56608F] p-3 rounded-xl shadow-xs text-white">
           {/* Search input */}
           <div className="relative flex-1 min-w-[200px]">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#C4C9DE] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               placeholder="Search course name (e.g. B.Com, M.Com, BCA, B.Sc, M.A)..."
-              className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:bg-white focus:border-[#1E40AF] focus:ring-1 focus:ring-blue-100 outline-none"
+              className="w-full pl-9 pr-3 py-2 bg-[#1C2036] border border-[#56608F] rounded-lg text-xs text-white placeholder-[#C4C9DE] focus:border-[#8FE388] outline-none"
             />
           </div>
 
@@ -126,10 +127,10 @@ export default function BooksView({ onSelectSubject, currentUser }) {
               <button
                 key={stream}
                 onClick={() => setSelectedStreamFilter(stream)}
-                className={`px-3 py-1.5 rounded-lg border whitespace-nowrap transition-all ${
+                className={`btn-cta px-3 py-1.5 rounded-lg border whitespace-nowrap transition-all cursor-pointer ${
                   selectedStreamFilter === stream
-                    ? "bg-[#1E40AF] text-white border-[#1E40AF] font-bold shadow-2xs"
-                    : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#3D446C] text-white border-[#8FE388]/40 font-bold shadow-2xs"
+                    : "bg-[#1C2036] text-[#C4C9DE] border-[#56608F] hover:bg-[#3D446C]/50 hover:text-white"
                 }`}
               >
                 {stream === "All" ? `All Streams (${allCoursesList.length})` : stream}
@@ -144,32 +145,32 @@ export default function BooksView({ onSelectSubject, currentUser }) {
             <div
               key={courseItem.id || courseItem.name}
               onClick={() => handleSelectCourseCard(courseItem)}
-              className="group bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-[#1E40AF]/40 rounded-2xl p-5 transition-all duration-200 shadow-2xs hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col justify-between"
+              className="course-card group bg-[#292F4C] hover:bg-[#3D446C]/30 border border-[#56608F] hover:border-[#8FE388]/40 rounded-2xl p-5 shadow-2xs cursor-pointer flex flex-col justify-between text-white"
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <span className="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-black tracking-wide">
+                  <span className="px-2.5 py-1 rounded-lg bg-[#3D446C] border border-[#56608F] text-[#8FE388] text-xs font-black tracking-wide">
                     {courseItem.code}
                   </span>
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#1C2036] text-[#C4C9DE] border border-[#56608F]">
                     {courseItem.duration}
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-[#1E293B] group-hover:text-[#1E40AF] transition-colors leading-snug">
+                <h3 className="text-base font-bold text-white group-hover:text-[#8FE388] transition-colors leading-snug">
                   {courseItem.name}
                 </h3>
-                <p className="text-xs text-[#64748B] mt-1">
-                  Stream: <strong className="text-slate-700">{courseItem.stream}</strong>
+                <p className="text-xs text-[#C4C9DE] mt-1">
+                  Stream: <strong className="text-white">{courseItem.stream}</strong>
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-600 flex items-center gap-1">
-                  <BookOpen className="w-3.5 h-3.5 text-[#1E40AF]" />
+              <div className="mt-4 pt-3 border-t border-[#56608F] flex items-center justify-between text-xs">
+                <span className="font-semibold text-[#C4C9DE] flex items-center gap-1">
+                  <BookOpen className="w-3.5 h-3.5 text-[#8FE388]" />
                   {courseItem.booksCount} Textbooks Available
                 </span>
-                <span className="font-bold text-[#1E40AF] group-hover:text-[#1E3A8A] flex items-center gap-1">
+                <span className="font-bold text-[#8FE388] flex items-center gap-1">
                   View Books <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
@@ -184,21 +185,21 @@ export default function BooksView({ onSelectSubject, currentUser }) {
   return (
     <div className="space-y-6 animate-fade-in pb-4">
       {/* Back Button & Course Header */}
-      <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="bg-[#292F4C] border border-[#56608F] rounded-xl p-3.5 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white">
         <div className="flex items-center gap-3">
           <button
             onClick={handleBackToCourses}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all active:scale-[0.97] shrink-0"
+            className="p-2 rounded-xl bg-[#1C2036] hover:bg-[#3D446C] text-[#C4C9DE] hover:text-white border border-[#56608F] transition-all cursor-pointer shrink-0"
             title="Back to Course List"
           >
-            <ArrowLeft className="w-4 h-4 text-[#1E40AF]" />
+            <ArrowLeft className="w-4 h-4 text-[#8FE388]" />
           </button>
 
           <div>
-            <div className="text-[11px] uppercase font-bold text-[#1E40AF] tracking-wider">
+            <div className="text-[11px] uppercase font-bold text-[#8FE388] tracking-wider">
               {selectedCourse.code} • Textbooks Catalog
             </div>
-            <h1 className="text-base sm:text-lg font-bold text-[#1E293B] leading-snug">
+            <h1 className="text-base sm:text-lg font-bold text-white leading-snug">
               {selectedCourse.name}
             </h1>
           </div>
@@ -207,11 +208,11 @@ export default function BooksView({ onSelectSubject, currentUser }) {
         <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
           <button
             onClick={handleBackToCourses}
-            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all"
+            className="btn-cta px-3 py-1.5 rounded-xl bg-[#1C2036] hover:bg-[#3D446C] text-[#C4C9DE] hover:text-white border border-[#56608F] text-xs font-bold transition-all cursor-pointer"
           >
             ← Select Different Course
           </button>
-          <div className="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#1E40AF] text-xs font-bold whitespace-nowrap">
+          <div className="px-2.5 py-1 rounded-full bg-[#3D446C] border border-[#56608F] text-[#8FE388] text-xs font-bold whitespace-nowrap">
             {filteredBooks.length} Books
           </div>
         </div>
@@ -219,27 +220,27 @@ export default function BooksView({ onSelectSubject, currentUser }) {
 
       {/* Filter & Search Bar for books in selected course */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE]" />
         <input
           type="text"
           value={filterQuery}
           onChange={(e) => setFilterQuery(e.target.value)}
           placeholder={`Filter ${selectedCourse.code} books by title, author, or subject...`}
-          className="w-full bg-white border border-slate-200 text-slate-800 placeholder-slate-400 text-sm rounded-xl pl-10 pr-4 py-2.5 outline-none focus:ring-2 focus:ring-[#1E40AF] shadow-xs"
+          className="w-full bg-[#292F4C] border border-[#56608F] text-white placeholder-[#C4C9DE] text-sm rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-[#8FE388] shadow-xs"
         />
       </div>
 
       {/* Book Grid */}
       {filteredBooks.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3 shadow-xs">
-          <BookOpen className="w-12 h-12 text-slate-400 mx-auto" />
-          <h3 className="text-lg font-bold text-[#1E293B]">No textbooks found for {selectedCourse.name}</h3>
-          <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto">
+        <div className="bg-[#292F4C] border border-[#56608F] rounded-2xl p-12 text-center space-y-3 shadow-xs text-white">
+          <BookOpen className="w-12 h-12 text-[#C4C9DE]/40 mx-auto" />
+          <h3 className="text-lg font-bold text-white">No textbooks found for {selectedCourse.name}</h3>
+          <p className="text-xs sm:text-sm text-[#C4C9DE] max-w-md mx-auto">
             Try clearing your search filter or choose another course from the course list.
           </p>
           <button
             onClick={handleBackToCourses}
-            className="px-4 py-2 bg-[#1E40AF] text-white font-bold text-xs rounded-xl shadow-xs hover:bg-blue-900"
+            className="btn-cta px-4 py-2 bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] font-bold text-xs rounded-xl shadow-xs cursor-pointer"
           >
             Browse All Courses ➜
           </button>
@@ -249,7 +250,7 @@ export default function BooksView({ onSelectSubject, currentUser }) {
           {filteredBooks.map((book) => (
             <div
               key={book.id}
-              className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row gap-4 justify-between hover:scale-[1.01]"
+              className="course-card bg-[#292F4C] border border-[#56608F] hover:border-[#8FE388]/40 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row gap-4 justify-between text-white"
             >
               <div className="flex gap-3 sm:gap-4 min-w-0 flex-1">
                 <ImageWithFallback
@@ -257,45 +258,62 @@ export default function BooksView({ onSelectSubject, currentUser }) {
                   alt={book.title}
                   type="book"
                   fallbackTitle={book.title}
-                  className="w-18 h-26 sm:w-20 sm:h-28 object-cover rounded-lg shadow-sm border border-slate-200 shrink-0"
+                  className="w-18 h-26 sm:w-20 sm:h-28 object-cover rounded-lg shadow-sm border border-[#56608F] shrink-0"
                 />
                 <div className="space-y-1 min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#1E40AF]">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#3D446C] text-[#8FE388] border border-[#56608F]">
                       {book.subjectCode || "COURSE-REF"}
                     </span>
                   </div>
 
-                  <h3 className="text-sm sm:text-base font-bold text-[#1E293B] leading-snug">
+                  <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
                     {book.title}
                   </h3>
-                  <p className="text-xs text-[#64748B] font-medium">
+                  <p className="text-xs text-[#8FE388] font-semibold">
                     By {book.author}
                   </p>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-[#C4C9DE]">
                     {book.edition} • {book.pages} Pages
                   </p>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 mt-1 leading-relaxed">
+                  <p className="text-xs text-[#C4C9DE] line-clamp-2 mt-1 leading-relaxed">
                     {book.summary}
                   </p>
                 </div>
               </div>
 
               {/* Read PDF Button */}
-              <div className="flex sm:flex-col items-center justify-between sm:justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0 w-full sm:w-auto">
+              <div className="flex sm:flex-col items-center justify-between sm:justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#56608F] shrink-0 w-full sm:w-auto">
                 <button
                   onClick={() => setActivePdfBook(book)}
-                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-white text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5 active:scale-[0.97]"
+                  className="btn-cta w-full sm:w-auto px-3.5 py-1.5 rounded-xl bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <FileText className="w-4 h-4" />
+                  <FileText className="w-3.5 h-3.5 text-[#1C2036]" />
                   Read PDF
+                </button>
+
+                <button
+                  onClick={() => {
+                    const subObj = book.subjectObj || {
+                      name: book.title,
+                      code: book.subjectCode || "REF-101",
+                      description: book.summary,
+                      books: [book]
+                    };
+                    downloadSingleSubjectPdf(subObj, selectedCourse?.name, "Reference Library");
+                  }}
+                  className="btn-cta w-full sm:w-auto px-3.5 py-1.5 rounded-xl bg-[#3D446C] hover:bg-[#3D446C]/90 text-[#8FE388] border border-[#56608F] text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  title="Download PDF"
+                >
+                  <FileDown className="w-3.5 h-3.5 text-[#8FE388]" />
+                  Download PDF
                 </button>
 
                 {book.subjectObj && (
                   <button
                     onClick={() => onSelectSubject(book.subjectObj)}
-                    className="text-[11px] text-[#1E40AF] hover:underline font-semibold whitespace-nowrap"
+                    className="text-[11px] text-[#8FE388] hover:underline font-semibold whitespace-nowrap cursor-pointer"
                   >
                     Go to Subject
                   </button>

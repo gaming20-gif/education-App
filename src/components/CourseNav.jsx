@@ -8,6 +8,11 @@ export default function CourseNav({
 }) {
   const tabs = [
     {
+      id: "university_college",
+      label: "University / College",
+      icon: Building2
+    },
+    {
       id: "universities",
       label: "Universities",
       icon: Building2
@@ -35,8 +40,8 @@ export default function CourseNav({
   ];
 
   return (
-    <nav className="hidden md:block bg-white border-b border-slate-200 py-2 px-3 sm:px-6 lg:px-8 shadow-xs">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none">
+    <nav className="hidden md:block bg-[#292F4C] border-b border-[#56608F] py-2 px-3 sm:px-6 lg:px-8 shadow-sm">
+      <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none">
         
         {/* Navigation Tabs / Links */}
         <div className="flex items-center gap-1 sm:gap-2">
@@ -48,13 +53,13 @@ export default function CourseNav({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap active:scale-[0.97] ${
+                className={`tab-underline-animated flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap active:scale-[0.97] cursor-pointer ${
                   isActive
-                    ? "bg-[#1E40AF] text-white shadow-xs"
-                    : "text-slate-600 hover:text-[#1E40AF] hover:bg-blue-50/70 border border-transparent"
+                    ? "is-active bg-[#3D446C] text-[#8FE388] shadow-xs"
+                    : "text-[#C4C9DE] hover:text-white hover:bg-[#3D446C]/40 border border-transparent"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-amber-300" : "text-[#1E40AF]"}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#8FE388]" : "text-[#C4C9DE]"}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -63,8 +68,8 @@ export default function CourseNav({
 
         {/* Selected Course Indicator Badge */}
         {selectedCourseName && (
-          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#D97706] text-xs font-bold whitespace-nowrap">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="badge-pulse badge-dot hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8FE388]/15 border border-[#8FE388]/30 text-[#8FE388] text-xs font-bold whitespace-nowrap">
+            <Sparkles className="w-3.5 h-3.5 text-[#8FE388]" />
             <span>Course: {selectedCourseName}</span>
           </div>
         )}

@@ -1,32 +1,55 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg-main: #1C2036;
+  --color-surface: #292F4C;
+  --color-primary: #3D446C;
+  --color-accent: #8FE388;
+  --color-cta: #4CD964;
+  --color-border: #56608F;
+  --color-text-primary: #FFFFFF;
+  --color-text-muted: #C4C9DE;
+  --color-success: #8FE388;
+  --color-warning: #F5A623;
+  --color-error: #EF4444;
+}
+
 @layer base {
+  html {
+    overflow-x: hidden;
+    width: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: #F8FAFC;
-    color: #1E293B;
+    background-color: #1C2036;
+    color: #FFFFFF;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    color: #FFFFFF;
   }
 }
 
 /* Color Variables Reference */
 :root {
-  --color-primary: #1E40AF;
-  --color-primary-hover: #1E3A8A;
-  --color-secondary-bg: #F8FAFC;
-  --color-card-bg: #FFFFFF;
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-success: #10B981;
-  --color-text-primary: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-border: #E2E8F0;
-  --color-error: #EF4444;
+  --color-primary: #3D446C;
+  --color-accent: #8FE388;
+  --color-cta: #4CD964;
+  --color-background: #1C2036;
+  --color-surface: #292F4C;
+  --color-border: #56608F;
+  --color-text: #FFFFFF;
+  --color-text-muted: #C4C9DE;
+  --color-alert: #EF4444;
+  --color-success: #8FE388;
+  --color-warning: #F5A623;
 }
 
 /* Custom Scrollbar */
@@ -36,19 +59,143 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #1C2036;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #56608F;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #3D446C;
 }
 
-/* Shimmer animation for skeleton loaders */
+/* ==========================================================================
+   ANIMATION 1: Background slow-moving blurred gradient blobs/orbs (12-18s)
+   GPU-accelerated, will-change: transform, does not affect scroll performance
+   ========================================================================== */
+@keyframes floatOrb1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(80px, 60px, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-40px, 90px, 0) scale(0.95);
+  }
+}
+
+@keyframes floatOrb2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-70px, -80px, 0) scale(0.9);
+  }
+  100% {
+    transform: translate3d(50px, -40px, 0) scale(1.05);
+  }
+}
+
+@keyframes floatOrb3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+  50% {
+    transform: translate3d(60px, -50px, 0) scale(1.2);
+  }
+  100% {
+    transform: translate3d(-50px, 40px, 0) scale(1);
+  }
+}
+
+.bg-orb-1 {
+  animation: floatOrb1 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.bg-orb-2 {
+  animation: floatOrb2 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.bg-orb-3 {
+  animation: floatOrb3 13s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   ANIMATION 2: Course cards lift slightly (translateY -4px) with soft shadow
+   and border color transition (200-250ms ease) on tap/hover
+   ========================================================================== */
+.course-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  will-change: transform;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(11, 37, 69, 0.7), 0 0 16px -2px rgba(143, 227, 136, 0.2);
+  border-color: rgba(143, 227, 136, 0.45);
+}
+
+.course-card:active {
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   ANIMATION 3: Progress bars animate fill from 0 to actual percentage (~1.2s)
+   ========================================================================== */
+@keyframes fillProgress {
+  from {
+    width: 0% !important;
+  }
+}
+
+.animate-progress-fill {
+  animation: fillProgress 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: width;
+}
+
+/* ==========================================================================
+   ANIMATION 4: CTA buttons ripple effect on tap + subtle scale-down (0.97)
+   ========================================================================== */
+.btn-cta {
+  position: relative;
+  overflow: hidden;
+  transition: transform 160ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease, background-color 200ms ease;
+  user-select: none;
+}
+
+.btn-cta:active {
+  transform: scale(0.97);
+}
+
+.btn-cta::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn-cta:active::after {
+  transform: translate(-50%, -50%) scale(1.6);
+  opacity: 1;
+  transition: transform 0.4s ease-out, opacity 0.5s ease-out;
+}
+
+/* ==========================================================================
+   ANIMATION 5: Loading states skeleton shimmer effect (animated gradient sweep)
+   ========================================================================== */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -59,19 +206,84 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background: linear-gradient(90deg, #292F4C 20%, #56608F 50%, #292F4C 80%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.6s infinite ease-in-out;
 }
 
-/* Progress bar fill animation */
-@keyframes fillProgress {
-  from {
-    width: 0%;
+/* ==========================================================================
+   ANIMATION 6: Tabs / Navigation sliding animated indicator (200-250ms ease)
+   ========================================================================== */
+.tab-slide-indicator {
+  transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-underline-animated {
+  position: relative;
+}
+
+.tab-underline-animated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background-color: #8FE388;
+  border-radius: 2px;
+  transition: transform 220ms ease, opacity 220ms ease;
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.tab-underline-animated.is-active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   ANIMATION 7: Badges subtle pulsing glow/dot
+   ========================================================================== */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(143, 227, 136, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(143, 227, 136, 0);
   }
 }
 
-.animate-progress-fill {
-  animation: fillProgress 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.6;
+  }
 }
+
+.badge-pulse {
+  animation: pulseGlow 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.badge-dot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.badge-dot::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background-color: #8FE388;
+  box-shadow: 0 0 6px #8FE388;
+  animation: pulseDot 1.8s infinite ease-in-out;
+}
+
 

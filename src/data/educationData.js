@@ -1618,6 +1618,344 @@ export const COURSES = [
     totalSemesters: 4,
     description: "Advanced postgraduate engineering degree in artificial intelligence, robotics, and distributed systems.",
     careerPaths: ["Principal Engineer", "Robotics Researcher", "Chief Technology Officer"]
+  },
+
+  // --- GENERAL & STATE UNIVERSITY DEGREE PROGRAMS ---
+  {
+    id: "bcom-general",
+    collegeId: "kskvku-jbthacker",
+    name: "Bachelor of Commerce (B.Com General / Program)",
+    shortCode: "B.Com",
+    courseKey: "bcom",
+    stream: "Commerce",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Foundational undergraduate commerce degree focusing on financial accounting, auditing, commercial laws, corporate taxation, and business economics.",
+    careerPaths: ["Junior Accountant", "Banking Executive", "Tax Consultant", "Audit Assistant", "Financial Officer"]
+  },
+  {
+    id: "ba-program",
+    collegeId: "kskvku-rrlalan",
+    name: "Bachelor of Arts (B.A. Program / General)",
+    shortCode: "B.A.",
+    courseKey: "ba",
+    stream: "Arts",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Broad-based liberal arts program covering history, political science, sociology, economics, literature, and public administration with rich elective choices.",
+    careerPaths: ["Civil Services Aspirant", "Content Writer", "Public Relations Specialist", "Teacher", "Social Worker"]
+  },
+  {
+    id: "ba-degree",
+    collegeId: "kskvku-ssv",
+    name: "Bachelor of Arts (B.A.)",
+    shortCode: "B.A.",
+    courseKey: "ba",
+    stream: "Arts",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Comprehensive 3-year undergraduate degree in Arts and Humanities covering English, Economics, Psychology, History, and Gujarati Literature.",
+    careerPaths: ["Administrative Officer", "Journalist", "Educator", "Community Organizer"]
+  },
+  {
+    id: "ma-program",
+    collegeId: "kskvku-ssv",
+    name: "Master of Arts (M.A. - Economics, Psychology, English, Gujarati)",
+    shortCode: "M.A.",
+    courseKey: "ma",
+    stream: "Arts",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Postgraduate humanities degree emphasizing advanced economic policy, literary criticism, psychological research, and social theories.",
+    careerPaths: ["Senior Economist", "University Lecturer", "Psychological Counselor", "Policy Advisor", "Research Fellow"]
+  },
+  {
+    id: "bsc-program",
+    collegeId: "kskvku-rrlalan",
+    name: "Bachelor of Science (B.Sc - Physics, Chemistry, Mathematics, Biology)",
+    shortCode: "B.Sc",
+    courseKey: "bsc",
+    stream: "Science",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Undergraduate science curriculum with rigorous laboratory training in physics, analytical chemistry, mathematics, and biological sciences.",
+    careerPaths: ["Scientific Officer", "Research Assistant", "Lab Analyst", "Quality Controller", "Data Analyst"]
+  },
+  {
+    id: "msc-program",
+    collegeId: "kskvku-dept-chemistry",
+    name: "Master of Science (M.Sc - Chemistry, Geology, IT, Environmental)",
+    shortCode: "M.Sc",
+    courseKey: "msc",
+    stream: "Science",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Postgraduate science degree focusing on scientific investigation, organic & analytical chemistry, geosciences, and environmental impact assessment.",
+    careerPaths: ["Research Scientist", "Geologist", "Environmental Consultant", "Senior Chemist", "Academic Researcher"]
+  },
+  {
+    id: "bba-program",
+    collegeId: "kskvku-srk-management",
+    name: "Bachelor of Business Administration (BBA)",
+    shortCode: "BBA",
+    courseKey: "bba",
+    stream: "Commerce",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Professional undergraduate business management program covering organizational behavior, digital marketing, finance, human resources, and entrepreneurship.",
+    careerPaths: ["Business Manager", "Marketing Executive", "HR Coordinator", "Operations Analyst", "Startup Founder"]
+  },
+  {
+    id: "mba-program",
+    collegeId: "kskvku-dept-management",
+    name: "Master of Business Administration (M.B.A.)",
+    shortCode: "M.B.A.",
+    courseKey: "mba",
+    stream: "Commerce",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "AICTE approved management master's program specializing in Strategic Management, Corporate Finance, Marketing & Analytics, and Human Resources.",
+    careerPaths: ["Corporate Strategist", "Investment Banker", "Product Manager", "Management Consultant", "Business Unit Head"]
+  },
+  {
+    id: "bca-program",
+    collegeId: "kskvku-srk-management",
+    name: "Bachelor of Computer Applications (BCA)",
+    shortCode: "BCA",
+    courseKey: "bca",
+    stream: "Science",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Professional IT curriculum covering programming in C/C++/Java/Python, Web Development, Database Management Systems, and Cloud Computing.",
+    careerPaths: ["Software Engineer", "Full Stack Developer", "Database Administrator", "System Analyst", "Web Developer"]
+  },
+  {
+    id: "mca-program",
+    collegeId: "kskvku-dept-cs-campus",
+    name: "Master of Computer Applications (M.C.A.)",
+    shortCode: "M.C.A.",
+    courseKey: "mca",
+    stream: "Science",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Advanced computing and software engineering master's program covering distributed systems, machine learning, cloud architectures, and cybersecurity.",
+    careerPaths: ["Software Architect", "Cloud Systems Engineer", "AI/ML Engineer", "DevOps Specialist", "Technical Lead"]
+  },
+  {
+    id: "bed-degree",
+    collegeId: "kskvku-sdshethia",
+    name: "Bachelor of Education (B.Ed.)",
+    shortCode: "B.Ed.",
+    courseKey: "bed",
+    stream: "Education",
+    degree: "Professional Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 4,
+    description: "NCTE approved professional teacher education program preparing educators in pedagogic theory, educational psychology, curriculum design, and classroom management.",
+    careerPaths: ["Secondary School Teacher", "Educational Counselor", "Curriculum Developer", "Education Officer", "School Administrator"]
+  },
+  {
+    id: "med-degree",
+    collegeId: "kskvku-dept-education",
+    name: "Master of Education (M.Ed.)",
+    shortCode: "M.Ed.",
+    courseKey: "med",
+    stream: "Education",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Postgraduate teacher educator program emphasizing advanced educational research methodologies, teacher education curriculum, educational psychology, and academic leadership.",
+    careerPaths: ["Assistant Professor of Education", "Curriculum Specialist", "School Principal", "Educational Researcher", "Policy Planner"]
+  },
+  {
+    id: "llb-degree",
+    collegeId: "kskvku-sdlaw",
+    name: "Bachelor of Laws (L.L.B.)",
+    shortCode: "L.L.B.",
+    courseKey: "llb",
+    stream: "Law",
+    degree: "Professional Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Bar Council of India accredited degree covering constitutional law, criminal jurisprudence, civil procedure code, corporate laws, family law, and moot court advocacy.",
+    careerPaths: ["Advocate", "Legal Advisor", "Judicial Magistrate Aspirant", "Corporate Legal Counsel", "Public Prosecutor"]
+  },
+  {
+    id: "llm-degree",
+    collegeId: "kskvku-dept-law",
+    name: "Master of Laws (LL.M.)",
+    shortCode: "LL.M.",
+    courseKey: "llm",
+    stream: "Law",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Specialized postgraduate legal education in Comparative Constitutional Law, Commercial and Corporate Jurisprudence, Intellectual Property, and Human Rights.",
+    careerPaths: ["Senior Legal Consultant", "Law Professor", "Legal Researcher", "Corporate Compliance Head", "Arbitrator"]
+  },
+  {
+    id: "bjmc-degree",
+    collegeId: "kskvku-ssv",
+    name: "Bachelor of Journalism & Mass Communication (BJMC)",
+    shortCode: "BJMC",
+    courseKey: "bjmc",
+    stream: "Arts",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Hands-on media curriculum covering print and broadcast journalism, electronic news production, public relations, digital media, and investigative reporting.",
+    careerPaths: ["News Journalist", "Broadcast Producer", "PR Specialist", "Content Strategist", "Digital Media Manager"]
+  },
+  {
+    id: "msw-degree",
+    collegeId: "kskvku-dept-socialwork",
+    name: "Master of Social Work (M.S.W.)",
+    shortCode: "M.S.W.",
+    courseKey: "msw",
+    stream: "Arts",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Professional social work qualification covering community development, psychiatric social work, NGO management, human rights, and social policy formulation.",
+    careerPaths: ["Social Work Officer", "NGO Executive Director", "Community Welfare Lead", "CSR Manager", "Medical Social Worker"]
+  },
+  {
+    id: "bvoc-degree",
+    collegeId: "kskvku-dept-vocational",
+    name: "Bachelor of Vocational Studies (B.Voc - Software Development & Tourism)",
+    shortCode: "B.Voc",
+    courseKey: "bvoc",
+    stream: "Science",
+    degree: "Undergraduate Degree",
+    duration: "3 Years (6 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 6,
+    description: "Skill-based UGC vocational degree combining practical apprenticeship, full-stack software development, hospitality management, and industry certifications.",
+    careerPaths: ["Software Developer", "Tourism Manager", "Hospitality Executive", "Technical Specialist"]
+  },
+  {
+    id: "bsc-nursing-degree",
+    collegeId: "kskvku-bmcb-nursing",
+    name: "Bachelor of Science in Nursing (B.Sc. Nursing)",
+    shortCode: "B.Sc. Nursing",
+    courseKey: "nursing",
+    stream: "Medical",
+    degree: "Undergraduate Degree",
+    duration: "4 Years (8 Semesters)",
+    level: "Bachelors",
+    totalSemesters: 8,
+    description: "Indian Nursing Council approved medical program covering patient clinical care, pharmacology, medical-surgical nursing, maternal health, and community nursing.",
+    careerPaths: ["Registered Nurse", "Clinical Nurse Specialist", "Nursing Supervisor", "Healthcare Administrator"]
+  },
+  {
+    id: "msc-nursing-degree",
+    collegeId: "kskvku-bmcb-nursing",
+    name: "Master of Science in Nursing (M.Sc. Nursing)",
+    shortCode: "M.Sc. Nursing",
+    courseKey: "nursing",
+    stream: "Medical",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Advanced clinical nursing postgraduate education specializing in critical care, pediatric nursing, obstetric nursing, and nursing education leadership.",
+    careerPaths: ["Nurse Educator", "Clinical Nurse Specialist", "Nursing Director", "Healthcare Researcher"]
+  },
+  {
+    id: "bpt-degree",
+    collegeId: "kskvku-chankya-physio",
+    name: "Bachelor of Physiotherapy (B.P.T.)",
+    shortCode: "B.P.T.",
+    courseKey: "physio",
+    stream: "Medical",
+    degree: "Professional Degree",
+    duration: "4.5 Years (8 Semesters + Internship)",
+    level: "Bachelors",
+    totalSemesters: 8,
+    description: "Rehabilitation and clinical physiotherapy degree covering human anatomy, biomechanics, neuro-physiotherapy, musculoskeletal care, and sports rehabilitation.",
+    careerPaths: ["Physiotherapist", "Sports Rehabilitation Specialist", "Clinical Consultant", "Ergonomist"]
+  },
+  {
+    id: "mpt-degree",
+    collegeId: "kskvku-chankya-physio",
+    name: "Master of Physiotherapy (M.P.T.)",
+    shortCode: "M.P.T.",
+    courseKey: "physio",
+    stream: "Medical",
+    degree: "Postgraduate Degree",
+    duration: "2 Years (4 Semesters)",
+    level: "Masters",
+    totalSemesters: 4,
+    description: "Specialized post-graduate physiotherapy degree in Orthopedics, Neurology, Cardio-Pulmonary Care, and Sports Physical Therapy.",
+    careerPaths: ["Senior Physiotherapist", "Sports Team Physiotherapist", "Consultant Specialist", "Academic Faculty"]
+  },
+  {
+    id: "mbbs-degree",
+    collegeId: "kskvku-gaims",
+    name: "Bachelor of Medicine & Bachelor of Surgery (M.B.B.S.)",
+    shortCode: "M.B.B.S.",
+    courseKey: "mbbs",
+    stream: "Medical",
+    degree: "Medical Degree",
+    duration: "5.5 Years (9 Semesters + Internship)",
+    level: "Bachelors",
+    totalSemesters: 9,
+    description: "NMC accredited primary medical qualification covering human anatomy, physiology, pathology, pharmacology, general surgery, medicine, and clinical clerkship.",
+    careerPaths: ["Medical Doctor / Physician", "Medical Officer", "Clinical Researcher", "Hospital Resident", "Public Health Specialist"]
+  },
+  {
+    id: "pgdhrm-degree",
+    collegeId: "kskvku-pgdhrm",
+    name: "P.G. Diploma in Human Resource Management (P.G.D.H.R.M.)",
+    shortCode: "P.G.D.H.R.M.",
+    courseKey: "diploma",
+    stream: "Commerce",
+    degree: "Postgraduate Diploma",
+    duration: "1 Year (2 Semesters)",
+    level: "Diploma",
+    totalSemesters: 2,
+    description: "Executive postgraduate program covering talent management, labor legislation, organizational dynamics, compensation structures, and strategic HR leadership.",
+    careerPaths: ["HR Executive", "Talent Acquisition Lead", "Industrial Relations Officer", "Training Manager"]
+  },
+  {
+    id: "pgdspm-degree",
+    collegeId: "kskvku-pgdspm",
+    name: "P.G. Diploma in Safety & Plant Management (P.G.D.S.P.M.)",
+    shortCode: "P.G.D.S.P.M.",
+    courseKey: "diploma",
+    stream: "Science",
+    degree: "Postgraduate Diploma",
+    duration: "1 Year (2 Semesters)",
+    level: "Diploma",
+    totalSemesters: 2,
+    description: "Industrial safety certification covering industrial hygiene, risk assessment, environmental plant safety regulations, and disaster management protocols.",
+    careerPaths: ["Safety Officer", "Plant Safety Manager", "EHS Auditor", "Risk Compliance Specialist"]
   }
 ];
 
@@ -2209,66 +2547,186 @@ export const SUBJECTS = [
 ];
 
 // Helper fallback data generation for missing semesters to guarantee seamless experience
+// Pre-mapped subject titles per course and semester for realistic curriculum
+const COURSE_SUBJECT_NAMES = {
+  bcom: {
+    1: ["Financial Accounting I", "Business Law", "Microeconomics", "Business Communication"],
+    2: ["Corporate Accounting", "Business Mathematics & Stats", "Macroeconomics", "Environmental Studies"],
+    3: ["Income Tax Law & Practice", "Company Law", "Advanced Financial Accounting", "Business Statistics"],
+    4: ["Cost Accounting", "Indirect Tax (GST)", "Computer Applications in Business", "Human Resource Management"],
+    5: ["Management Accounting", "Financial Management", "Auditing & Corporate Governance", "E-Commerce & Digital Business"],
+    6: ["International Business", "Fundamentals of Investment", "GST Practice & Customs", "Entrepreneurship & Business Ethics"]
+  },
+  ba: {
+    1: ["English Literature & Rhetoric", "Introduction to Political Theory", "Ancient Indian History", "Principles of Sociology"],
+    2: ["Modern Indian Literature", "Comparative Politics", "Medieval Indian History", "Social Psychology & Culture"],
+    3: ["British Poetry & Drama", "Indian Government & Politics", "Modern World History", "Development Economics"],
+    4: ["Literary Criticism & Theory", "International Relations", "Cultural Studies", "Public Administration"],
+    5: ["Post-Colonial Literature", "Western Political Thought", "Historiography & Research", "Social Movements in India"],
+    6: ["Contemporary Critical Theory", "Global Politics & Policy", "Human Rights & Gender Studies", "Dissertation Project"]
+  },
+  mcom: {
+    1: ["Advanced Financial Accounting & Reporting", "Managerial Economics & Decisions", "Advanced Business Statistics", "Corporate Legal Environment"],
+    2: ["Corporate Financial Policy & Strategy", "Marketing Management & Research", "Accounting for Managerial Decisions", "International Business Environment"],
+    3: ["Advanced Cost & Management Accounting", "Direct Tax Laws & Practice", "Security Analysis & Portfolio Management", "Strategic Business Management"],
+    4: ["International Financial Management", "Goods & Services Tax (GST) & Customs", "Corporate Governance & Business Ethics", "Research Project & Viva-Voce"]
+  },
+  ma: {
+    1: ["Advanced Microeconomic Analysis", "Literary Theory & Criticism", "Historical Methods & Historiography", "Classical Sociological Theory"],
+    2: ["Macroeconomic Policy & Growth", "Postcolonial Studies", "Modern Asian History", "Advanced Social Research Methods"],
+    3: ["Econometric Methods & Applications", "Contemporary World Literature", "Regional History & Culture", "Sociology of Development"],
+    4: ["Indian Economic Policies & Issues", "Comparative Literature", "Public Policy & Administration", "Master's Thesis & Viva-Voce"]
+  },
+  bsc: {
+    1: ["Classical Mechanics & Relativity", "Inorganic Chemistry I", "Differential Calculus & Matrices", "Cell Biology & Genetics"],
+    2: ["Electricity & Magnetism", "Organic Chemistry I", "Integral Calculus & Differential Equations", "Ecology & Evolutionary Biology"],
+    3: ["Thermal & Statistical Physics", "Physical Chemistry I", "Real Analysis & Multivariable Calculus", "Plant Anatomy & Physiology"],
+    4: ["Waves, Optics & Acoustics", "Analytical Chemistry & Separation", "Linear Algebra & Vector Analysis", "Animal Diversity & Physiology"],
+    5: ["Quantum Mechanics & Modern Physics", "Inorganic Chemistry II", "Complex Analysis & Numerical Methods", "Molecular Biology & Biotechnology"],
+    6: ["Solid State Physics & Electronics", "Organic Synthesis & Spectroscopy", "Probability & Statistics", "Environmental Science & Project"]
+  },
+  msc: {
+    1: ["Advanced Inorganic Chemistry", "Classical & Quantum Mechanics", "Advanced Organic Synthesis", "Research Instrumentation & Methods"],
+    2: ["Advanced Physical Chemistry", "Solid State Physics & Nanotechnology", "Spectroscopic Techniques", "Computational Chemistry & Modeling"],
+    3: ["Bio-Inorganic & Materials Chemistry", "Nuclear & Particle Physics", "Environmental Chemistry & Geosciences", "Advanced Elective Theory"],
+    4: ["Drug Design & Medicinal Chemistry", "Laser Physics & Photonics", "Industrial Safety & Plant Chemistry", "Master's Research Dissertation"]
+  },
+  bba: {
+    1: ["Principles of Management", "Business Economics", "Basic Financial Accounting", "Business Communication Skills"],
+    2: ["Organizational Behavior", "Business Statistics", "Marketing Management", "Business Regulatory Framework"],
+    3: ["Human Resource Management", "Cost & Management Accounting", "Production & Operations Management", "Management Information Systems"],
+    4: ["Financial Management", "Consumer Behavior & Market Research", "Taxation Laws & Practices", "Business Research Methods"],
+    5: ["Strategic Management", "Digital Marketing & Analytics", "International Trade & Logistics", "Entrepreneurship Development"],
+    6: ["Retail & Supply Chain Management", "Project Finance & Banking", "Business Ethics & Corporate Governance", "Major Internship Project"]
+  },
+  mba: {
+    1: ["Management Theory & Practice", "Managerial Economics", "Financial Accounting for Managers", "Quantitative Techniques in Business"],
+    2: ["Corporate Financial Management", "Human Resource & Talent Management", "Marketing Strategy & Consumer Insights", "Operations & Supply Chain Optimization"],
+    3: ["Strategic Corporate Leadership", "Business Analytics & Big Data", "Elective Specialization I", "Elective Specialization II"],
+    4: ["Global Strategic Management", "Corporate Governance & Ethics", "Entrepreneurship & Venture Capital", "Capstone Project & Viva"]
+  },
+  bca: {
+    1: ["Computer Fundamentals & PC Software", "Programming in C", "Mathematical Foundations of CS", "Digital Electronics & Logic"],
+    2: ["Data Structures & Algorithms", "Object-Oriented Programming (C++)", "Computer System Architecture", "Database Management Systems (SQL)"],
+    3: ["Java Programming & OOP Concepts", "Operating Systems & Linux Shell", "Software Engineering & Agile Methods", "Discrete Mathematical Structures"],
+    4: ["Web Technologies (HTML5/CSS3/JavaScript)", "Computer Networks & Protocols", "Python Programming & Data Analysis", "Mobile Application Development"],
+    5: ["Full Stack Web Development (React & Node)", "Cloud Computing & AWS", "Introduction to Artificial Intelligence", "Information Security & Cryptography"],
+    6: ["Machine Learning Fundamentals", "DevOps & CI/CD Pipelines", "Software Testing & Quality Assurance", "Major Industry Capstone Project"]
+  },
+  mca: {
+    1: ["Advanced Data Structures & Algorithms", "Advanced Operating Systems", "Enterprise Database Architecture", "Mathematical Concepts for Computer Science"],
+    2: ["Advanced Java & Enterprise Frameworks", "Cloud Infrastructure & Virtualization", "Web Architecture & Microservices", "Data Mining & Business Intelligence"],
+    3: ["Machine Learning & Deep Neural Networks", "Cybersecurity & Network Defense", "Big Data Analytics & Hadoop/Spark", "Advanced Software Engineering Principles"],
+    4: ["Natural Language Processing & AI Agents", "Distributed Systems & Blockchain", "Internet of Things (IoT) & Embedded Systems", "Master's Final Industrial Project"]
+  },
+  bed: {
+    1: ["Childhood & Growing Up", "Contemporary India & Education", "Language Across Curriculum", "Understanding Disciplines & Subjects"],
+    2: ["Learning & Teaching Processes", "Pedagogy of School Subject Part I", "Assessment for Student Learning", "Drama & Art in Classroom Education"],
+    3: ["Pedagogy of School Subject Part II", "Critical Understanding of ICT", "Pre-Internship School Engagement", "School Microteaching Practicum"],
+    4: ["Gender, School & Society", "Creating an Inclusive Classroom", "Health, Yoga & Physical Education", "Comprehensive School Internship"]
+  },
+  med: {
+    1: ["Philosophical Foundations of Education", "Advanced Educational Psychology", "Educational Research Methodology I", "Teacher Education: Pre-service & In-service"],
+    2: ["Sociological Foundations of Education", "Curriculum Studies & Development", "Educational Research Methodology II", "Educational Measurement & Evaluation"],
+    3: ["Educational Administration & Leadership", "Technology & E-Learning in Teacher Education", "Comparative & International Education", "Special Education & Inclusive Practices"],
+    4: ["Educational Policy, Planning & Economics", "Guidance & Counseling in Education", "Academic Writing & Research Seminar", "Master's Dissertation & Defense"]
+  },
+  llb: {
+    1: ["Constitutional Law of India I", "Law of Contracts & Specific Relief", "Law of Torts & Consumer Protection", "Legal Language & Legal Writing"],
+    2: ["Constitutional Law of India II", "Special Contracts & Partnership", "Criminal Law (Indian Penal Code)", "Family Law I (Marriage & Divorce)"],
+    3: ["Criminal Procedure Code (CrPC)", "Jurisprudence & Legal Philosophy", "Family Law II (Succession & Inheritance)", "Law of Evidence & Proof"],
+    4: ["Civil Procedure Code (CPC) & Limitation", "Property Law & Transfer of Property", "Labor & Industrial Laws", "Environmental Law & Policy"],
+    5: ["Company Law & Corporate Governance", "Administrative Law", "Public International Law & Human Rights", "Drafting, Pleading & Conveyancing"],
+    6: ["Taxation Laws (Direct & Indirect)", "Alternative Dispute Resolution (ADR)", "Professional Ethics & Bar-Bench Relations", "Moot Court Exercise & Internship"]
+  },
+  llm: {
+    1: ["Comparative Constitutional Law", "Law and Social Transformation", "Judicial Process & Legal Theory", "Research Methods & Legal Writing"],
+    2: ["International Trade & Commercial Law", "Corporate Governance & Securities Law", "Intellectual Property Rights", "Human Rights & Humanitarian Law"],
+    3: ["Comparative Criminal Jurisprudence", "Competition Law & Consumer Justice", "Information Technology & Cyber Laws", "Environmental Jurisprudence"],
+    4: ["Alternative Dispute Resolution in Practice", "International Banking & Finance Law", "Dissertation & Research Defense", "Seminar & Viva-Voce"]
+  },
+  btech: {
+    1: ["Engineering Mathematics I", "Engineering Physics", "Basics of Electrical & Electronics", "Programming for Problem Solving (C)"],
+    2: ["Engineering Mathematics II", "Engineering Chemistry", "Data Structures & Fundamentals", "Digital Logic & Computer Design"],
+    3: ["Object-Oriented Programming (Java/C++)", "Computer Organization & Architecture", "Discrete Mathematics", "Database Management Systems"],
+    4: ["Operating Systems & System Programming", "Design & Analysis of Algorithms", "Computer Networks", "Theory of Computation & Automata"],
+    5: ["Software Engineering & Agile", "Web Development Technologies", "Microprocessors & Interfacing", "Artificial Intelligence & Expert Systems"],
+    6: ["Compiler Design", "Machine Learning & Pattern Recognition", "Cloud Computing & Virtualization", "Cybersecurity & Cryptography"],
+    7: ["Big Data Analytics", "Internet of Things (IoT)", "Distributed Computing Systems", "Open Elective / Project Phase I"],
+    8: ["Deep Learning & Neural Networks", "DevOps & Continuous Deployment", "Major Engineering Capstone Project", "Comprehensive Technical Viva"]
+  }
+};
+
+// Helper fallback data generation for missing semesters to guarantee seamless experience
 export const getSubjectsForSemester = (semesterId, courseId) => {
-  const existing = SUBJECTS.filter(s => s.semesterId === semesterId || s.courseId === courseId);
+  const existing = SUBJECTS.filter(s => s.semesterId === semesterId);
   if (existing.length > 0) return existing;
 
-  // Generate dynamic subjects if specific data isn't pre-coded
-  const semNum = semesterId ? (semesterId.split('-').pop() || "1") : "1";
-  return [
-    {
-      id: `${courseId || "course"}-${semesterId || "sem1"}-sub1`,
-      semesterId: semesterId || "sem-1",
-      courseId: courseId || "mcom",
-      code: `SUB-${semNum}01`,
-      name: `Core Curriculum Subject ${semNum}.1`,
-      shortName: `Subject ${semNum}.1`,
-      credits: 4,
-      description: `Comprehensive core module covering fundamental theories, quantitative methodologies, and practical applications in semester ${semNum}.`,
-      syllabus: [
-        "Unit 1: Foundations & Theoretical Framework",
-        "Unit 2: Quantitative Analysis & Applied Models",
-        "Unit 3: Advanced Principles & Real-world Case Studies",
-        "Unit 4: Industry Best Practices & Exam Review"
-      ],
-      books: [
-        {
-          id: `b-dyn-${courseId || "c"}-${semNum}-1`,
-          title: `Standard Course Reference Textbook`,
-          author: "University Academic Panel",
-          edition: "Latest University Edition",
-          isbn: "978-0123456789",
-          cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop&q=80",
-          rating: 4.8,
-          pages: 540,
-          pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-          summary: "Essential textbook designed for university curricula with solved question papers and chapter reviews."
-        }
-      ],
-      videos: [
-        {
-          id: `v-dyn-${courseId || "c"}-${semNum}-1`,
-          title: `Semester ${semNum} Comprehensive Lecture Series`,
-          duration: "40:00",
-          instructor: "Senior Faculty Panel",
-          embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-          thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80",
-          topic: "Core Fundamentals"
-        }
-      ],
-      notes: [
-        {
-          id: `n-dyn-${courseId || "c"}-${semNum}-1`,
-          title: `Complete Revision Notes & Exam Guide`,
-          author: "Academic Resource Cell",
-          format: "PDF Document",
-          size: "2.5 MB",
-          pages: 24,
-          pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-        }
-      ]
-    }
-  ];
+  const semNum = semesterId ? parseInt(semesterId.split('-').pop() || "1", 10) : 1;
+  const courseKey = getCourseKey(courseId || "mcom");
+  const subjectNamesList = (COURSE_SUBJECT_NAMES[courseKey] && COURSE_SUBJECT_NAMES[courseKey][semNum])
+    ? COURSE_SUBJECT_NAMES[courseKey][semNum]
+    : [
+        `Core Foundation Subject ${semNum}.1`,
+        `Advanced Theoretical Concepts ${semNum}.2`,
+        `Applied Methodologies & Analytics ${semNum}.3`,
+        `Practical Laboratory & Case Studies ${semNum}.4`
+      ];
+
+  const prefix = (courseKey.toUpperCase() || "SUB");
+
+  return subjectNamesList.map((name, idx) => ({
+    id: `${courseId || "course"}-${semesterId || "sem1"}-sub${idx + 1}`,
+    semesterId: semesterId || "sem-1",
+    courseId: courseId || "mcom",
+    code: `${prefix}-${semNum}0${idx + 1}`,
+    name: name,
+    shortName: name.length > 22 ? name.substring(0, 20) + "..." : name,
+    credits: 4,
+    description: `In-depth academic module in ${name} covering theoretical principles, applied problem-solving models, and university curriculum standards for semester ${semNum}.`,
+    syllabus: [
+      `Unit 1: Fundamentals & Conceptual Framework of ${name.split(" ")[0]}`,
+      `Unit 2: Quantitative Analysis & Applied Industry Methodologies`,
+      `Unit 3: Advanced Analytical Principles & Real-world Case Studies`,
+      `Unit 4: Regulatory Guidelines, Emerging Trends & Examination Review`
+    ],
+    books: [
+      {
+        id: `b-dyn-${courseId || "c"}-${semNum}-${idx + 1}`,
+        title: `${name}: Comprehensive University Edition`,
+        author: "Prof. Academic Council",
+        edition: "Latest University Prescribed Edition",
+        isbn: `978-012345${semNum}${idx + 1}`,
+        cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop&q=80",
+        rating: 4.8,
+        pages: 480 + (idx * 30),
+        pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        summary: `Standard university reference textbook for ${name} containing illustrated problem sets, unit-wise reviews, and past university examination papers.`
+      }
+    ],
+    videos: [
+      {
+        id: `v-dyn-${courseId || "c"}-${semNum}-${idx + 1}`,
+        title: `${name} - Comprehensive Lecture Series`,
+        duration: "38:45",
+        instructor: "Senior University Faculty Panel",
+        embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80",
+        topic: `${name} Core Concepts`
+      }
+    ],
+    notes: [
+      {
+        id: `n-dyn-${courseId || "c"}-${semNum}-${idx + 1}`,
+        title: `${name} Complete Revision Notes & Question Bank`,
+        author: "University Academic Resource Cell",
+        format: "PDF Document",
+        size: "3.4 MB",
+        pages: 32,
+        pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+      }
+    ]
+  }));
 };
 
 // -------------------------------------------------------------
@@ -2283,10 +2741,10 @@ export const getCourseKey = (courseStr) => {
 
   if (str.includes("m.com") || str.includes("mcom") || str.includes("master of commerce")) return "mcom";
   if (str.includes("b.com") || str.includes("bcom") || str.includes("bachelor of commerce")) return "bcom";
-  if (str.includes("bba") || str.includes("business admin")) return "bba";
-  if (str.includes("mba")) return "mba";
-  if (str.includes("ca") || str.includes("chartered")) return "ca";
-  if (str.includes("cs") || str.includes("company secretary")) return "cs";
+  if (str.includes("bba") || str.includes("b.b.a") || str.includes("business admin")) return "bba";
+  if (str.includes("mba") || str.includes("m.b.a")) return "mba";
+  if (str.includes("ca ") || str.includes("chartered")) return "ca";
+  if (str.includes("cs ") || str.includes("company secretary")) return "cs";
 
   if (str.includes("m.a.") || str.includes("m.a ") || str.includes("ma ") || str.includes("master of arts")) return "ma";
   if (str.includes("b.a.") || str.includes("b.a ") || str.includes("ba ") || str.includes("bachelor of arts") || str.includes("bjmc") || str.includes("journalism")) {
@@ -2294,14 +2752,37 @@ export const getCourseKey = (courseStr) => {
     return "ba";
   }
   if (str.includes("bfa") || str.includes("fine arts")) return "bfa";
-  if (str.includes("b.ed") || str.includes("bed") || str.includes("education")) return "bed";
+  if (str.includes("b.ed") || str.includes("bed") || str.includes("education")) {
+    if (str.includes("m.ed") || str.includes("med")) return "med";
+    return "bed";
+  }
+  if (str.includes("m.ed") || str.includes("med")) return "med";
 
-  if (str.includes("m.sc") || str.includes("msc") || str.includes("master of science")) return "msc";
-  if (str.includes("b.sc") || str.includes("bsc") || str.includes("bachelor of science")) return "bsc";
+  if (str.includes("l.l.b") || str.includes("ll.b") || str.includes("llb") || str.includes("law")) {
+    if (str.includes("ll.m") || str.includes("llm")) return "llm";
+    return "llb";
+  }
+  if (str.includes("ll.m") || str.includes("llm")) return "llm";
+  if (str.includes("msw") || str.includes("m.s.w") || str.includes("social work")) return "msw";
+  if (str.includes("bvoc") || str.includes("b.voc") || str.includes("vocational")) return "bvoc";
+
+  if (str.includes("m.sc") || str.includes("msc") || str.includes("master of science")) {
+    if (str.includes("nursing")) return "msc-nursing";
+    return "msc";
+  }
+  if (str.includes("b.sc") || str.includes("bsc") || str.includes("bachelor of science")) {
+    if (str.includes("nursing")) return "bsc-nursing";
+    return "bsc";
+  }
+  if (str.includes("nursing")) return "bsc-nursing";
+  if (str.includes("b.p.t") || str.includes("bpt") || str.includes("m.p.t") || str.includes("mpt") || str.includes("physio")) return "physio";
+  if (str.includes("mbbs") || str.includes("m.b.b.s") || str.includes("medicine")) return "mbbs";
+
   if (str.includes("m.tech") || str.includes("mtech") || str.includes("master of technology")) return "mtech";
   if (str.includes("b.tech") || str.includes("btech") || str.includes("b.s. cs") || str.includes("bachelor of technology")) return "btech";
-  if (str.includes("mca") || str.includes("master of computer applications")) return "mca";
-  if (str.includes("bca") || str.includes("bachelor of computer applications")) return "bca";
+  if (str.includes("mca") || str.includes("m.c.a") || str.includes("master of computer applications")) return "mca";
+  if (str.includes("bca") || str.includes("b.c.a") || str.includes("bachelor of computer applications")) return "bca";
+  if (str.includes("pgd") || str.includes("diploma")) return "diploma";
 
   return "all";
 };
@@ -2317,16 +2798,28 @@ export const isCourseMatchingKey = (courseObj, targetKey) => {
   if (targetKey === "mcom" && (str.includes("m.com") || str.includes("mcom"))) return true;
   if (targetKey === "btech" && (str.includes("b.tech") || str.includes("btech") || str.includes("b.s. cs"))) return true;
   if (targetKey === "mtech" && (str.includes("m.tech") || str.includes("mtech"))) return true;
-  if (targetKey === "ba" && (str.includes("b.a.") || str.includes("ba "))) return true;
-  if (targetKey === "ma" && (str.includes("m.a.") || str.includes("ma "))) return true;
-  if (targetKey === "bsc" && (str.includes("b.sc") || str.includes("bsc"))) return true;
-  if (targetKey === "msc" && (str.includes("m.sc") || str.includes("msc"))) return true;
-  if (targetKey === "bca" && str.includes("bca")) return true;
-  if (targetKey === "mca" && str.includes("mca")) return true;
-  if (targetKey === "bba" && str.includes("bba")) return true;
-  if (targetKey === "mba" && str.includes("mba")) return true;
-  if (targetKey === "ca" && str.includes("ca")) return true;
-  if (targetKey === "cs" && str.includes("cs")) return true;
+  if (targetKey === "ba" && (str.includes("b.a.") || str.includes("ba ") || str.includes("bachelor of arts"))) return true;
+  if (targetKey === "ma" && (str.includes("m.a.") || str.includes("ma ") || str.includes("master of arts"))) return true;
+  if (targetKey === "bsc" && (str.includes("b.sc") || str.includes("bsc") || str.includes("bachelor of science"))) return true;
+  if (targetKey === "msc" && (str.includes("m.sc") || str.includes("msc") || str.includes("master of science"))) return true;
+  if (targetKey === "bca" && (str.includes("bca") || str.includes("b.c.a"))) return true;
+  if (targetKey === "mca" && (str.includes("mca") || str.includes("m.c.a"))) return true;
+  if (targetKey === "bba" && (str.includes("bba") || str.includes("b.b.a"))) return true;
+  if (targetKey === "mba" && (str.includes("mba") || str.includes("m.b.a"))) return true;
+  if (targetKey === "ca" && (str.includes("ca") || str.includes("chartered"))) return true;
+  if (targetKey === "cs" && (str.includes("cs") || str.includes("company secretary"))) return true;
+  if (targetKey === "bed" && (str.includes("b.ed") || str.includes("bed") || str.includes("education"))) return true;
+  if (targetKey === "med" && (str.includes("m.ed") || str.includes("med"))) return true;
+  if (targetKey === "llb" && (str.includes("l.l.b") || str.includes("ll.b") || str.includes("llb") || str.includes("law"))) return true;
+  if (targetKey === "llm" && (str.includes("ll.m") || str.includes("llm"))) return true;
+  if (targetKey === "bfa" && str.includes("bfa")) return true;
+  if (targetKey === "bjmc" && (str.includes("bjmc") || str.includes("journalism"))) return true;
+  if (targetKey === "msw" && (str.includes("msw") || str.includes("social work"))) return true;
+  if (targetKey === "bvoc" && (str.includes("bvoc") || str.includes("b.voc") || str.includes("vocational"))) return true;
+  if ((targetKey === "bsc-nursing" || targetKey === "msc-nursing" || targetKey === "nursing") && str.includes("nursing")) return true;
+  if (targetKey === "physio" && (str.includes("physio") || str.includes("bpt") || str.includes("mpt") || str.includes("b.p.t"))) return true;
+  if (targetKey === "mbbs" && (str.includes("mbbs") || str.includes("m.b.b.s") || str.includes("medicine"))) return true;
+  if (targetKey === "diploma" && (str.includes("pgd") || str.includes("diploma"))) return true;
   return false;
 };
 
@@ -2428,7 +2921,22 @@ export const collegeOffersCourse = (college, targetKey) => {
         return lower.includes("bfa") || lower.includes("fine arts");
       }
       if (targetKey === "bed") {
-        return lower.includes("b.ed") || lower.includes("bed");
+        return lower.includes("b.ed") || lower.includes("bed") || lower.includes("education");
+      }
+      if (targetKey === "med") {
+        return lower.includes("m.ed") || lower.includes("med");
+      }
+      if (targetKey === "llb") {
+        return lower.includes("l.l.b") || lower.includes("ll.b") || lower.includes("llb") || lower.includes("law");
+      }
+      if (targetKey === "llm") {
+        return lower.includes("ll.m") || lower.includes("llm");
+      }
+      if (targetKey === "msw") {
+        return lower.includes("msw") || lower.includes("m.s.w") || lower.includes("social work");
+      }
+      if (targetKey === "bvoc") {
+        return lower.includes("bvoc") || lower.includes("b.voc") || lower.includes("vocational");
       }
       if (targetKey === "bjmc") {
         return lower.includes("bjmc") || lower.includes("journalism");
@@ -2440,6 +2948,15 @@ export const collegeOffersCourse = (college, targetKey) => {
       if (targetKey === "bsc") {
         return (lower.includes("b.sc") || lower.includes("bsc") || lower.includes("bachelor of science")) && !lower.includes("m.sc") && !lower.includes("msc");
       }
+      if (targetKey === "nursing" || targetKey === "bsc-nursing" || targetKey === "msc-nursing") {
+        return lower.includes("nursing");
+      }
+      if (targetKey === "physio") {
+        return lower.includes("physio") || lower.includes("bpt") || lower.includes("mpt") || lower.includes("b.p.t");
+      }
+      if (targetKey === "mbbs") {
+        return lower.includes("mbbs") || lower.includes("m.b.b.s") || lower.includes("medicine");
+      }
       if (targetKey === "mtech") {
         return lower.includes("m.tech") || lower.includes("mtech");
       }
@@ -2447,10 +2964,13 @@ export const collegeOffersCourse = (college, targetKey) => {
         return (lower.includes("b.tech") || lower.includes("btech")) && !lower.includes("m.tech") && !lower.includes("mtech");
       }
       if (targetKey === "mca") {
-        return lower.includes("mca");
+        return lower.includes("mca") || lower.includes("m.c.a");
       }
       if (targetKey === "bca") {
-        return lower.includes("bca");
+        return lower.includes("bca") || lower.includes("b.c.a");
+      }
+      if (targetKey === "diploma") {
+        return lower.includes("pgd") || lower.includes("diploma");
       }
 
       return getCourseKey(cStr) === targetKey;

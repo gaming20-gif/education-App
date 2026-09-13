@@ -53,15 +53,15 @@ export default function Breadcrumb({
   ];
 
   return (
-    <nav className="bg-white border-b border-slate-200 py-2.5 px-3 sm:px-6 lg:px-8 shadow-xs overflow-x-auto scrollbar-none">
-      <div className="max-w-7xl mx-auto flex items-center whitespace-nowrap gap-1.5 text-xs sm:text-sm">
+    <nav className="bg-[#292F4C] border-b border-[#56608F] py-2.5 px-3 sm:px-6 lg:px-8 shadow-xs overflow-x-auto scrollbar-none">
+      <div className="max-w-[1600px] mx-auto flex items-center whitespace-nowrap gap-1.5 text-xs sm:text-sm">
         
         {/* Home Root Button */}
         <button
           onClick={() => onSelectStep("home")}
-          className="flex items-center gap-1 text-slate-500 hover:text-[#1E40AF] font-medium transition-colors active:scale-[0.97] flex-shrink-0"
+          className="flex items-center gap-1 text-[#C4C9DE] hover:text-white font-medium transition-colors active:scale-[0.97] flex-shrink-0"
         >
-          <Home className="w-3.5 h-3.5 text-[#1E40AF]" />
+          <Home className="w-3.5 h-3.5 text-[#8FE388]" />
           <span>Home</span>
         </button>
 
@@ -73,7 +73,7 @@ export default function Breadcrumb({
 
           return (
             <React.Fragment key={step.id}>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-[#C4C9DE]/50 flex-shrink-0" />
               
               <button
                 onClick={() => {
@@ -84,13 +84,13 @@ export default function Breadcrumb({
                 disabled={!isSelected}
                 className={`flex items-center gap-1.5 font-medium px-2 py-0.5 rounded-md transition-all active:scale-[0.97] flex-shrink-0 ${
                   isLast && isSelected
-                    ? "bg-blue-50 text-[#1E40AF] border border-blue-200 font-semibold cursor-default"
+                    ? "bg-[#3D446C] text-[#8FE388] border border-[#56608F] font-semibold cursor-default"
                     : isSelected
-                    ? "text-slate-700 hover:text-[#1E40AF] hover:bg-slate-100 cursor-pointer"
-                    : "text-slate-400 cursor-not-allowed"
+                    ? "text-white hover:text-[#8FE388] hover:bg-[#1C2036] cursor-pointer"
+                    : "text-[#C4C9DE]/40 cursor-not-allowed"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-[#1E40AF]" : "text-slate-400"}`} />
+                <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-[#8FE388]" : "text-[#C4C9DE]/40"}`} />
                 <span className="max-w-[120px] sm:max-w-[200px] truncate">
                   {step.data ? step.displayText : step.label}
                 </span>

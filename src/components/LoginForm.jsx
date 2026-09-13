@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   GraduationCap,
@@ -8,12 +8,10 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
-  ArrowRight,
-  ShieldCheck,
-  Sparkles,
-  LogOut,
+  AlertCircle,
   BookOpen
 } from "lucide-react";
+import { formatStudentDisplayName } from "../utils/formatName";
 
 // Stream data with dependent courses and specializations
 export const STREAM_DATA = {
@@ -28,23 +26,36 @@ export const STREAM_DATA = {
       { id: "mba", name: "MBA (Master of Business Admin)", duration: "2 Years", code: "MBA" },
       { id: "ca", name: "CA (Chartered Accountancy)", duration: "Professional", code: "CA" },
       { id: "cs", name: "CS (Company Secretary)", duration: "Professional", code: "CS" },
+      { id: "pgdhrm", name: "P.G.D.H.R.M. (Human Resource Mgmt)", duration: "1 Year", code: "PGDHRM" },
+      { id: "ba_general", name: "B.A. (Bachelor of Arts)", duration: "3 Years", code: "B.A." },
       { id: "ba_hons", name: "B.A. Hons (Bachelor of Arts)", duration: "3 Years", code: "B.A. (H)" },
       { id: "ma", name: "M.A. (Master of Arts)", duration: "2 Years", code: "M.A." },
       { id: "bfa", name: "BFA (Bachelor of Fine Arts)", duration: "4 Years", code: "BFA" },
-      { id: "bed", name: "B.Ed (Bachelor of Education)", duration: "2 Years", code: "B.ED" },
       { id: "journalism", name: "B.A. Journalism & Mass Communication", duration: "3 Years", code: "BJMC" },
+      { id: "msw", name: "M.S.W. (Master of Social Work)", duration: "2 Years", code: "MSW" },
+      { id: "bed", name: "B.Ed (Bachelor of Education)", duration: "2 Years", code: "B.ED" },
+      { id: "med", name: "M.Ed (Master of Education)", duration: "2 Years", code: "M.ED" },
+      { id: "llb", name: "L.L.B. (Bachelor of Laws)", duration: "3 Years", code: "LL.B" },
+      { id: "llm", name: "LL.M. (Master of Laws)", duration: "2 Years", code: "LL.M" },
       { id: "bsc", name: "B.Sc (Bachelor of Science)", duration: "3 Years", code: "B.SC" },
       { id: "msc", name: "M.Sc (Master of Science)", duration: "2 Years", code: "M.SC" },
       { id: "btech", name: "B.Tech (Bachelor of Technology)", duration: "4 Years", code: "B.TECH" },
       { id: "mtech", name: "M.Tech (Master of Technology)", duration: "2 Years", code: "M.TECH" },
       { id: "bca", name: "BCA (Bachelor of Computer Applications)", duration: "3 Years", code: "BCA" },
-      { id: "mca", name: "MCA (Master of Computer Applications)", duration: "2 Years", code: "MCA" }
+      { id: "mca", name: "MCA (Master of Computer Applications)", duration: "2 Years", code: "MCA" },
+      { id: "bvoc", name: "B.Voc (Software Development & Tourism)", duration: "3 Years", code: "B.VOC" },
+      { id: "bsc_nursing", name: "B.Sc. Nursing (Bachelor of Nursing)", duration: "4 Years", code: "B.SC NUR" },
+      { id: "msc_nursing", name: "M.Sc. Nursing (Master of Nursing)", duration: "2 Years", code: "M.SC NUR" },
+      { id: "bpt", name: "B.P.T. (Bachelor of Physiotherapy)", duration: "4.5 Years", code: "BPT" },
+      { id: "mbbs", name: "M.B.B.S. (Bachelor of Medicine & Surgery)", duration: "5.5 Years", code: "MBBS" }
     ],
     specializations: [
       "All Academic Specializations & Disciplines",
       "Advanced Accounting & Financial Management",
       "English Literature & Critical Studies",
-      "Computer Science & Artificial Intelligence"
+      "Computer Science & Artificial Intelligence",
+      "Pedagogy & Educational Leadership",
+      "Constitutional & Corporate Law"
     ]
   },
   Commerce: {
@@ -56,7 +67,8 @@ export const STREAM_DATA = {
       { id: "bba", name: "BBA (Bachelor of Business Admin)", duration: "3 Years", code: "BBA" },
       { id: "mba", name: "MBA (Master of Business Admin)", duration: "2 Years", code: "MBA" },
       { id: "ca", name: "CA (Chartered Accountancy)", duration: "Professional", code: "CA" },
-      { id: "cs", name: "CS (Company Secretary)", duration: "Professional", code: "CS" }
+      { id: "cs", name: "CS (Company Secretary)", duration: "Professional", code: "CS" },
+      { id: "pgdhrm", name: "P.G.D.H.R.M. (Human Resource Mgmt)", duration: "1 Year", code: "PGDHRM" }
     ],
     specializations: [
       "Advanced Accounting & Financial Management",
@@ -71,11 +83,12 @@ export const STREAM_DATA = {
   Arts: {
     label: "Arts & Humanities",
     courses: [
+      { id: "ba_general", name: "B.A. (Bachelor of Arts)", duration: "3 Years", code: "B.A." },
       { id: "ba_hons", name: "B.A. Hons (Bachelor of Arts)", duration: "3 Years", code: "B.A. (H)" },
       { id: "ma", name: "M.A. (Master of Arts)", duration: "2 Years", code: "M.A." },
       { id: "bfa", name: "BFA (Bachelor of Fine Arts)", duration: "4 Years", code: "BFA" },
-      { id: "bed", name: "B.Ed (Bachelor of Education)", duration: "2 Years", code: "B.ED" },
-      { id: "journalism", name: "B.A. Journalism & Mass Communication", duration: "3 Years", code: "BJMC" }
+      { id: "journalism", name: "B.A. Journalism & Mass Communication", duration: "3 Years", code: "BJMC" },
+      { id: "msw", name: "M.S.W. (Master of Social Work)", duration: "2 Years", code: "MSW" }
     ],
     specializations: [
       "English Literature & Critical Studies",
@@ -94,7 +107,8 @@ export const STREAM_DATA = {
       { id: "btech", name: "B.Tech (Bachelor of Technology)", duration: "4 Years", code: "B.TECH" },
       { id: "mtech", name: "M.Tech (Master of Technology)", duration: "2 Years", code: "M.TECH" },
       { id: "bca", name: "BCA (Bachelor of Computer Applications)", duration: "3 Years", code: "BCA" },
-      { id: "mca", name: "MCA (Master of Computer Applications)", duration: "2 Years", code: "MCA" }
+      { id: "mca", name: "MCA (Master of Computer Applications)", duration: "2 Years", code: "MCA" },
+      { id: "bvoc", name: "B.Voc (Software Development & Tourism)", duration: "3 Years", code: "B.VOC" }
     ],
     specializations: [
       "Computer Science & Artificial Intelligence",
@@ -103,6 +117,47 @@ export const STREAM_DATA = {
       "Biotechnology & Life Sciences",
       "Data Science & Analytics",
       "Electronics & Communication"
+    ]
+  },
+  Education: {
+    label: "Education & Teaching",
+    courses: [
+      { id: "bed", name: "B.Ed (Bachelor of Education)", duration: "2 Years", code: "B.ED" },
+      { id: "med", name: "M.Ed (Master of Education)", duration: "2 Years", code: "M.ED" }
+    ],
+    specializations: [
+      "Pedagogy & Classroom Instructional Design",
+      "Educational Psychology & Guidance Counseling",
+      "Curriculum Planning & Assessment",
+      "School Administration & Leadership"
+    ]
+  },
+  Law: {
+    label: "Law & Legal Studies",
+    courses: [
+      { id: "llb", name: "L.L.B. (Bachelor of Laws)", duration: "3 Years", code: "LL.B" },
+      { id: "llm", name: "LL.M. (Master of Laws)", duration: "2 Years", code: "LL.M" }
+    ],
+    specializations: [
+      "Constitutional Law & Civil Rights",
+      "Corporate & Commercial Jurisprudence",
+      "Criminal Law & Judicial Procedures",
+      "Intellectual Property Rights"
+    ]
+  },
+  Medical: {
+    label: "Medical & Health Sciences",
+    courses: [
+      { id: "bsc_nursing", name: "B.Sc. Nursing (Bachelor of Nursing)", duration: "4 Years", code: "B.SC NUR" },
+      { id: "msc_nursing", name: "M.Sc. Nursing (Master of Nursing)", duration: "2 Years", code: "M.SC NUR" },
+      { id: "bpt", name: "B.P.T. (Bachelor of Physiotherapy)", duration: "4.5 Years", code: "BPT" },
+      { id: "mbbs", name: "M.B.B.S. (Bachelor of Medicine & Surgery)", duration: "5.5 Years", code: "MBBS" }
+    ],
+    specializations: [
+      "Clinical Patient Care & Pharmacology",
+      "Musculoskeletal & Sports Physiotherapy",
+      "Critical Care & Pediatric Nursing",
+      "Internal Medicine & Surgery"
     ]
   }
 };
@@ -129,519 +184,581 @@ export const POPULAR_COLLEGES = [
   "Other University / College"
 ];
 
+// Helper: Calculate password strength (0 to 4)
+function calculatePasswordStrength(pass) {
+  if (!pass) return 0;
+  let score = 0;
+  if (pass.length >= 6) score += 1;
+  if (pass.length >= 10) score += 1;
+  if (/[0-9]/.test(pass) && /[a-zA-Z]/.test(pass)) score += 1;
+  if (/[^a-zA-Z0-9]/.test(pass)) score += 1;
+  return Math.min(score, 4);
+}
+
 export default function LoginForm({
-  isOpen,
+  isOpen = true,
   onClose,
   onLoginSuccess,
   currentUser,
   onLogout,
   isFullPage = false
 }) {
-  // Mode: 'register' (Sign Up) | 'login' (Sign In)
-  const [mode, setMode] = useState("register");
+  // Screen mode: 'signin' (Login) | 'signup' (Create account)
+  // Default to 'signin' (Login tab first, then Create account)
+  const [screenMode, setScreenMode] = useState("signin");
 
-  // Form State
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  // Form Fields State
+  const [fullName, setFullName] = useState(() => currentUser?.fullName || "");
+  const [courseName, setCourseName] = useState(() => currentUser?.course || "");
+  const [email, setEmail] = useState(() => currentUser?.email || "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Academic State
-  const [selectedStream, setSelectedStream] = useState("Commerce");
-  const [selectedCourse, setSelectedCourse] = useState(""); // Default empty requiring user selection
-  const [specialization, setSpecialization] = useState("Advanced Accounting & Financial Management");
-  const [semester, setSemester] = useState("Postgraduate Year 1 (Sem 1 & 2)");
-  const [collegeName, setCollegeName] = useState("Department of Commerce & Management");
-  const [rollNumber, setRollNumber] = useState("");
+  // Sync currentUser into form fields when modal opens
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.fullName) setFullName(currentUser.fullName);
+      if (currentUser.course) setCourseName(currentUser.course);
+      if (currentUser.email) setEmail(currentUser.email);
+    }
+  }, [currentUser, isOpen]);
 
-  const [submittedSuccess, setSubmittedSuccess] = useState(false);
+  // Modal / Feedback State
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSuccess, setForgotSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   if (!isOpen && !isFullPage) return null;
 
-  // Stream selection handler
-  const handleStreamChange = (stream) => {
-    setSelectedStream(stream);
-    if (stream === "All") {
-      setSelectedCourse("All Academic Courses");
-    } else {
-      setSelectedCourse(""); // Reset course to force explicit user selection
-    }
-    const defaultSpec = STREAM_DATA[stream]?.specializations[0] || "";
-    setSpecialization(defaultSpec);
+  // Clear messages on mode switch
+  const handleSwitchScreen = (mode) => {
+    setScreenMode(mode);
+    setErrorMessage("");
+    setSuccessMessage("");
   };
 
-  // Quick Demo Login Handler
-  const handleQuickDemoLogin = () => {
+  // Google Sign-in handler
+  const handleGoogleSignIn = () => {
     setErrorMessage("");
-    const demoUser = {
-      fullName: "Ananya Sharma",
-      email: "demo.student@edunexus.edu",
+    const googleUser = {
+      fullName: "Alex Morgan",
+      email: "alex.morgan@student.edu",
       stream: "Commerce",
-      course: "M.Com (Master of Commerce)",
+      course: courseName.trim() || "B.Com Hons (Bachelor of Commerce)",
       specialization: "Advanced Accounting & Financial Management",
-      semester: "Postgraduate Year 1 (Sem 1 & 2)",
+      semester: "1st Year - Semester 1",
       collegeName: "Shri Ram College of Commerce (SRCC)",
-      rollNumber: "REG-2026-DEMO",
+      rollNumber: "GOOG-2026-9901",
       isLoggedIn: true,
+      authProvider: "google",
       enrolledDate: new Date().toLocaleDateString()
     };
-
-    setSubmittedSuccess(true);
-    setTimeout(() => {
-      onLoginSuccess(demoUser);
-      setSubmittedSuccess(false);
-      if (onClose) onClose();
-    }, 700);
+    if (onLoginSuccess) {
+      onLoginSuccess(googleUser);
+    }
   };
 
+  // Forgot password submit handler
+  const handleForgotPasswordSubmit = (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    if (!forgotEmail || !forgotEmail.includes("@")) {
+      setErrorMessage("Please enter a valid email address");
+      return;
+    }
+    setForgotSuccess(true);
+  };
+
+  // Form Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setSuccessMessage("");
 
-    if (!email || !password) {
-      setErrorMessage("Please enter both Email Address and Password.");
-      return;
-    }
-
-    if (mode === "register") {
+    if (screenMode === "signup") {
       if (!fullName.trim()) {
-        setErrorMessage("Please enter your Full Name.");
+        setErrorMessage("Please enter your full name");
         return;
       }
-      if (selectedStream !== "All" && !selectedCourse) {
-        setErrorMessage(`Please select a course for the ${selectedStream} stream.`);
+      if (!courseName.trim()) {
+        setErrorMessage("Please enter your course name");
+        return;
+      }
+      if (!email.trim() || !email.includes("@")) {
+        setErrorMessage("Please enter a valid email address");
+        return;
+      }
+      if (!password || password.length < 6) {
+        setErrorMessage("Password must be at least 6 characters long");
+        return;
+      }
+    } else {
+      if (!email.trim() || !email.includes("@")) {
+        setErrorMessage("Please enter your email address");
+        return;
+      }
+      if (!password) {
+        setErrorMessage("Please enter your password");
         return;
       }
     }
 
-    const userData = {
-      fullName: mode === "register" ? fullName.trim() : (fullName.trim() || email.split("@")[0] || "Student"),
+    // Success user payload
+    const userPayload = {
+      fullName: formatStudentDisplayName(fullName.trim(), email),
       email: email.trim(),
-      stream: selectedStream,
-      course: selectedCourse || (selectedStream === "All" ? "All Academic Courses" : STREAM_DATA[selectedStream]?.courses[0]?.name || "M.Com (Master of Commerce)"),
-      specialization,
-      semester,
-      collegeName: collegeName || "University Student Portal",
-      rollNumber: rollNumber || "REG-2026-8841",
+      course: courseName.trim() || "M.Com (Master of Commerce)",
+      stream: "Commerce",
+      specialization: "Advanced Accounting & Financial Management",
+      semester: "Postgraduate Year 1 (Sem 1 & 2)",
+      collegeName: "Department of Commerce & Management",
+      rollNumber: "REG-2026-8841",
       isLoggedIn: true,
       enrolledDate: new Date().toLocaleDateString()
     };
 
-    setSubmittedSuccess(true);
-    setTimeout(() => {
-      onLoginSuccess(userData);
-      setSubmittedSuccess(false);
-      if (onClose) onClose();
-    }, 800);
+    if (onLoginSuccess) {
+      onLoginSuccess(userPayload);
+    }
   };
+
+  // Password strength score computation
+  const strengthScore = calculatePasswordStrength(password);
+  const strengthLabels = ["", "Weak", "Fair", "Good", "Strong"];
+  const strengthColors = ["#56608F", "#EF4444", "#F5A623", "#8FE388", "#4CD964"];
 
   const containerClasses = isFullPage
-    ? "min-h-screen bg-slate-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950 via-slate-900 to-black text-slate-800 flex items-center justify-center p-3 sm:p-6"
-    : "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/75 backdrop-blur-md animate-fade-in overflow-y-auto";
+    ? "min-h-screen bg-[#1C2036] text-white flex flex-col items-center justify-center p-4 font-sans selection:bg-[#3D446C] selection:text-white relative overflow-hidden"
+    : "fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-[#1C2036]/85 backdrop-blur-sm font-sans overflow-y-auto";
 
-  // Helper for initial avatar
-  const getInitial = (name) => {
-    if (!name) return "S";
-    return name.charAt(0).toUpperCase();
-  };
-
-  // -------------------------------------------------------------
-  // VIEW 1: USER IS ALREADY LOGGED IN -> SHOW DETAILS & LOG OUT ONLY
-  // -------------------------------------------------------------
-  if (currentUser) {
-    return (
-      <div className={containerClasses}>
-        <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-lg my-4 overflow-hidden transform transition-all animate-fade-in">
-          
-          {/* Header Banner */}
-          <div className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 text-white p-6 relative">
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors z-10 cursor-pointer"
-                title="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-400 text-blue-950 font-black text-2xl flex items-center justify-center shadow-lg border-2 border-amber-300 shrink-0">
-                {getInitial(currentUser.fullName)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-extrabold text-white truncate">
-                    {currentUser.fullName}
-                  </h2>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-400 text-blue-950 text-[10px] font-black uppercase">
-                    Active Session
-                  </span>
-                </div>
-                <p className="text-xs text-blue-200 mt-0.5 truncate">{currentUser.email}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Student Details Body */}
-          <div className="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Student Account Details
-            </h3>
-
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-              
-              {/* Name */}
-              <div className="flex items-center justify-between py-2 border-b border-slate-200/60">
-                <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
-                  <User className="w-4 h-4 text-blue-600" /> Full Name
-                </span>
-                <span className="text-xs font-bold text-slate-800">{currentUser.fullName}</span>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-center justify-between py-2 border-b border-slate-200/60">
-                <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-blue-600" /> Email Address
-                </span>
-                <span className="text-xs font-bold text-slate-800 truncate max-w-[200px]">{currentUser.email}</span>
-              </div>
-
-              {/* Stream */}
-              <div className="flex items-center justify-between py-2">
-                <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
-                  <BookOpen className="w-4 h-4 text-amber-600" /> Academic Stream
-                </span>
-                <span className="text-xs font-extrabold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                  {currentUser.stream || "All Streams"}
-                </span>
-              </div>
-
-            </div>
-
-            {/* Log Out Action Button */}
-            <div className="pt-2 space-y-2">
-              <button
-                type="button"
-                onClick={() => {
-                  if (onLogout) onLogout();
-                  if (onClose) onClose();
-                }}
-                className="w-full py-3.5 px-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Log Out of Account</span>
-              </button>
-
-              {onClose && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all cursor-pointer"
-                >
-                  Close Window
-                </button>
-              )}
-            </div>
-
-          </div>
-
-          {/* Footer info */}
-          <div className="bg-slate-50 border-t border-slate-100 px-6 py-3 text-center text-xs text-slate-500 flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>EduNexus Student Dashboard • Logged In</span>
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-
-  // -------------------------------------------------------------
-  // VIEW 2: USER IS NOT LOGGED IN -> SHOW CREATE ACCOUNT / SIGN IN
-  // -------------------------------------------------------------
   return (
     <div className={containerClasses}>
-      
-      {/* Main Card Container */}
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-xl my-4 sm:my-8 overflow-hidden transform transition-all">
-        
-        {/* Header Banner */}
-        <div className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 text-white p-6 sm:p-8 relative">
-          {!isFullPage && onClose && (
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors z-10 cursor-pointer"
-              title="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          )}
+      {/* Background floating orbs for full-page mode */}
+      {isFullPage && (
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#3D446C] opacity-30 blur-[100px] bg-orb-1" />
+          <div className="absolute top-[35%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#8FE388] opacity-20 blur-[120px] bg-orb-2" />
+          <div className="absolute bottom-[-15%] left-[25%] w-[550px] h-[550px] rounded-full bg-[#292F4C] opacity-35 blur-[90px] bg-orb-3" />
+        </div>
+      )}
 
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center shadow-inner shrink-0">
-              <GraduationCap className="w-7 h-7 text-amber-300" />
-            </div>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-                {mode === "register" ? "Create Account" : "Welcome Back"}
-              </h2>
-              <p className="text-xs sm:text-sm text-blue-200 mt-0.5">
-                {mode === "register"
-                  ? "Sign up to customize your academic dashboard & stream"
-                  : "Sign in to access your courses, textbooks & syllabus"}
-              </p>
-            </div>
+      {/* Outer wrapper */}
+      <div className="w-full max-w-[420px] flex flex-col items-center relative z-10">
+
+        {/* ------------------------------------------------------------- */}
+        {/* LOGO MARK + SCREEN TITLE + ONE-LINE SUBTEXT                   */}
+        {/* ------------------------------------------------------------- */}
+        <div className="flex flex-col items-center text-center mb-5">
+          <div className="w-11 h-11 bg-[#3D446C] border border-[#56608F] text-[#8FE388] rounded-xl flex items-center justify-center shadow-xs mb-3">
+            <GraduationCap className="w-6 h-6" />
           </div>
 
-          {/* Mode Switcher Tabs */}
-          <div className="grid grid-cols-2 bg-blue-950/60 p-1.5 rounded-2xl border border-blue-600/30 mt-4">
-            <button
-              type="button"
-              onClick={() => {
-                setMode("register");
-                setErrorMessage("");
-              }}
-              className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                mode === "register"
-                  ? "bg-white text-blue-900 shadow-md scale-[1.01]"
-                  : "text-blue-200 hover:text-white"
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Create Account</span>
-            </button>
+          <h1 className="text-[18px] font-bold text-white tracking-tight">
+            {screenMode === "signin" ? "Login to EduNexus" : "Create your account"}
+          </h1>
 
-            <button
-              type="button"
-              onClick={() => {
-                setMode("login");
-                setErrorMessage("");
-              }}
-              className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                mode === "login"
-                  ? "bg-white text-blue-900 shadow-md scale-[1.01]"
-                  : "text-blue-200 hover:text-white"
-              }`}
-            >
-              <Lock className="w-4 h-4 text-blue-600" />
-              <span>Sign In</span>
-            </button>
-          </div>
+          <p className="text-[12px] font-normal text-[#C4C9DE] mt-1">
+            {screenMode === "signin"
+              ? "Sign in to access your course syllabus, notes & textbooks"
+              : "Start your academic journey with our student portal"}
+          </p>
         </div>
 
-        {/* Quick Demo Access Bar */}
-        <div className="bg-amber-50/80 border-b border-amber-200/80 px-6 py-2.5 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs font-semibold text-amber-900">
-            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-            <span>Want to test quickly without typing?</span>
-          </div>
+        {/* ------------------------------------------------------------- */}
+        {/* TAB SWITCHER: 1. Login | 2. Create account                    */}
+        {/* ------------------------------------------------------------- */}
+        <div className="w-full bg-[#1C2036] p-1 rounded-xl border border-[#56608F] flex items-center gap-1 mb-4">
           <button
             type="button"
-            onClick={handleQuickDemoLogin}
-            className="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-xs shrink-0 active:scale-95 cursor-pointer"
+            onClick={() => handleSwitchScreen("signin")}
+            className={`tab-underline-animated flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all text-center cursor-pointer ${
+              screenMode === "signin"
+                ? "is-active bg-[#3D446C] text-[#8FE388] shadow-xs"
+                : "text-[#C4C9DE] hover:text-white hover:bg-[#3D446C]/30"
+            }`}
           >
-            ⚡ Quick Demo Login
+            Login
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSwitchScreen("signup")}
+            className={`tab-underline-animated flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all text-center cursor-pointer ${
+              screenMode === "signup"
+                ? "is-active bg-[#3D446C] text-[#8FE388] shadow-xs"
+                : "text-[#C4C9DE] hover:text-white hover:bg-[#3D446C]/30"
+            }`}
+          >
+            Create account
           </button>
         </div>
 
-        {/* Body Form */}
-        <div className="p-6 sm:p-8 max-h-[68vh] overflow-y-auto">
+        {/* ------------------------------------------------------------- */}
+        {/* CARD CONTAINER (Dark surface, 20px radius, subtle border)     */}
+        {/* ------------------------------------------------------------- */}
+        <div className="w-full bg-[#292F4C] rounded-[20px] border border-[#56608F] p-6 shadow-xl relative">
           
-          {submittedSuccess ? (
-            <div className="py-10 text-center space-y-4 animate-fade-in">
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
-                <CheckCircle2 className="w-10 h-10" />
+          {!isFullPage && onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="absolute top-4 right-4 text-[#C4C9DE] hover:text-white transition-colors p-1 rounded-lg hover:bg-[#3D446C] cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            
+            {/* Soft coral error banner (if any error) */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-[#EF4444]/15 border border-[#EF4444]/30 flex items-start gap-2.5 text-[#EF4444]">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="text-[12px] font-medium leading-tight">{errorMessage}</span>
               </div>
-              <div>
-                <h3 className="text-2xl font-bold text-slate-800">
-                  {mode === "register" ? "Account Created!" : "Signed In Successfully!"}
-                </h3>
-                <p className="text-sm text-slate-600 max-w-sm mx-auto mt-2 leading-relaxed">
-                  Opening dashboard for <strong className="text-blue-700">{selectedCourse}</strong>...
-                </p>
+            )}
+
+            {/* Success feedback message */}
+            {successMessage && (
+              <div className="p-3 rounded-xl bg-[#8FE388]/15 border border-[#8FE388]/30 flex items-start gap-2.5 text-[#8FE388]">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="text-[12px] font-medium leading-tight">{successMessage}</span>
               </div>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 text-left">
-              
-              {errorMessage && (
-                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 animate-shake">
-                  <span className="text-base">⚠️</span>
-                  <span>{errorMessage}</span>
-                </div>
-              )}
+            )}
 
-              {/* ------------------------------------ */}
-              {/* SIGN UP / REGISTER SPECIFIC FIELDS  */}
-              {/* ------------------------------------ */}
-              {mode === "register" && (
-                <>
-                  {/* Full Name */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="e.g. Ananya Sharma"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Academic Stream Selection Cards */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                      Select Academic Stream <span className="text-red-500">*</span>
-                    </label>
-                    
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {Object.keys(STREAM_DATA).map((streamKey) => {
-                        const isSelected = selectedStream === streamKey;
-                        const icon = streamKey === "Commerce" ? "📊" : streamKey === "Arts" ? "🎨" : streamKey === "Science" ? "🔬" : "🌐";
-                        
-                        return (
-                          <button
-                            key={streamKey}
-                            type="button"
-                            onClick={() => handleStreamChange(streamKey)}
-                            className={`p-2.5 rounded-xl border text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
-                              isSelected
-                                ? "bg-blue-700 text-white border-blue-700 shadow-md scale-[1.02]"
-                                : "bg-white text-slate-700 border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-                            }`}
-                          >
-                            <span className="text-lg">{icon}</span>
-                            <span>{streamKey === "All" ? "All Streams" : streamKey}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Course Dropdown */}
-                  <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="block text-xs font-bold text-blue-900 uppercase tracking-wider">
-                        Select Course ({selectedStream}) {selectedStream !== "All" && <span className="text-red-500">*</span>}
-                      </label>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                        {STREAM_DATA[selectedStream]?.courses.length} Courses
-                      </span>
-                    </div>
-
-                    <select
-                      value={selectedCourse}
-                      onChange={(e) => setSelectedCourse(e.target.value)}
-                      className={`w-full bg-white border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold outline-none transition-all cursor-pointer shadow-xs ${
-                        selectedStream !== "All" && !selectedCourse
-                          ? "border-amber-400 text-amber-900 bg-amber-50/30 focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
-                          : "border-blue-300 text-slate-800 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                      }`}
-                    >
-                      {selectedStream === "All" ? (
-                        <option value="" className="text-slate-500 font-normal">
-                          -- All Academic Courses (Optional) --
-                        </option>
-                      ) : (
-                        <option value="" disabled className="text-slate-400 font-normal">
-                          -- Select Course in {selectedStream} --
-                        </option>
-                      )}
-                      {STREAM_DATA[selectedStream]?.courses.map((c) => (
-                        <option key={c.id} value={c.name} className="text-slate-800 font-semibold">
-                          {c.code} — {c.name} ({c.duration})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </>
-              )}
-
-              {/* ------------------------------------ */}
-              {/* COMMON FIELDS: Email & Password       */}
-              {/* ------------------------------------ */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="student@university.edu"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Password <span className="text-red-500">*</span>
+            {/* ------------------ SIGN IN FIELDS (LOGIN) ------------------ */}
+            {screenMode === "signin" && (
+              <>
+                {/* Email address field */}
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Email address
                   </label>
-                  {mode === "login" && (
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type="email"
+                      placeholder="student@university.edu"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-3 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Password field + Forgot link */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[12px] font-medium text-white">
+                      Password
+                    </label>
                     <button
                       type="button"
-                      onClick={() => alert("Password reset link has been sent to your email (Demo mode).")}
-                      className="text-xs text-blue-600 hover:underline font-semibold cursor-pointer"
+                      onClick={() => {
+                        setForgotPasswordOpen(true);
+                        setForgotSuccess(false);
+                        setForgotEmail(email);
+                        setErrorMessage("");
+                      }}
+                      className="text-[12px] font-medium text-[#8FE388] hover:underline cursor-pointer"
                     >
                       Forgot password?
                     </button>
+                  </div>
+
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-10 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#C4C9DE] hover:text-white transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Primary CTA: Login */}
+                <button
+                  type="submit"
+                  className="btn-cta w-full h-[42px] bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] font-bold text-[14px] rounded-xl transition-all flex items-center justify-center cursor-pointer shadow-md mt-1"
+                >
+                  Login
+                </button>
+              </>
+            )}
+
+            {/* ------------------ SIGN UP FIELDS (CREATE ACCOUNT) ------------------ */}
+            {screenMode === "signup" && (
+              <>
+                {/* Full name field */}
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Full name
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="e.g. Alex Morgan"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-3 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Course name field */}
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Course name
+                  </label>
+                  <div className="relative">
+                    <BookOpen className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="e.g. B.Com Hons, M.Com, B.Tech"
+                      value={courseName}
+                      onChange={(e) => setCourseName(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-3 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Email address field */}
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type="email"
+                      placeholder="student@university.edu"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-3 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Password field with show/hide toggle & strength bar */}
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE] pointer-events-none" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="At least 6 characters"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-10 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#C4C9DE] hover:text-white transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  {/* Password strength indicator bar */}
+                  {password && (
+                    <div className="mt-1.5">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4].map((step) => (
+                          <div
+                            key={step}
+                            className="h-1 flex-1 rounded-full transition-all duration-300"
+                            style={{
+                              backgroundColor:
+                                step <= strengthScore
+                                  ? strengthColors[strengthScore]
+                                  : "#56608F"
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center mt-1">
+                        <span className="text-[11px] font-normal text-[#C4C9DE]">
+                          Password strength
+                        </span>
+                        <span
+                          className="text-[11px] font-semibold"
+                          style={{ color: strengthColors[strengthScore] }}
+                        >
+                          {strengthLabels[strengthScore]}
+                        </span>
+                      </div>
+                    </div>
                   )}
                 </div>
-                
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                    title={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+
+                {/* Primary CTA: Create account */}
+                <button
+                  type="submit"
+                  className="btn-cta w-full h-[42px] bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] font-bold text-[14px] rounded-xl transition-all flex items-center justify-center cursor-pointer shadow-md mt-1"
+                >
+                  Create account
+                </button>
+              </>
+            )}
+
+            {/* ------------------------------------------------------------- */}
+            {/* DIVIDER: "or continue with"                                  */}
+            {/* ------------------------------------------------------------- */}
+            <div className="relative flex items-center justify-center my-3">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[#56608F]" />
               </div>
+              <span className="relative bg-[#292F4C] px-3 text-[11px] font-medium text-[#C4C9DE]">
+                or continue with
+              </span>
+            </div>
 
-              {/* Submit CTA Button */}
-              <button
-                type="submit"
-                className="w-full mt-4 py-3.5 px-6 rounded-2xl bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-sm tracking-wide shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
-              >
-                <span>{mode === "register" ? "Create Account & Start Learning" : "Sign In & Access Dashboard"}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+            {/* ------------------------------------------------------------- */}
+            {/* SECONDARY BUTTON: Google sign-in                              */}
+            {/* ------------------------------------------------------------- */}
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="btn-cta w-full h-[42px] bg-[#1C2036] hover:bg-[#3D446C]/40 border border-[#56608F] hover:border-[#8FE388]/40 rounded-xl text-white font-medium text-[13px] transition-all flex items-center justify-center gap-2.5 cursor-pointer shadow-xs"
+            >
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.29v3.15C3.26 21.3 7.31 24 12 24z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.29C.47 8.21 0 10.05 0 12s.47 3.79 1.29 5.42l3.99-3.15z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.58l3.99 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                />
+              </svg>
+              <span>Continue with Google</span>
+            </button>
 
-            </form>
-          )}
-        </div>
+          </form>
 
-        {/* Footer info */}
-        <div className="bg-slate-50 border-t border-slate-100 px-6 py-3.5 text-center text-xs text-slate-500 flex items-center justify-center gap-1.5">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>EduNexus Academic Portal • Secure Student Access</span>
+          {/* ------------------------------------------------------------- */}
+          {/* FOOTER LINK                                                   */}
+          {/* ------------------------------------------------------------- */}
+          <div className="mt-4 pt-3.5 border-t border-[#56608F] text-center">
+            {screenMode === "signup" ? (
+              <p className="text-[12px] font-normal text-[#C4C9DE]">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => handleSwitchScreen("signin")}
+                  className="text-[#8FE388] font-semibold hover:underline cursor-pointer ml-1"
+                >
+                  Login
+                </button>
+              </p>
+            ) : (
+              <p className="text-[12px] font-normal text-[#C4C9DE]">
+                Don't have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => handleSwitchScreen("signup")}
+                  className="text-[#8FE388] font-semibold hover:underline cursor-pointer ml-1"
+                >
+                  Create account
+                </button>
+              </p>
+            )}
+          </div>
+
         </div>
 
       </div>
+
+      {/* ------------------------------------------------------------- */}
+      {/* FORGOT PASSWORD MODAL                                         */}
+      {/* ------------------------------------------------------------- */}
+      {forgotPasswordOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C2036]/85 backdrop-blur-sm">
+          <div className="bg-[#292F4C] rounded-[20px] border border-[#56608F] w-full max-w-[380px] p-6 shadow-2xl relative font-sans">
+            <button
+              onClick={() => setForgotPasswordOpen(false)}
+              className="absolute top-4 right-4 text-[#C4C9DE] hover:text-white transition-colors p-1 rounded-lg hover:bg-[#3D446C] cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <h3 className="text-[16px] font-bold text-white mb-1">
+              Reset password
+            </h3>
+            <p className="text-[12px] font-normal text-[#C4C9DE] mb-4">
+              Enter your registered email address to receive reset instructions
+            </p>
+
+            {forgotSuccess ? (
+              <div className="p-4 bg-[#8FE388]/15 border border-[#8FE388]/30 rounded-xl text-center space-y-2">
+                <CheckCircle2 className="w-6 h-6 text-[#8FE388] mx-auto" />
+                <p className="text-[13px] font-bold text-[#8FE388]">
+                  Reset link sent!
+                </p>
+                <p className="text-[12px] font-normal text-[#C4C9DE]">
+                  Check your inbox for password reset instructions.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setForgotPasswordOpen(false)}
+                  className="btn-cta w-full h-[38px] bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] text-[13px] font-bold rounded-xl mt-2 cursor-pointer transition-all shadow-xs"
+                >
+                  Back to login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleForgotPasswordSubmit} className="space-y-3.5">
+                <div>
+                  <label className="block text-[12px] font-medium text-white mb-1">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C4C9DE]" />
+                    <input
+                      type="email"
+                      required
+                      placeholder="student@university.edu"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      className="w-full h-[42px] pl-10 pr-3 text-[14px] font-normal text-white bg-[#1C2036] border border-[#56608F] rounded-xl placeholder:text-[#C4C9DE] focus:bg-[#1C2036] focus:outline-none focus:border-[#8FE388] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn-cta w-full h-[42px] bg-[#4CD964] hover:bg-[#4CD964]/90 text-[#1C2036] font-bold text-[13px] rounded-xl transition-all cursor-pointer shadow-md"
+                >
+                  Send reset link
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

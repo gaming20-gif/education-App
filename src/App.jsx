@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import CourseNav from "./components/CourseNav";
-import UniversityList from "./components/UniversityList";
 import CollegeList from "./components/CollegeList";
 import CourseList from "./components/CourseList";
 import SemesterList from "./components/SemesterList";
@@ -9,13 +8,16 @@ import SubjectList from "./components/SubjectList";
 import SubjectDetail from "./components/SubjectDetail";
 import SearchResults from "./components/SearchResults";
 import BottomNav from "./components/BottomNav";
+import MobileSearchModal from "./components/MobileSearchModal";
 import MyCourseView from "./components/MyCourseView";
 import BooksView from "./components/BooksView";
 import ProfileView from "./components/ProfileView";
 import LoginForm from "./components/LoginForm";
+import HomeView from "./components/HomeView";
+import ExploreCoursesView from "./components/ExploreCoursesView";
+import { formatStudentDisplayName } from "./utils/formatName";
 
 import {
-  UNIVERSITIES,
   COLLEGES,
   COURSES,
   SUBJECTS,
@@ -24,7 +26,6 @@ import {
   getCoursesForCollege,
   getCourseKey,
   isCourseMatchingKey,
-  filterUniversitiesByCourse,
   filterCollegesByCourse,
   filterCoursesByCourse,
   filterSubjectsByCourse,
@@ -32,27 +33,38 @@ import {
 } from "./data/educationData";
 
 export default function App() {
-  // Current logged in user session (null if not logged in)
+  // Current logged in user session
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem("edunexus_user");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed) {
+          if (parsed.fullName) {
+            parsed.fullName = formatStudentDisplayName(parsed.fullName, parsed.email);
+          }
+          return parsed;
+        }
       } catch {
-        return null;
+        // fallback
       }
     }
-    return null; // Force user to log in / register first!
+    return {
+      fullName: "Hitesh",
+      email: "hitesh@edunexus.edu",
+      stream: "Commerce",
+      course: "M.Com (Master of Commerce)",
+      collegeName: "R. R. Lalan College, Bhuj"
+    };
   });
 
   // Modal edit state for when logged-in user wants to edit profile
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // Navigation tab state: 'universities' | 'colleges' | 'mycourse' | 'subjects' | 'books' | 'profile'
-  const [activeTab, setActiveTab] = useState("universities");
+  // Navigation tab state: 'home' | 'colleges' | 'mycourse' | 'subjects' | 'books' | 'profile'
+  const [activeTab, setActiveTab] = useState("home");
 
   // Drill-down selection states
-  const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedCollege, setSelectedCollege] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(null);
@@ -60,6 +72,7 @@ export default function App() {
 
   // Global search state
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Helper function to focus view directly on the user's selected course
   const applyUserCourseSelection = (userData) => {
@@ -68,9 +81,7 @@ export default function App() {
     const filteredCourses = filterCoursesByCourse(userData.course);
     const targetCourse = filteredCourses[0] || COURSES[0];
     const targetCollege = COLLEGES.find(col => col.id === targetCourse.collegeId) || COLLEGES[0];
-    const targetUni = UNIVERSITIES.find(u => u.id === targetCollege.universityId) || UNIVERSITIES[0];
 
-    setSelectedUniversity(targetUni);
     setSelectedCollege(targetCollege);
     setSelectedCourse(targetCourse);
     setSelectedSemester(null);
@@ -78,10 +89,12 @@ export default function App() {
   };
 
   const handleLoginSuccess = (userData) => {
+    if (userData && userData.fullName) {
+      userData.fullName = formatStudentDisplayName(userData.fullName, userData.email);
+    }
     setCurrentUser(userData);
     localStorage.setItem("edunexus_user", JSON.stringify(userData));
     setIsLoginModalOpen(false);
-    setSelectedUniversity(null);
     setSelectedCollege(null);
     setSelectedCourse(null);
     setSelectedSemester(null);
@@ -94,7 +107,6 @@ export default function App() {
     setCurrentUser(null);
     localStorage.removeItem("edunexus_user");
     setIsLoginModalOpen(false);
-    setSelectedUniversity(null);
     setSelectedCollege(null);
     setSelectedCourse(null);
     setSelectedSemester(null);
@@ -114,13 +126,42 @@ export default function App() {
     localStorage.setItem("edunexus_user", JSON.stringify(updatedUser));
     
     // Reset drill-down selections & navigate to Colleges page to display all colleges offering this course
-    setSelectedUniversity(null);
     setSelectedCollege(null);
     setSelectedCourse(null);
     setSelectedSemester(null);
     setSelectedSubject(null);
     setSearchQuery("");
     setActiveTab("colleges");
+  };
+
+  // 1-Click Course Switcher handler (keeps current tab active so HomeView immediately updates!)
+  const handleQuickCourseChange = (newCourseName, newStream) => {
+    if (!currentUser) return;
+
+    // Auto-detect stream if not passed
+    let stream = newStream;
+    if (!stream) {
+      const matched = COURSES.find((c) =>
+        (c.name && c.name.toLowerCase().includes(newCourseName.toLowerCase())) ||
+        (c.shortCode && newCourseName.toLowerCase().includes(c.shortCode.toLowerCase()))
+      );
+      stream = matched?.stream || currentUser.stream || "Commerce";
+    }
+
+    const updatedUser = {
+      ...currentUser,
+      stream: stream,
+      course: newCourseName
+    };
+    setCurrentUser(updatedUser);
+    localStorage.setItem("edunexus_user", JSON.stringify(updatedUser));
+
+    // Reset drill-down selections
+    setSelectedCollege(null);
+    setSelectedCourse(null);
+    setSelectedSemester(null);
+    setSelectedSubject(null);
+    setSearchQuery("");
   };
 
   // -------------------------------------------------------------
@@ -140,44 +181,29 @@ export default function App() {
   // STEP 2: FULL CONTENT (STRICTLY FOR USER'S SELECTED COURSE)
   // -------------------------------------------------------------
 
-  // Handler: Reset to Universities Home
+  // Handler: Reset to Home
   const handleResetHome = () => {
-    setActiveTab("universities");
-    setSelectedUniversity(null);
+    setActiveTab("home");
     setSelectedCollege(null);
     setSelectedCourse(null);
     setSelectedSemester(null);
     setSelectedSubject(null);
     setSearchQuery("");
+    setIsMobileSearchOpen(false);
   };
 
   // Handler: Select Navigation Tab
   const handleNavTabChange = (tabId) => {
     setActiveTab(tabId);
     setSearchQuery("");
+    setIsMobileSearchOpen(false);
 
-    if (tabId === "universities") {
-      setSelectedUniversity(null);
-      setSelectedCollege(null);
-      setSelectedCourse(null);
-      setSelectedSemester(null);
-      setSelectedSubject(null);
-    } else if (tabId === "colleges") {
-      setSelectedUniversity(null);
+    if (tabId === "home" || tabId === "colleges") {
       setSelectedCollege(null);
       setSelectedCourse(null);
       setSelectedSemester(null);
       setSelectedSubject(null);
     }
-  };
-
-  // Handler: Select University
-  const handleSelectUniversity = (uni) => {
-    setSelectedUniversity(uni);
-    setSelectedCollege(null);
-    setSelectedCourse(null);
-    setSelectedSemester(null);
-    setSelectedSubject(null);
   };
 
   // Handler: Select College
@@ -256,36 +282,20 @@ export default function App() {
   // Colleges matching active stream
   const streamColleges = COLLEGES.filter(isCollegeInStream);
 
-  const streamUniIds = new Set(streamColleges.map(col => col.universityId));
-
-  // Universities in active stream
-  const streamUniversities = currentStream === "All"
-    ? UNIVERSITIES
-    : UNIVERSITIES.filter(u => streamUniIds.has(u.id));
-
   // Subjects in active stream
   const streamSubjects = currentStream === "All"
     ? SUBJECTS
     : SUBJECTS.filter(sub => streamCourseIds.has(sub.courseId));
 
-  // 1. Universities filtered by active Course (or Stream fallback)
-  const activeUniversities = (!isAllCourse)
-    ? filterUniversitiesByCourse(userCourseStr)
-    : streamUniversities;
-
-  // 2. Colleges & Departments filtered by active Course (or Stream fallback) & selected University
-  const activeColleges = selectedUniversity
-    ? (!isAllCourse
-        ? filterCollegesByCourse(userCourseStr, selectedUniversity.id)
-        : streamColleges.filter(c => c.universityId === selectedUniversity.id))
-    : (!isAllCourse
-        ? filterCollegesByCourse(userCourseStr)
-        : streamColleges);
+  // Colleges & Departments filtered by active Course (or Stream fallback)
+  const activeColleges = !isAllCourse
+    ? filterCollegesByCourse(userCourseStr)
+    : streamColleges;
 
   // Colleges offering user's specific selected course (e.g. M.Com)
   const allCollegesOfferingCourse = activeColleges;
 
-  // 3. Filtered Courses for active College / Stream / Course
+  // Filtered Courses for active College / Stream / Course
   const activeCourses = selectedCollege 
     ? (() => {
         const colCourses = getCoursesForCollege(selectedCollege);
@@ -294,10 +304,7 @@ export default function App() {
           : colCourses.filter(c => currentStream === "All" || c.stream === currentStream || !c.stream);
         return filtered.length > 0 ? filtered : colCourses;
       })()
-    : (selectedUniversity ? streamCourseObjects.filter(c => {
-        const col = COLLEGES.find(col => col.id === c.collegeId);
-        return col && col.universityId === selectedUniversity.id;
-      }) : streamCourseObjects);
+    : streamCourseObjects;
 
   // 4. Filtered Semesters for active Course
   const activeSemesters = selectedCourse ? getSemestersForCourse(selectedCourse) : [];
@@ -325,15 +332,7 @@ export default function App() {
     // Books in active stream
     const streamBooks = filterBooksByCourse(userCourseStr);
 
-    // 1. Filter Universities
-    const matchedUnis = streamUniversities.filter(u => 
-      u.name.toLowerCase().includes(q) ||
-      u.shortName.toLowerCase().includes(q) ||
-      u.location.toLowerCase().includes(q) ||
-      u.type.toLowerCase().includes(q)
-    );
-
-    // 2. Filter Colleges
+    // 1. Filter Colleges
     const matchedCols = streamColleges.filter(c => 
       c.name.toLowerCase().includes(q) ||
       c.shortName.toLowerCase().includes(q) ||
@@ -341,7 +340,7 @@ export default function App() {
       c.address.toLowerCase().includes(q)
     );
 
-    // 3. Filter Courses
+    // 2. Filter Courses
     const matchedCourses = streamCourseObjects.filter(c => 
       c.name.toLowerCase().includes(q) ||
       c.shortCode.toLowerCase().includes(q) ||
@@ -350,7 +349,7 @@ export default function App() {
       (c.careerPaths && c.careerPaths.some(cp => cp.toLowerCase().includes(q)))
     );
 
-    // 4. Filter Semesters
+    // 3. Filter Semesters
     const matchedSemesters = streamSemesters.filter(s => 
       s.name.toLowerCase().includes(q) ||
       s.title.toLowerCase().includes(q) ||
@@ -358,7 +357,7 @@ export default function App() {
       `sem ${s.semesterNumber}`.includes(q)
     );
 
-    // 5. Filter Subjects
+    // 4. Filter Subjects
     const matchedSubjects = streamSubjects.filter(sub => 
       sub.name.toLowerCase().includes(q) ||
       sub.code.toLowerCase().includes(q) ||
@@ -366,7 +365,7 @@ export default function App() {
       (sub.description && sub.description.toLowerCase().includes(q))
     );
 
-    // 6. Filter Chapters / Syllabus Units specifically
+    // 5. Filter Chapters / Syllabus Units specifically
     const matchedChapters = [];
     streamSubjects.forEach(sub => {
       if (sub.syllabus) {
@@ -382,7 +381,7 @@ export default function App() {
       }
     });
 
-    // 7. Filter Books
+    // 6. Filter Books
     const matchedBooks = streamBooks.filter(b => 
       b.title.toLowerCase().includes(q) ||
       b.author.toLowerCase().includes(q) ||
@@ -392,7 +391,6 @@ export default function App() {
 
     return {
       stream: currentStream,
-      universities: matchedUnis,
       colleges: matchedCols,
       courses: matchedCourses,
       semesters: matchedSemesters,
@@ -405,10 +403,8 @@ export default function App() {
   // Handle Search Result Click
   const handleSelectSearchResult = (type, item) => {
     setSearchQuery("");
-    if (type === "university") {
-      setActiveTab("universities");
-      handleSelectUniversity(item);
-    } else if (type === "college") {
+    setIsMobileSearchOpen(false);
+    if (type === "college") {
       setActiveTab("colleges");
       handleSelectCollege(item);
     } else if (type === "course") {
@@ -430,25 +426,27 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#1E293B] flex flex-col font-sans selection:bg-[#1E40AF] selection:text-white">
+    <div className="min-h-screen bg-[#1C2036] text-white flex flex-col font-sans selection:bg-[#3D446C] selection:text-white relative">
       
-      {/* Top Navbar */}
+      {/* Animation 1: Background slow-moving blurred gradient blobs/orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#3D446C] opacity-30 blur-[100px] bg-orb-1" />
+        <div className="absolute top-[35%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#8FE388] opacity-20 blur-[120px] bg-orb-2" />
+        <div className="absolute bottom-[-15%] left-[25%] w-[550px] h-[550px] rounded-full bg-[#292F4C] opacity-35 blur-[90px] bg-orb-3" />
+      </div>
+
+      {/* Main Single Navbar */}
       <Navbar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onResetHome={handleResetHome}
-        activeCourseName={selectedCourse?.name || currentUser?.course}
         onOpenLogin={() => setIsLoginModalOpen(true)}
         currentUser={currentUser}
         onLogout={handleLogout}
         onStreamCourseChange={handleStreamCourseChange}
-      />
-
-      {/* Sub-Header Course Nav Links (Replaces old breadcrumb) */}
-      <CourseNav
+        onQuickCourseChange={handleQuickCourseChange}
+        onNavTabChange={handleNavTabChange}
         activeTab={activeTab}
-        setActiveTab={handleNavTabChange}
-        selectedCourseName={currentUser?.course}
       />
 
       {/* User Details & Profile Modal (when logged in) */}
@@ -462,7 +460,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-24 md:pb-8">
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-6 pb-28 md:pb-8 relative z-10">
         
         {searchResults ? (
           /* Global Search Results Mode */
@@ -502,30 +500,17 @@ export default function App() {
             onSelectCourse={handleSelectCourse}
             onBack={() => setSelectedCollege(null)}
           />
-        ) : selectedUniversity ? (
-          /* University Colleges */
-          <CollegeList
-            university={selectedUniversity}
-            colleges={activeColleges}
-            onSelectCollege={handleSelectCollege}
-            onBack={() => setSelectedUniversity(null)}
-            selectedCourseName={currentUser?.course}
-          />
-        ) : activeTab === "colleges" ? (
-          /* Colleges Link: Show all colleges teaching the selected course */
-          <CollegeList
-            university={selectedUniversity}
-            colleges={selectedUniversity ? activeColleges : allCollegesOfferingCourse}
-            onSelectCollege={handleSelectCollege}
-            onBack={selectedUniversity ? () => setSelectedUniversity(null) : null}
-            selectedCourseName={currentUser?.course}
-          />
-        ) : activeTab === "mycourse" ? (
-          /* Semesters Link: My Course Dashboard & Semesters */
-          <MyCourseView
-            onSelectSubject={handleSelectSubject}
-            onSelectCourse={handleSelectCourse}
+        ) : activeTab === "explore" ? (
+          /* Explore All Academic Courses */
+          <ExploreCoursesView
+            courses={COURSES}
             currentUser={currentUser}
+            onSelectCourse={handleSelectCourse}
+            onSelectStreamCourse={handleStreamCourseChange}
+            onViewColleges={(course) => {
+              handleStreamCourseChange(course.stream || "All", course.name);
+            }}
+            onBack={() => handleNavTabChange("home")}
           />
         ) : activeTab === "books" ? (
           /* Textbooks Link: Textbooks Library */
@@ -547,39 +532,50 @@ export default function App() {
             semester={{ name: `${selectedCourse?.shortCode || currentUser?.course || "Course"} Enrolled Semesters` }}
             subjects={activeSubjects}
             onSelectSubject={handleSelectSubject}
-            onBack={() => setActiveTab("universities")}
+            onBack={() => setActiveTab("home")}
           />
         ) : (
-          /* Universities Link / Default Home: Choose University */
-          <UniversityList
-            universities={activeUniversities}
-            onSelectUniversity={handleSelectUniversity}
+          /* Home View: Rich Student Dashboard Home Screen */
+          <HomeView
+            currentUser={currentUser}
+            onSelectSubject={handleSelectSubject}
+            onSelectCourse={handleSelectCourse}
+            onOpenProfile={() => setIsLoginModalOpen(true)}
+            onExploreCourses={() => handleNavTabChange("explore")}
+            onQuickCourseChange={handleQuickCourseChange}
           />
         )}
       </main>
 
-      {/* Academic Portal Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mb-16 md:mb-0">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Academic Portal Footer (Desktop only) */}
+      <footer className="hidden md:block bg-[#292F4C] border-t border-[#56608F] py-6 text-center text-xs text-[#C4C9DE] relative z-10">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 EduNexus Higher Education Reference Hub. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 text-slate-600 font-medium text-xs">
-            <span>Universities</span>
-            <span className="text-slate-300">•</span>
-            <span>Colleges</span>
-            <span className="text-slate-300">•</span>
-            <span className="text-[#1E40AF] font-bold">{currentUser?.course || "Course Portal"}</span>
-            <span className="text-slate-300">•</span>
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 text-[#C4C9DE] font-medium text-xs">
+            <span className="text-[#8FE388] font-bold">{currentUser?.course || "Course Portal"}</span>
+            <span className="text-[#56608F]">•</span>
             <span>PDF Textbooks</span>
           </div>
         </div>
       </footer>
 
+      {/* Mobile Search Modal Drawer / Overlay */}
+      <MobileSearchModal
+        isOpen={isMobileSearchOpen}
+        onClose={() => setIsMobileSearchOpen(false)}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        searchResults={searchResults}
+        onSelectResult={handleSelectSearchResult}
+        onNavigateTab={handleNavTabChange}
+      />
+
       {/* Sticky Bottom Navigation Bar (Fixed Position for Mobile Viewports) */}
       <BottomNav
         activeTab={activeTab}
-        setActiveTab={(tab) => {
-          handleNavTabChange(tab === "home" ? "universities" : tab);
-        }}
+        onTabChange={handleNavTabChange}
+        onOpenSearch={() => setIsMobileSearchOpen((prev) => !prev)}
+        isSearchActive={isMobileSearchOpen || Boolean(searchQuery.trim())}
       />
     </div>
   );
