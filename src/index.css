@@ -71,6 +71,20 @@
   background: #3D446C;
 }
 
+/* Hide scrollbar lines on mobile & touch devices */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* ==========================================================================
    ANIMATION 1: Background slow-moving blurred gradient blobs/orbs (12-18s)
    GPU-accelerated, will-change: transform, does not affect scroll performance

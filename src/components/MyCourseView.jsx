@@ -95,14 +95,6 @@ export default function MyCourseView({ onSelectSubject, onSelectCourse, currentU
               </span>
             </div>
 
-            {/* Success Progress Bar */}
-            <div className="w-full bg-[#292F4C] rounded-full h-3 overflow-hidden border border-[#56608F]">
-              <div
-                className="bg-[#4CD964] h-3 rounded-full animate-progress-fill transition-all duration-800"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-
             <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-[#56608F]">
               <div>
                 <div className="text-[#C4C9DE]">Total Credits</div>

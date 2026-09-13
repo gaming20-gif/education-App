@@ -171,8 +171,8 @@ export default function HomeView({
   onExploreCourses,
   onQuickCourseChange
 }) {
-  // Active semester chip state (Default to Semester 3)
-  const [activeSemester, setActiveSemester] = useState(3);
+  // Active semester chip state (Default to Semester 1)
+  const [activeSemester, setActiveSemester] = useState(1);
   
   // Mobile drawer menu state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -205,8 +205,8 @@ export default function HomeView({
     }
   }, [totalSemestersCount]);
 
-  // Selected semester subjects
-  const currentSemesterSubjects = SEMESTER_DATA[activeSemester] || SEMESTER_DATA[3];
+  // Selected semester subjects (Defaults to Semester 1)
+  const currentSemesterSubjects = SEMESTER_DATA[activeSemester] || SEMESTER_DATA[1];
 
   // 1-Click ZIP & PDF Download States
   const [isDownloadingZip, setIsDownloadingZip] = useState(false);
@@ -593,7 +593,7 @@ export default function HomeView({
                 Enrolled Semesters & Subjects
               </h2>
               <p className="text-[12px] text-[#C4C9DE] mt-0.5">
-                Select semester to view enrolled curriculum and progress
+                Select semester to view enrolled curriculum
               </p>
             </div>
 
@@ -606,9 +606,9 @@ export default function HomeView({
                     key={semNum}
                     type="button"
                     onClick={() => setActiveSemester(semNum)}
-                    className={`tab-underline-animated px-3.5 py-1.5 rounded-lg text-[12px] font-semibold transition-all shrink-0 cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-lg text-[12px] font-semibold transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? "is-active bg-[#3D446C] text-[#8FE388] shadow-xs"
+                        ? "bg-[#3D446C] text-[#8FE388] shadow-xs"
                         : "text-[#C4C9DE] hover:text-white hover:bg-[#3D446C]/30"
                     }`}
                   >
@@ -702,22 +702,17 @@ export default function HomeView({
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#3D446C] border border-[#56608F] text-[#8FE388] uppercase tracking-wider">
                       {subject.code}
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDownloadSingleSubjectPdf(subject);
-                        }}
-                        className="btn-cta p-1 rounded bg-[#3D446C] hover:bg-[#8FE388] text-[#8FE388] hover:text-[#1C2036] border border-[#56608F] transition-all cursor-pointer shadow-xs"
-                        title={`Download ${subject.name} Book PDF in 1 click`}
-                      >
-                        <FileDown className="w-3.5 h-3.5" />
-                      </button>
-                      <span className="text-[12px] font-bold text-[#8FE388]">
-                        {subject.progress}%
-                      </span>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDownloadSingleSubjectPdf(subject);
+                      }}
+                      className="btn-cta p-1 rounded bg-[#3D446C] hover:bg-[#8FE388] text-[#8FE388] hover:text-[#1C2036] border border-[#56608F] transition-all cursor-pointer shadow-xs"
+                      title={`Download ${subject.name} Book PDF in 1 click`}
+                    >
+                      <FileDown className="w-3.5 h-3.5" />
+                    </button>
                   </div>
 
                   <div>
@@ -727,16 +722,6 @@ export default function HomeView({
                     <p className="text-[11px] font-normal text-[#C4C9DE] mt-0.5">
                       {subject.chapters} chapters · Syllabus active
                     </p>
-                  </div>
-
-                  {/* Progress bar with Animation 3: Animate fill from 0 to percentage over 1.2s */}
-                  <div className="w-full h-1.5 bg-[#56608F] rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full animate-progress-fill bg-[#8FE388]"
-                      style={{
-                        width: `${subject.progress}%`
-                      }}
-                    />
                   </div>
                 </div>
               ))}
